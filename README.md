@@ -1,2 +1,2 @@
 # PLD-SMART_Front
-PLD Smart front-end. React JS mobile application.
+PLD Smart Back-end. AWS. React JS mobile application.
