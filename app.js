@@ -5,7 +5,6 @@ dotenv.config()
 //Server initialization
 const express = require('express')
 const app = express()
-const port = 3000
 
 //MySql Connection
 const mysql = require('mysql')
@@ -28,6 +27,6 @@ app.get('/', (req, res) => {
 
 })
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${process.env.PORT}`)
+app.listen(process.env.PORT || 3000, () => {
+  console.log(`Example app listening on port ${process.env.PORT || 3000}`)
 })
