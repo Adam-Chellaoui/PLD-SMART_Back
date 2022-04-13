@@ -5,6 +5,8 @@ dotenv.config()
 //Server initialization
 const express = require('express')
 const app = express()
+app.use(express.json())
+
 
 //MySql Connection
 const mysql = require('mysql2')
@@ -16,6 +18,9 @@ const connection = mysql.createConnection({
   database: process.env.DB_NAME
 })
 
+connection.connect()
+
+
 app.get('/', (req, res) => {
     connection.connect()
     connection.query('SELECT * FROM School', (err, rows, fields) => {
@@ -25,6 +30,40 @@ app.get('/', (req, res) => {
     })
     connection.end()
 
+})
+
+app.post("/", (req, res) => {
+    console.log("Request body: ", req.body)
+    const {name,
+         surname, 
+         email, 
+         city,
+         street,
+         streetNb,
+         region,
+         zipCode,
+         addressComplement,
+         password, 
+         confirmedPassword, 
+         phone, 
+         address, 
+         gender,
+        birthDate,
+        description, 
+        wholeResult} = req.body
+
+    const splitted = birthDate.split("/");
+    const birtDateTimestamp = `${splitted[2]}-${splitted[1]}-${splitted[0]} 00:00:00`
+    connection.query(`
+    INSERT INTO eve.User (name, surname, mail, phone, city, street, street_number, region, zip_code, address_complement, gender, date_birth, user_password, description, admin, school_id, photo)
+    VALUES ('${name}', '${surname}', '${email}', '${phone}','${city}', '${street}', '${streetNb}', '${region}', '${zipCode}', '${addressComplement}', '${gender}', '${birtDateTimestamp}', '${password}', '${description}', FALSE, 1, '')`,
+    (err, rows, fields) => {
+        if (err) throw "SQL ERROR: " + err  
+        console.log("Succesfull")
+    })
+
+
+    res.send("Response: " + name)
 })
 
 app.listen(process.env.PORT || 3000, () => {
