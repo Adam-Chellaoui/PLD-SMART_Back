@@ -20,12 +20,9 @@ const connection = mysql.createConnection({
 
 connection.connect()
 
-
-
+app.get("/", (req, res) => res.send("Bienvenue au backend du meilleur hexanome de l'INSA."))
 app.post("/signup", (req, res) => signupRoute(connection, req, res))
-
 app.get("/login", (req, res) => loginRoute(connection, req, res))
-
 
 app.listen(process.env.PORT || 3000, () => {
   console.log(`Example app listening on port ${process.env.PORT || 3000}`)
