@@ -27,11 +27,8 @@ const signupRoute = (connection, req, res) => {
         signupQuery(name, surname, email, city, street, streetNb, region, zipCode, addressComplement, password, confirmedPassword, phone, address, gender, birthDateTimestamp, description),
     (err, rows, fields) => {
         if (err) throw "SQL ERROR: " + err  
-        console.log("Succesfull")
+        res.send("Signup Sucessfull")
     })
-
-
-    res.send("Response: " + name)
 }
 
 export default signupRoute;

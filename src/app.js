@@ -22,7 +22,7 @@ connection.connect()
 
 
 
-app.post("/", (req, res) => signupRoute(connection, req, res))
+app.post("/signup", (req, res) => signupRoute(connection, req, res))
 
 app.get("/login", (req, res) => loginRoute(connection, req, res))
 
