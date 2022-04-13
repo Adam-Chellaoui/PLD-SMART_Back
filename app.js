@@ -7,7 +7,7 @@ const express = require('express')
 const app = express()
 
 //MySql Connection
-const mysql = require('mysql')
+const mysql = require('mysql2')
 
 const connection = mysql.createConnection({
   host: process.env.DB_HOST,
