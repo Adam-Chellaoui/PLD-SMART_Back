@@ -1,6 +1,6 @@
 import dotenv from "dotenv"
 import express from "express"
-import mysql from "mysql2"
+import mysql from "mysql2/promise"
 import signupRoute from "./routes/signup/route.js"
 import loginRoute from "./routes/login/route.js"
 
@@ -11,14 +11,12 @@ const app = express()
 app.use(express.json())
 
 
-const connection = mysql.createConnection({
+const connection = await mysql.createConnection({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME
 })
-
-connection.connect()
 
 app.get("/", (req, res) => res.send("Bienvenue au backend du meilleur hexanome de l'INSA."))
 app.post("/signup", (req, res) => signupRoute(connection, req, res))
