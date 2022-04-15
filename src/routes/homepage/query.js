@@ -3,8 +3,8 @@ const getUserInfoQuery = () => {
     return req
 }
 
-const eventQuery = () => {
-        const req = `SELECT * FROM eve.Event `
+const getPopularEventQuery = () => {
+        const req = `SELECT event.name, event.photo, event.date_timestamp, event.place, user.photo as imgProfil FROM eve.Event as event, eve.User as user  where event.date_timestamp>=Now() and user.id=event.creator_id `
         return req
    }
 
@@ -20,6 +20,6 @@ const categoryQuery = () => {
 
 
 export {getUserInfoQuery};
-export {eventQuery};
+export {getPopularEventQuery};
 //export {eventbyCategoryQuery};
 //export {categoryQuery};
