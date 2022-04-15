@@ -1,5 +1,5 @@
 const getUserInfoQuery = () => {
-    const req = `SELECT name, photo FROM eve.User U WHERE U.id = ?`
+    const req = `SELECT name, photo FROM eve.User WHERE id = ?`
     return req
 }
 
@@ -8,9 +8,15 @@ const getPopularEventQuery = () => {
         return req
    }
 
-
-   const getCategoriesQuery = () => {
+const getCategoriesQuery = () => {
     const req = `SELECT * FROM eve.Category`
+    return req
+}
+
+const getEventbyCategoryQuery = () => {
+    const req = `SELECT e.name, e.date_timestamp, e.place, e.photo as ImageEvent, u.photo as ImageProfil 
+                FROM eve.Event e JOIN eve.User u  
+                WHERE e.creator_id = u.id AND e.date_timestamp>=Now() AND e.category_id = ? `
     return req
 }
 
@@ -24,5 +30,5 @@ const getPopularEventQuery = () => {
 export {getUserInfoQuery};
 export {getPopularEventQuery};
 export {getCategoriesQuery};
-
+export{getEventbyCategoryQuery};
 //export {eventbyCategoryQuery};

@@ -3,8 +3,9 @@ import express from "express"
 import mysql from "mysql2/promise"
 import signupRoute from "./routes/signup/route.js"
 import loginRoute from "./routes/login/route.js"
-import {getPopularRoute, getUserInfoRoute, getCategoriesRoute} from "./routes/homepage/route.js"
+import {getPopularRoute, getUserInfoRoute, getCategoriesRoute, getEventbyCategoryRoute} from "./routes/homepage/route.js"
 import {authenticateToken} from "./middleware/authenticateToken.js"
+//import {getEventbyCategoryRoute} from "./routes/homepage/route.js"
 
 //Env config
 dotenv.config();
@@ -29,7 +30,7 @@ app.post("/login", (req, res) => loginRoute(connection, req, res));
 app.get("/getPopular", (req, res) => getPopularRoute(connection, req, res));
 app.post("/getUserInfo", authenticateToken, (req, res) => getUserInfoRoute(connection, req, res))
 app.get("/getCategories", (req, res) => getCategoriesRoute(connection, req, res))
-
+app.post("/getEventsByCategory", (req, res) => getEventbyCategoryRoute(connection, req, res))
 
 app.listen(process.env.PORT || 3000, () => {
   console.log(`Example app listening on port ${process.env.PORT || 3000}`);

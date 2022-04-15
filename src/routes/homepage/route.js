@@ -1,6 +1,4 @@
-import { getPopularEventQuery, getUserInfoQuery, getCategoriesQuery } from "./query.js";
-
-//import { EventbyCategoryQuery } from "./query.js";
+import { getPopularEventQuery, getUserInfoQuery, getCategoriesQuery, getEventbyCategoryQuery } from "./query.js";
 
 const getUserInfoRoute = async(connection, req, res) => {
     console.log("getUserInfoRoute Request bod: ", req.body)
@@ -20,10 +18,7 @@ const getPopularRoute = async(connection, req, res) => {
     //if (err) throw "SQL ERROR: " + err 
     if(results){
         res.send(results);
-    }
-    
-    
-    
+    }  
 }
 
 const getCategoriesRoute = async (connection, req, res) => {
@@ -37,4 +32,16 @@ const getCategoriesRoute = async (connection, req, res) => {
     }
 }
 
-export {getUserInfoRoute, getPopularRoute, getCategoriesRoute} ;
+const getEventbyCategoryRoute = async(connection, req, res) => {
+    console.log(req.body)
+    const {id} = req.body
+    console.log(id)
+    const [results, fields] = await connection.execute(getEventbyCategoryQuery(), [id])
+        if(results){
+            console.log(results);
+            res.send(results);
+        }
+}
+
+
+export {getUserInfoRoute, getPopularRoute, getCategoriesRoute, getEventbyCategoryRoute} ;
