@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
 import express from "express";
-import mysql from "mysql2";
+import mysql from "mysql2/promise";
 import signupRoute from "./routes/signup/route.js";
 import loginRoute from "./routes/login/route.js";
 
@@ -10,7 +10,7 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 
-const connection = mysql.createConnection({
+const connection = await mysql.createConnection({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
