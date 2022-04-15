@@ -16,7 +16,7 @@ const loginRoute = async (connection, req, res) => {
     }
     //if (err) throw "SQL ERROR: " + err
     const passwordMatch = await bcrypt.compare(password,results[0].user_password)
-
+  ;
     if (passwordMatch) {
       const token = jwt.sign({ id: results[0].id }, process.env.SECRET, { expiresIn: '3 hours' })
       res.status(200).json({ id: results[0].id, token: token });

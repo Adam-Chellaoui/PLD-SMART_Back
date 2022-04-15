@@ -9,14 +9,14 @@ const getUserInfoRoute = async(connection, req, res) => {
 
     if(results){
         console.log(results[0]);
-        res.send(Ok);
+        res.send(results);
     }
 }
 
 const getPopularRoute = async(connection, req, res) => {
     const {} = req.body;
     const [results, fields] = await connection.execute(getPopularEventQuery());
-    console.log(results[0].date_timestamp)
+   
     //if (err) throw "SQL ERROR: " + err 
     if(results){
         res.send(results);
