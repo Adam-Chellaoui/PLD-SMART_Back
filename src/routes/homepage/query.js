@@ -8,18 +8,21 @@ const getPopularEventQuery = () => {
         return req
    }
 
+
+   const getCategoriesQuery = () => {
+    const req = `SELECT * FROM eve.Category`
+    return req
+}
+
 /*const eventbyCategoryQuery = (id) => {
         const req = `SELECT * FROM eve.Event Event WHERE Event.category_id = '${id}' `
         return req
     }
-
-const categoryQuery = () => {
-    const req = `SELECT * FROM eve.Category`
-}
 */
 
 
 export {getUserInfoQuery};
 export {getPopularEventQuery};
+export {getCategoriesQuery};
+
 //export {eventbyCategoryQuery};
-//export {categoryQuery};

@@ -1,12 +1,10 @@
-import { getPopularEventQuery } from "./query.js";
-import { getUserInfoQuery } from "./query.js";
+import { getPopularEventQuery, getUserInfoQuery, getCategoriesQuery } from "./query.js";
+
 //import { EventbyCategoryQuery } from "./query.js";
-//import { CategoryQuery } from "./query.js";
 
 const getUserInfoRoute = async(connection, req, res) => {
     console.log("getUserInfoRoute Request bod: ", req.body)
     const {id} = req.body
-    console.log("getUserInfoRoute userId: ", id)
     const [results, fields] = await connection.execute(getUserInfoQuery(), [id])
 
     if(results){
@@ -28,4 +26,15 @@ const getPopularRoute = async(connection, req, res) => {
     
 }
 
-export {getUserInfoRoute, getPopularRoute} ;
+const getCategoriesRoute = async (connection, req, res) => {
+    console.log("getCategoriesRoute Request bod: ", req.body)
+    const {} = req.body
+    const [results, fields] = await connection.execute(`SELECT * FROM eve.Category`,[])
+    if(results){
+        console.log(results[0]);
+        res.send(results);
+
+    }
+}
+
+export {getUserInfoRoute, getPopularRoute, getCategoriesRoute} ;

@@ -3,8 +3,8 @@ import express from "express"
 import mysql from "mysql2/promise"
 import signupRoute from "./routes/signup/route.js"
 import loginRoute from "./routes/login/route.js"
-import {getPopularRoute} from "./routes/homepage/route.js"
-import {getUserInfoRoute} from "./routes/homepage/route.js"
+import {getPopularRoute, getUserInfoRoute, getCategoriesRoute} from "./routes/homepage/route.js"
+import {authenticateToken} from "./middleware/authenticateToken.js"
 
 //Env config
 dotenv.config();
@@ -26,8 +26,9 @@ app.get("/", (req, res) =>
 );
 app.post("/signup", (req, res) => signupRoute(connection, req, res));
 app.post("/login", (req, res) => loginRoute(connection, req, res));
-app.post("/getUserInfo", (req, res) => getUserInfoRoute(connection, req, res))
 app.get("/getPopular", (req, res) => getPopularRoute(connection, req, res));
+app.post("/getUserInfo", authenticateToken, (req, res) => getUserInfoRoute(connection, req, res))
+app.get("/getCategories", (req, res) => getCategoriesRoute(connection, req, res))
 
 
 app.listen(process.env.PORT || 3000, () => {
