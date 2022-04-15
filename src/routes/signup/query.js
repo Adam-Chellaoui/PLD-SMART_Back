@@ -5,9 +5,7 @@ const signupQuery = () => {
         return req
    }
 
-const checkEmailExists = (email) => {
-    const req = `SELECT * FROM eve.User WHERE mail='${email}'`
-}
+const checkEmailExists = () => `SELECT * FROM eve.User WHERE mail=?`
 
 
-export {signupQuery};
+export {signupQuery, checkEmailExists};
