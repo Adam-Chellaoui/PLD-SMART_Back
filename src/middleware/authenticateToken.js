@@ -1,6 +1,16 @@
 import jwt from "jsonwebtoken"
 
+/**
+ * Middleware function that authenticates an user jwt token.
+ * See how middleware works here: https://expressjs.com/en/guide/using-middleware.html
+ * See how jwt works here: https://jwt.io
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ * @returns 
+ */
 export const authenticateToken = async(req, res, next) => {
+    console.log(req.headers)
     const authHeader = req.headers['authorization']
     const token = authHeader && authHeader.split(' ')[1]
 

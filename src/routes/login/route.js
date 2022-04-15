@@ -18,7 +18,7 @@ const loginRoute = async (connection, req, res) => {
     const passwordMatch = await bcrypt.compare(password,results[0].user_password)
 
     if (passwordMatch) {
-      const token = jwt.sign({ id: results[0].id }, process.env.SECRET, { expiresIn: '10 hours' })
+      const token = jwt.sign({ id: results[0].id }, process.env.SECRET, { expiresIn: '3 hours' })
       res.status(200).json({ id: results[0].id, token: token });
     } else {
       res.status(401).send("Wrong password or email.");
