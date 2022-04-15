@@ -1,8 +1,5 @@
-const loginQuery = (
-    mail
-    ) => {
-        console.log("Mail is: ", mail)
-        const req = `SELECT * FROM eve.User WHERE mail='${mail}' `
+const loginQuery = () => {
+        const req = `SELECT * FROM eve.User WHERE mail=?`
         return req
    }
 

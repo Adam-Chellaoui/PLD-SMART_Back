@@ -8,7 +8,8 @@ const loginRoute = async(connection, req, res) => {
         password} = req.body
 
     connection.query(
-        loginQuery(mail),
+        loginQuery(),
+        [mail],
     async(err, results, fields) => {
         if (err) throw "SQL ERROR: " + err
         const passwordMatch = await bcrypt.compare(password,results[0].user_password)

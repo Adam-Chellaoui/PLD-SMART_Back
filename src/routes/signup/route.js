@@ -29,22 +29,23 @@ const signupRoute = async(connection, req, res) => {
     const birthDateTimestamp = `${splitted[2]}-${splitted[1]}-${splitted[0]} 00:00:00`
 
     connection.query(
-        signupQuery(
-            name, 
-            surname, 
-            email, 
-            city, 
-            street, 
-            streetNb, 
-            region, 
-            zipCode, 
-            addressComplement, 
-            hashedPassword, 
-            phone, 
-            address, 
-            gender, 
-            birthDateTimestamp, 
-            description),
+        signupQuery(),
+        //We escape the variable to prevent sql injection attacks
+        //https://github.com/mysqljs/mysql#escaping-query-values
+        [name, 
+         surname, 
+         email, 
+         phone, 
+         city, 
+         street, 
+         streetNb, 
+         region, 
+         zipCode, 
+         addressComplement, 
+         gender, 
+         birthDate, 
+         hashedPassword, 
+         description],
     (err, rows, fields) => {
         if (err) throw "SQL ERROR: " + err  
         res.send("Signup Sucessfull")
