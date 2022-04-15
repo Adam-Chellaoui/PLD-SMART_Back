@@ -1,6 +1,7 @@
 import { loginQuery } from "./query.js";
+import bcrypt from "bcrypt";
 
-const loginRoute = (connection, req, res) => {
+const loginRoute = async(connection, req, res) => {
     console.log("Request bod: ", req.body)
     const {
         mail,
@@ -8,15 +9,15 @@ const loginRoute = (connection, req, res) => {
 
     connection.query(
         loginQuery(mail),
-    (err, results, fields) => {
+    async(err, results, fields) => {
         if (err) throw "SQL ERROR: " + err
-        if (`${password}`==results[0].user_password)  {
-            console.log("Ok")
-            res.send("Ok")
+        const passwordMatch = await bcrypt.compare(password,results[0].user_password)
+
+        if(passwordMatch)  {
+            res.status(200).json({id: results[0].id})
         }
         else {
-            console.log("Pas Ok")
-            res.status(401).send("Bad password")
+            res.status(401).send("Wrong password or email.")
         }
     })
 }
