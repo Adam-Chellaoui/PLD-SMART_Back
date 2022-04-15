@@ -1,3 +1,8 @@
+const getUserInfoQuery = (userId) => {
+    const req = `SELECT name, photo FROM eve.User U WHERE U.id = '${userId}'`
+    return req
+}
+
 const eventQuery = () => {
         const req = `SELECT * FROM eve.Event `
         return req
@@ -11,12 +16,10 @@ const eventQuery = () => {
 const categoryQuery = () => {
     const req = `SELECT * FROM eve.Category`
 }
+*/
 
-const creatorQuery = (id) => {
-    const req = `SELECT * FROM eve.Creator C WHERE C.id = '${id}'`
-}*/
 
-//export {creatorQuery};
+export {getUserInfoQuery};
 export {eventQuery};
 //export {eventbyCategoryQuery};
 //export {categoryQuery};
