@@ -38,7 +38,6 @@ const signupRoute = async(connection, req, res) => {
     const birthDateTimestamp = `${splitted[2]}-${splitted[1]}-${splitted[0]} 00:00:00`
 
 
-
     connection.query(
         signupQuery(),
         //We escape the variable to prevent sql injection attacks

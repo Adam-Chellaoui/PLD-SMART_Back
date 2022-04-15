@@ -1,5 +1,5 @@
-const getUserInfoQuery = (userId) => {
-    const req = `SELECT name, photo FROM eve.User U WHERE U.id = '${userId}'`
+const getUserInfoQuery = () => {
+    const req = `SELECT name, photo FROM eve.User U WHERE U.id = ?`
     return req
 }
 
