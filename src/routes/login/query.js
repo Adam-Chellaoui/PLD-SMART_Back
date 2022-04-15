@@ -1,6 +1,6 @@
 const loginQuery = () => {
-        const req = `SELECT * FROM eve.User WHERE mail=?`
-        return req
-   }
+  const req = `SELECT id, user_password FROM eve.User WHERE mail=?`;
+  return req;
+};
 
-export {loginQuery};
+export { loginQuery };
