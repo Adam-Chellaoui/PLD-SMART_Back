@@ -20,11 +20,11 @@ const connection = mysql.createConnection({
 
 connection.connect()
 
-
-
 app.post("/signup", (req, res) => signupRoute(connection, req, res))
 
 app.get("/login", (req, res) => loginRoute(connection, req, res))
+
+app.get("/event", (req, res) => eventRoute(connection, req, res))
 
 
 app.listen(process.env.PORT || 3000, () => {
