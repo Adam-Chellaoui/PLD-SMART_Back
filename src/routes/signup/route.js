@@ -43,7 +43,7 @@ const signupRoute = async(connection, req, res) => {
          zipCode, 
          addressComplement, 
          gender, 
-         birthDate, 
+         birthDateTimestamp, 
          hashedPassword, 
          description],
     (err, rows, fields) => {
