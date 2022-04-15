@@ -12,6 +12,7 @@
   "type": "module",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "5.0.1",
     "dotenv": "16.0.0",
     "express": "4.17.3",
     "mysql2": "2.3.3"
