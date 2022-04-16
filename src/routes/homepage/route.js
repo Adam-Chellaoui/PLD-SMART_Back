@@ -1,4 +1,4 @@
-import { getPopularEventQuery, getUserInfoQuery, getCategoriesQuery, getEventbyCategoryQuery } from "./query.js";
+import { getPopularEventQuery, getUserInfoQuery, getCategoriesQuery, getEventsbyCategoryQuery } from "./query.js";
 
 const getUserInfoRoute = async(connection, req, res) => {
     console.log("getUserInfoRoute Request bod: ", req.body)
@@ -32,11 +32,10 @@ const getCategoriesRoute = async (connection, req, res) => {
     }
 }
 
-const getEventbyCategoryRoute = async(connection, req, res) => {
+const getEventsbyCategoryRoute = async(connection, req, res) => {
     console.log(req.body)
-    const {id} = req.body
-    console.log(id)
-    const [results, fields] = await connection.execute(getEventbyCategoryQuery(), [id])
+    const {} = req.body
+    const [results, fields] = await connection.execute(getEventsbyCategoryQuery())
         if(results){
             console.log(results);
             res.send(results);
@@ -44,4 +43,4 @@ const getEventbyCategoryRoute = async(connection, req, res) => {
 }
 
 
-export {getUserInfoRoute, getPopularRoute, getCategoriesRoute, getEventbyCategoryRoute} ;
+export {getUserInfoRoute, getPopularRoute, getCategoriesRoute, getEventsbyCategoryRoute} ;
