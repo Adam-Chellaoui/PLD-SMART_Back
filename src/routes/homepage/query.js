@@ -14,9 +14,9 @@ const getCategoriesQuery = () => {
 }
 
 const getEventsbyCategoryQuery = () => {
-    const req = `SELECT e.name, e.date_timestamp, e.place, e.photo as ImageEvent, u.photo as ImageProfil, e.category_id 
-                FROM eve.Event e JOIN eve.User u  
-                WHERE e.creator_id = u.id AND e.date_timestamp>=Now()
+    const req = `SELECT e.name, e.date_timestamp, e.place, e.photo as ImageEvent, u.photo as ImageProfil, e.category_id , c.description
+                FROM eve.Event e JOIN eve.User u, eve.Category as c 
+                WHERE e.creator_id = u.id AND e.date_timestamp>=Now() and c.id=category_id
                 ORDER BY e.category_id`
     return req
 }
