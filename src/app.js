@@ -4,6 +4,7 @@ import mysql from "mysql2/promise"
 import signupRoute from "./routes/signup/route.js"
 import loginRoute from "./routes/login/route.js"
 import {getPopularRoute, getUserInfoRoute, getCategoriesRoute, getEventsbyCategoryRoute} from "./routes/homepage/route.js"
+import {getHistoricRoute, getReviewUserRoute, getUpcomingEventRoute } from "./routes/myaccount/route.js"
 import {authenticateToken} from "./middleware/authenticateToken.js"
 //import {getEventbyCategoryRoute} from "./routes/homepage/route.js"
 
@@ -31,6 +32,12 @@ app.get("/getPopular", (req, res) => getPopularRoute(connection, req, res));
 app.post("/getUserInfo", authenticateToken, (req, res) => getUserInfoRoute(connection, req, res))
 app.get("/getCategories", (req, res) => getCategoriesRoute(connection, req, res))
 app.get("/getEventsByCategory", (req, res) => getEventsbyCategoryRoute(connection, req, res))
+
+//My Account
+app.get("/getHistoric", (req, res) => getHistoricRoute(connection, req, res))
+app.get("/getReviewUser", (req, res) => getReviewUserRoute(connection, req, res))
+app.get("/getUpcomingEvent", (req, res) => getUpcomingEventRoute(connection, req, res))
+
 
 app.listen(process.env.PORT || 3000, () => {
   console.log(`Example app listening on port ${process.env.PORT || 3000}`);

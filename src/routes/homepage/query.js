@@ -4,7 +4,9 @@ const getUserInfoQuery = () => {
 }
 
 const getPopularEventQuery = () => {
-        const req = `SELECT event.name, event.photo as ImageEvent, event.date_timestamp, event.place, user.photo as ImageProfil  FROM eve.Event as event, eve.User as user  where event.date_timestamp>=Now() and user.id=event.creator_id `
+        const req = `SELECT event.name, event.photo as ImageEvent, event.date_timestamp, event.place, user.photo as ImageProfil  
+                    FROM eve.Event as event, eve.User as user  
+                    where event.date_timestamp>=Now() and user.id=event.creator_id `
         return req
    }
 
