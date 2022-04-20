@@ -6,6 +6,7 @@ import loginRoute from "./routes/login/route.js"
 import {getPopularRoute, getUserInfoRoute, getCategoriesRoute, getEventsbyCategoryRoute} from "./routes/homepage/route.js"
 import {authenticateToken} from "./middleware/authenticateToken.js"
 import {getComingEventsRoute} from "./routes/myEventsPage/route.js"
+import {getEventsRoute} from "./routes/searchPage/route.js"
 //import {getEventbyCategoryRoute} from "./routes/homepage/route.js"
 
 //Env config
@@ -33,6 +34,7 @@ app.post("/getUserInfo", authenticateToken, (req, res) => getUserInfoRoute(conne
 app.get("/getCategories", (req, res) => getCategoriesRoute(connection, req, res))
 app.get("/getEventsByCategory", (req, res) => getEventsbyCategoryRoute(connection, req, res))
 app.post("/getComingEvents", (req, res) => getComingEventsRoute(connection, req, res))
+app.get("/getAllEvents", (req, res) => getEventsRoute(connection, req, res));
 
 app.listen(process.env.PORT || 3000, () => {
   console.log(`Example app listening on port ${process.env.PORT || 3000}`);
