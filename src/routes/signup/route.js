@@ -34,7 +34,7 @@ const signupRoute = async(connection, req, res) => {
     const domain = email.substring(email.lastIndexOf("@")+1,email.lastIndexOf("."));
     const [results2,fields2] = await connection.execute(checkMailValid(), [domain])
     if(results.length===0){
-        res.status(402).send("Your school is not on our list")
+        res.status(401).send("Your school is not on our list")
         return
     }
 
