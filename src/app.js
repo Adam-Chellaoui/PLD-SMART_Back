@@ -7,6 +7,7 @@ import {getPopularRoute, getUserInfoRoute, getCategoriesRoute, getEventsbyCatego
 import {authenticateToken} from "./middleware/authenticateToken.js"
 import {getComingEventsRoute} from "./routes/myEventsPage/route.js"
 import {getEventsRoute} from "./routes/searchPage/route.js"
+import {getEventParticipants} from "./routes/eventOrganizer/route.js"
 //import {getEventbyCategoryRoute} from "./routes/homepage/route.js"
 
 //Env config
@@ -24,17 +25,25 @@ const connection = await mysql.createConnection({
 
 connection.connect();
 
+//Root API welcome message :)
 app.get("/", (req, res) =>
   res.send("Bienvenue au backend du meilleur hexanome de l'INSA.")
 );
+//LOGIN AND SIGNUP
 app.post("/signup", (req, res) => signupRoute(connection, req, res));
 app.post("/login", (req, res) => loginRoute(connection, req, res));
+
+//HOMEPAGE
 app.get("/getPopular", (req, res) => getPopularRoute(connection, req, res));
-app.post("/getUserInfo", authenticateToken, (req, res) => getUserInfoRoute(connection, req, res))
 app.get("/getCategories", (req, res) => getCategoriesRoute(connection, req, res))
+app.post("/getUserInfo", authenticateToken, (req, res) => getUserInfoRoute(connection, req, res))
+
 app.get("/getEventsByCategory", (req, res) => getEventsbyCategoryRoute(connection, req, res))
-app.post("/getComingEvents", (req, res) => getComingEventsRoute(connection, req, res))
 app.get("/getAllEvents", (req, res) => getEventsRoute(connection, req, res));
+app.post("/getComingEvents", (req, res) => getComingEventsRoute(connection, req, res))
+
+//ORGANIZER EVENT
+app.get("/getEventParticipants", (req, res) =>  getEventParticipants(connection, req, res))
 
 app.listen(process.env.PORT || 3000, () => {
   console.log(`Example app listening on port ${process.env.PORT || 3000}`);
