@@ -7,5 +7,10 @@ const signupQuery = () => {
 
 const checkEmailExists = () => `SELECT * FROM eve.User WHERE mail=?`
 
+const checkMailValid = ()=>{
+        const req = 'Select name from eve.School where domain=?'
+        return req
+}
 
-export {signupQuery, checkEmailExists};
+
+export {signupQuery, checkEmailExists, checkMailValid};

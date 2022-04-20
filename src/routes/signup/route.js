@@ -1,4 +1,4 @@
-import { checkEmailExists, signupQuery } from "./query.js";
+import { checkEmailExists, signupQuery, checkMailValid} from "./query.js";
 import bcrypt from "bcrypt"
 
 const signupRoute = async(connection, req, res) => {
@@ -28,6 +28,13 @@ const signupRoute = async(connection, req, res) => {
     console.log("User already exists: ", results)
     if(results.length > 0){
         res.status(400).send("Email already exists.")
+        return
+    }
+
+    const domain = email.substring(email.lastIndexOf("@")+1,email.lastIndexOf("."));
+    const [results2,fields2] = await connection.execute(checkMailValid(), [domain])
+    if(results.length===0){
+        res.status(402).send("Your school is not on our list")
         return
     }
 
