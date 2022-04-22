@@ -1,4 +1,4 @@
-import { getEventsParticipantsQuery, cancelEventQuery } from "./query.js"
+import { getEventsParticipantsQuery, cancelEventQuery, removeParticipantQuery } from "./query.js"
 
 
 const cancelEvent = async(connection, req, res) => {
@@ -12,8 +12,22 @@ const cancelEvent = async(connection, req, res) => {
         console.log(err)
         res.status(500).json({message: "An error occured."})
     }
+}
 
+const removeParticipant = async(connection, req, res) => {
+    const eventId = req.eventId;
+    const {participantId} = req.body;
 
+    console.log("Hello: ", eventId)
+
+    try{
+        const [results, fields] = await connection.execute(removeParticipantQuery(), [eventId, participantId])
+        res.status(200).json({message: "Particpant successfully removed."})
+    }
+    catch(err){
+        console.log(err)
+        res.status(500).json({message: "An error occured"})
+    }
 }
 
 const modifyEvent = async(connection, req, res) => {
@@ -52,4 +66,4 @@ const getEventParticipants = async(connection, req, res) => {
     }
 }
 
-export {getEventParticipants, cancelEvent}
+export {getEventParticipants, cancelEvent, removeParticipant}

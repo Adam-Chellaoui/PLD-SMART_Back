@@ -9,6 +9,7 @@ import {getComingEventsRoute, getMyHistoric,getMyFavorite} from "./routes/myEven
 import {getEventsRoute} from "./routes/searchPage/route.js"
 import {cancelEvent, getEventParticipants} from "./routes/eventOrganizer/route.js"
 import {authenticateEventOwner} from "./middleware/authenticateEventOwner.js"
+import { removeParticipant } from "./routes/eventOrganizer/route.js"
 //import {getEventbyCategoryRoute} from "./routes/homepage/route.js"
 
 //Env config
@@ -55,6 +56,11 @@ app.post("/cancelEvent",
         authenticateToken,
         (req, res, next) => authenticateEventOwner(connection, req, res, next),
         (req, res) => cancelEvent(connection, req, res)
+)
+app.post("/removeParticipant",
+        authenticateToken,
+        (req, res, next) => authenticateEventOwner(connection, req, res, next),
+        (req, res) => removeParticipant(connection, req, res)
 )
 
 app.listen(process.env.PORT || 3000, () => {
