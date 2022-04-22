@@ -17,7 +17,7 @@ const getComingEventsRoute = async (connection, req, res) => {
     }
 };
 
-const getMyHistoric = async (connection, req, res) => {
+const getMyHistoricRoute = async (connection, req, res) => {
     console.log("historiqueRequest body", req.body);
     const { id } = req.body;
 
@@ -30,7 +30,7 @@ const getMyHistoric = async (connection, req, res) => {
     }
 };
 
-const getMyFavorite = async (connection, req, res) => {
+const getMyFavoriteRoute = async (connection, req, res) => {
     console.log("favoriteRequest body", req.body);
     const { id } = req.body;
 
@@ -44,5 +44,5 @@ const getMyFavorite = async (connection, req, res) => {
 };
 
 export {getComingEventsRoute};
-export {getMyHistoric};
-export {getMyFavorite};
+export {getMyHistoricRoute};
+export {getMyFavoriteRoute};

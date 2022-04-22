@@ -33,6 +33,8 @@ app.post("/getUserInfo", authenticateToken, (req, res) => getUserInfoRoute(conne
 app.get("/getCategories", (req, res) => getCategoriesRoute(connection, req, res))
 app.get("/getEventsByCategory", (req, res) => getEventsbyCategoryRoute(connection, req, res))
 app.post("/getComingEvents", (req, res) => getComingEventsRoute(connection, req, res))
+app.get("/getMyHistoric", (req, res) => getMyHistoricRoute(connection, req, res))
+app.get("/getMyFavorite", (req, res) => getMyFavoriteRoute(connection, req, res))
 
 app.listen(process.env.PORT || 3000, () => {
   console.log(`Example app listening on port ${process.env.PORT || 3000}`);
