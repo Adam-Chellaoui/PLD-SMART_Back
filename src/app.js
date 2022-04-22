@@ -8,6 +8,7 @@ import {authenticateToken} from "./middleware/authenticateToken.js"
 import {getComingEventsRoute} from "./routes/myEventsPage/route.js"
 import {getEventsRoute} from "./routes/searchPage/route.js"
 import {getEventParticipants} from "./routes/eventOrganizer/route.js"
+import {authenticateEventOwner} from "./middleware/authenticateEventOwner.js"
 //import {getEventbyCategoryRoute} from "./routes/homepage/route.js"
 
 //Env config
@@ -43,7 +44,11 @@ app.get("/getAllEvents", (req, res) => getEventsRoute(connection, req, res));
 app.post("/getComingEvents", (req, res) => getComingEventsRoute(connection, req, res))
 
 //ORGANIZER EVENT
-app.get("/getEventParticipants", (req, res) =>  getEventParticipants(connection, req, res))
+app.post("/getEventParticipants", 
+        authenticateToken, 
+        (req, res, next) => authenticateEventOwner(connection, req, res, next), 
+        (req, res) =>  getEventParticipants(connection, req, res)
+)
 
 app.listen(process.env.PORT || 3000, () => {
   console.log(`Example app listening on port ${process.env.PORT || 3000}`);

@@ -10,7 +10,6 @@ import jwt from "jsonwebtoken"
  * @returns 
  */
 export const authenticateToken = async(req, res, next) => {
-    console.log(req.headers)
     const authHeader = req.headers['authorization']
     const token = authHeader && authHeader.split(' ')[1]
 
@@ -18,11 +17,10 @@ export const authenticateToken = async(req, res, next) => {
 
     try{
         const payload = await jwt.verify(token, process.env.SECRET)
-        console.log("Payload: ", payload)
-
+        const {userId} = payload
+        req.userId = userId;
         next()
     }catch(err){
         return res.status(403).send("Invalid authentication token.")
     }
-    
 }

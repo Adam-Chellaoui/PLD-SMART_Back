@@ -1,7 +1,5 @@
 import { getEventsParticipantsQuery } from "./query.js"
 
-const cancelEvent = async(connection, req, res) => {}
-
 /**
  * Route gets event participants for a specific event.
  * Expects an eventId query param specyfing the queried param.
@@ -15,15 +13,15 @@ const cancelEvent = async(connection, req, res) => {}
  * 
  */
 const getEventParticipants = async(connection, req, res) => {
-    console.log(req.query)
-    const {eventId} = req.query
+    const eventId = req.eventId;
+    
     try{
         const[results, field] = await connection.execute(getEventsParticipantsQuery(), [eventId]);
-        res.status(200).json({ data: results });
+        res.status(200).json({ participants: results });
     }
     catch(err){
         res.status(500).json({message: "An error ocurred: " + err})
     }
 }
 
-export {getEventParticipants};
+export {getEventParticipants}
