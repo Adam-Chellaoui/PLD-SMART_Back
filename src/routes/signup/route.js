@@ -39,12 +39,16 @@ const signupRoute = async(connection, req, res) => {
         res.status(401).send("Your school is not on our list")
         return
     }
+    console.log("yes")
+    res.status(200).send("email has to be sent.")
 
-    //We hash the password with bcrypt: 
+    /*//We hash the password with bcrypt: 
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(password, saltRounds)
     const splitted = birthDate.split("/");
     const birthDateTimestamp = `${splitted[2]}-${splitted[1]}-${splitted[0]} 00:00:00`
+
+
     await connection.query(
         signupQuery(),
         [name, 
@@ -70,7 +74,7 @@ const signupRoute = async(connection, req, res) => {
     if(results4.length > 0){
         res.status(200).send("succesfully connected.")
         return
-    }
+    }*/
 }
 
 export default signupRoute;
