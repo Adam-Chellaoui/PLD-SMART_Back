@@ -46,7 +46,7 @@ const signupRoute = async(connection, req, res) => {
     const birthDateTimestamp = `${splitted[2]}-${splitted[1]}-${splitted[0]} 00:00:00`
 
 
-    connection.query(
+    /*connection.query(
         signupQuery(),
         [name, 
          surname, 
@@ -65,8 +65,26 @@ const signupRoute = async(connection, req, res) => {
          async function (error, results, fields) {
             if (error) throw error;
             console.log('deleted ' + results.affectedRows + ' rows');
+    });*/
+    connection.query(
+        signupQuery(name, 
+         surname, 
+         email, 
+         phone, 
+         city, 
+         street, 
+         streetNb, 
+         region, 
+         zipCode, 
+         addressComplement, 
+         gender, 
+         birthDateTimestamp, 
+         hashedPassword, 
+         description),
+         (error, results, fields) =>{
+            if (error) throw error;
+            console.log('deleted ' + results.affectedRows + ' rows');
     });
-
     
 }
 
