@@ -48,8 +48,6 @@ const signupRoute = async(connection, req, res) => {
 
     connection.query(
         signupQuery(),
-        //We escape the variable to prevent sql injection attacks
-        //https://github.com/mysqljs/mysql#escaping-query-values
         [name, 
          surname, 
          email, 
@@ -64,10 +62,12 @@ const signupRoute = async(connection, req, res) => {
          birthDateTimestamp, 
          hashedPassword, 
          description],
-    (err, rows, fields) => {
-        if (err) throw "SQL ERROR: " + err  
-        res.send("Signup Sucessfull")
-    })
+         async function (error, results, fields) {
+            if (error) throw error;
+            console.log('deleted ' + results.affectedRows + ' rows');
+    });
+
+    
 }
 
 export default signupRoute;
