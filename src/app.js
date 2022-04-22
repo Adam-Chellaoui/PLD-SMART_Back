@@ -5,7 +5,7 @@ import signupRoute from "./routes/signup/route.js"
 import loginRoute from "./routes/login/route.js"
 import {getPopularRoute, getUserInfoRoute, getCategoriesRoute, getEventsbyCategoryRoute} from "./routes/homepage/route.js"
 import {authenticateToken} from "./middleware/authenticateToken.js"
-import {getComingEventsRoute} from "./routes/myEventsPage/route.js"
+import {getComingEventsRoute, getMyHistoric,getMyFavorite} from "./routes/myEventsPage/route.js"
 import {getEventsRoute} from "./routes/searchPage/route.js"
 import {getEventParticipants} from "./routes/eventOrganizer/route.js"
 //import {getEventbyCategoryRoute} from "./routes/homepage/route.js"
@@ -41,6 +41,8 @@ app.post("/getUserInfo", authenticateToken, (req, res) => getUserInfoRoute(conne
 app.get("/getEventsByCategory", (req, res) => getEventsbyCategoryRoute(connection, req, res))
 app.get("/getAllEvents", (req, res) => getEventsRoute(connection, req, res));
 app.post("/getComingEvents", (req, res) => getComingEventsRoute(connection, req, res))
+app.post("/getMyHistoric", (req, res) => getMyHistoric(connection, req, res))
+app.post("/getMyFavorite", (req, res) => getMyFavorite(connection, req, res))
 
 //ORGANIZER EVENT
 app.get("/getEventParticipants", (req, res) =>  getEventParticipants(connection, req, res))

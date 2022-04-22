@@ -37,7 +37,7 @@ const getMyFavorite = async (connection, req, res) => {
     const [results, fields] = await connection.execute(
         myFavorite(),
         [id]);
-
+    console.log(results)
     if(results){
         res.send(results);
     }
