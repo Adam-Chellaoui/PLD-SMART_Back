@@ -1,5 +1,6 @@
 import { checkEmailExists, signupQuery, checkMailValid} from "./query.js";
 import bcrypt from "bcrypt"
+import mysql from "mysql2/promise"
 
 const signupRoute = async(connection, req, res) => {
     console.log("Request bod: ", req.body)
@@ -44,9 +45,7 @@ const signupRoute = async(connection, req, res) => {
     const hashedPassword = await bcrypt.hash(password, saltRounds)
     const splitted = birthDate.split("/");
     const birthDateTimestamp = `${splitted[2]}-${splitted[1]}-${splitted[0]} 00:00:00`
-
-
-    /*connection.query(
+    await connection.query(
         signupQuery(),
         [name, 
          surname, 
@@ -62,30 +61,16 @@ const signupRoute = async(connection, req, res) => {
          birthDateTimestamp, 
          hashedPassword, 
          description],
-         async function (error, results, fields) {
-            if (error) throw error;
-            console.log('deleted ' + results.affectedRows + ' rows');
-    });*/
-    connection.query(
-        signupQuery(name, 
-         surname, 
-         email, 
-         phone, 
-         city, 
-         street, 
-         streetNb, 
-         region, 
-         zipCode, 
-         addressComplement, 
-         gender, 
-         birthDateTimestamp, 
-         hashedPassword, 
-         description),
-         (error, results, fields) =>{
+         (err,result,field)=>{
             if (error) throw error;
             console.log('deleted ' + results.affectedRows + ' rows');
     });
-    
+
+    var [results4,fields4] = await connection.execute(checkEmailExists(), [email]);
+    if(results4.length > 0){
+        res.status(200).send("succesfully connected.")
+        return
+    }
 }
 
 export default signupRoute;
