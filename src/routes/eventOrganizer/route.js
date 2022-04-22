@@ -1,4 +1,31 @@
-import { getEventsParticipantsQuery } from "./query.js"
+import { getEventsParticipantsQuery, cancelEventQuery } from "./query.js"
+
+
+const cancelEvent = async(connection, req, res) => {
+    const eventId = req.eventId; 
+
+    try{
+        const [results, fields] = await connection.execute(cancelEventQuery(), [eventId])
+        res.status(200).json({message: "Event successfully cancelled."})
+    }
+    catch(err){
+        console.log(err)
+        res.status(500).json({message: "An error occured."})
+    }
+
+
+}
+
+const modifyEvent = async(connection, req, res) => {
+    const {name, city, categoryId, numberPersonMax, paying, photo} = req.body
+
+
+    try{
+
+    }catch(err){
+        res.send(500).json({error: "An error occured" + err})
+    }
+}
 
 /**
  * Route gets event participants for a specific event.
@@ -20,8 +47,9 @@ const getEventParticipants = async(connection, req, res) => {
         res.status(200).json({ participants: results });
     }
     catch(err){
-        res.status(500).json({message: "An error ocurred: " + err})
+        console.log(err)
+        res.status(500).json({message: "An error ocurred: "})
     }
 }
 
-export {getEventParticipants}
+export {getEventParticipants, cancelEvent}

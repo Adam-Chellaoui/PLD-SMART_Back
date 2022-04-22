@@ -7,7 +7,7 @@ import {getPopularRoute, getUserInfoRoute, getCategoriesRoute, getEventsbyCatego
 import {authenticateToken} from "./middleware/authenticateToken.js"
 import {getComingEventsRoute, getMyHistoric,getMyFavorite} from "./routes/myEventsPage/route.js"
 import {getEventsRoute} from "./routes/searchPage/route.js"
-import {getEventParticipants} from "./routes/eventOrganizer/route.js"
+import {cancelEvent, getEventParticipants} from "./routes/eventOrganizer/route.js"
 import {authenticateEventOwner} from "./middleware/authenticateEventOwner.js"
 //import {getEventbyCategoryRoute} from "./routes/homepage/route.js"
 
@@ -50,6 +50,11 @@ app.post("/getEventParticipants",
         authenticateToken, 
         (req, res, next) => authenticateEventOwner(connection, req, res, next), 
         (req, res) =>  getEventParticipants(connection, req, res)
+)
+app.post("/cancelEvent",
+        authenticateToken,
+        (req, res, next) => authenticateEventOwner(connection, req, res, next),
+        (req, res) => cancelEvent(connection, req, res)
 )
 
 app.listen(process.env.PORT || 3000, () => {
