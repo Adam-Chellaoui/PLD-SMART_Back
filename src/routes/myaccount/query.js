@@ -23,4 +23,17 @@ const getUpcomingEventQuery = () => {
     return req;
 }
 
-export { getHistoricQuery, getReviewUserQuery, getUpcomingEventQuery };
+const editInfoUser = () => {
+    (phone, city, streetNumber, street, region, zipCode, adressComplement, gender, dateBirth, userPassword, photo) => {
+        const params = [{phone: phone}, {city: city}, {streetNumber: streetNumber}, {street: street}, {region: region},
+            {zipCode: zipCode}, {adressComplement: adressComplement}, {gender: gender}, {dateBirth: dateBirth},
+            {userPassword: userPassword}, {photo: photo}]
+        const setColumns = params.filter(x => x.length > 0).map(x => "x = ")
+        const req = "UPDATE User SET " + setColumns()
+    }
+return req;
+}
+
+
+
+export { getHistoricQuery, getReviewUserQuery, getUpcomingEventQuery, editInfoUser };
