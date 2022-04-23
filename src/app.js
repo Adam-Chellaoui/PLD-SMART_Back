@@ -6,7 +6,7 @@ import loginRoute from "./routes/login/route.js"
 import {getPopularRoute, getUserInfoRoute, getCategoriesRoute, getEventsbyCategoryRoute} from "./routes/homepage/route.js"
 import {authenticateToken} from "./middleware/authenticateToken.js"
 import {getComingEventsRoute, getMyHistoric,getMyFavorite} from "./routes/myEventsPage/route.js"
-import {getEventsRoute} from "./routes/searchPage/route.js"
+import {getEventsRoute, getFilteredEventsRoute} from "./routes/searchPage/route.js"
 import {cancelEvent, getEventParticipants} from "./routes/eventOrganizer/route.js"
 import {authenticateEventOwner} from "./middleware/authenticateEventOwner.js"
 import { removeParticipant } from "./routes/eventOrganizer/route.js"
@@ -41,7 +41,6 @@ app.get("/getCategories", (req, res) => getCategoriesRoute(connection, req, res)
 app.post("/getUserInfo", authenticateToken, (req, res) => getUserInfoRoute(connection, req, res))
 
 app.get("/getEventsByCategory", (req, res) => getEventsbyCategoryRoute(connection, req, res))
-app.get("/getAllEvents", (req, res) => getEventsRoute(connection, req, res));
 app.post("/getComingEvents", (req, res) => getComingEventsRoute(connection, req, res))
 app.post("/getMyHistoric", (req, res) => getMyHistoric(connection, req, res))
 app.post("/getMyFavorite", (req, res) => getMyFavorite(connection, req, res))
@@ -62,6 +61,11 @@ app.post("/removeParticipant",
         (req, res, next) => authenticateEventOwner(connection, req, res, next),
         (req, res) => removeParticipant(connection, req, res)
 )
+
+//SEARCH PAGE
+app.get("/getMapEvents", (req, res) => getEventsRoute(connection, req, res));
+app.post("/getFilteredEvents", (req, res) => getFilteredEventsRoute(connection, req, res));
+
 
 app.listen(process.env.PORT || 3000, () => {
   console.log(`Example app listening on port ${process.env.PORT || 3000}`);
