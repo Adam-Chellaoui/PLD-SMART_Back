@@ -68,5 +68,5 @@ app.post("/getFilteredEvents", (req, res) => getFilteredEventsRoute(connection, 
 
 
 app.listen(process.env.PORT || 3000, () => {
-  console.log(`Example app listening on port ${process.env.PORT || 3000}`);
+  console.log(`EVE's backend app listening on port ${process.env.PORT || 3000}`);
 });
