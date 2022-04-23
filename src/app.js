@@ -6,11 +6,11 @@ import loginRoute from "./routes/login/route.js"
 import {getPopularRoute, getUserInfoRoute, getCategoriesRoute, getEventsbyCategoryRoute} from "./routes/homepage/route.js"
 import {authenticateToken} from "./middleware/authenticateToken.js"
 import {getComingEventsRoute, getMyHistoric,getMyFavorite} from "./routes/myEventsPage/route.js"
-import {getEventsRoute} from "./routes/searchPage/route.js"
+import {getEventsRoute, getFilteredEventsRoute} from "./routes/searchPage/route.js"
 import {cancelEvent, getEventParticipants} from "./routes/eventOrganizer/route.js"
 import {authenticateEventOwner} from "./middleware/authenticateEventOwner.js"
 import { removeParticipant } from "./routes/eventOrganizer/route.js"
-import {getFilteredEventsRoute} from "./routes/Filters/route.js"
+import {getFilteredEventsRoute2} from "./routes/Filters/route.js"
 //import {getEventbyCategoryRoute} from "./routes/homepage/route.js"
 
 //Env config
@@ -65,9 +65,10 @@ app.post("/removeParticipant",
 
 //SEARCH PAGE
 app.get("/getMapEvents", (req, res) => getEventsRoute(connection, req, res));
+app.post("/getFilteredEvents", (req, res) => getFilteredEventsRoute(connection, req, res));
 
 //FILTERS
-app.post("/getFilteredEvents", (req, res) => getFilteredEventsRoute(connection, req, res));
+app.post("/getFilteredEvents2", (req, res) => getFilteredEventsRoute2(connection, req, res));
 
 
 app.listen(process.env.PORT || 3000, () => {

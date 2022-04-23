@@ -1,5 +1,5 @@
 import { getFilteredEventsQuery } from "./query.js";
-const getFilteredEventsRoute = async(connection, req, res) => {
+const getFilteredEventsRoute2 = async(connection, req, res) => {
     console.log("getFilteredEventsRoute Request bod: ", req.body)
     const {
         category_id,
@@ -17,4 +17,4 @@ const getFilteredEventsRoute = async(connection, req, res) => {
     }  
 }
 
-export {getFilteredEventsRoute}
+export {getFilteredEventsRoute2}
