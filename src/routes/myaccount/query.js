@@ -1,3 +1,8 @@
+const getUserInfoQuery = () => {
+    const req = `SELECT name, surname, mail, phone, city, street, street_number, region, zip_code, gender, date_birth, description, photo FROM eve.User WHERE id = ?`
+    return req
+}
+
 const getHistoricQuery = () => {
     const req = `SELECT e.name, e.photo as ImageEvent, e.date_timestamp, e.place, u.photo as ImageProfil  
                 FROM eve.Event e , eve.User u
@@ -10,9 +15,19 @@ const getHistoricQuery = () => {
 }
 
 const getReviewUserQuery = () => {
-    const req = `SELECT R.id, U.name, U.surname, R.score, R.review  
-                FROM eve.Review R JOIN eve.User U
-                WHERE U.id = R.id and R.creator = ?`
+    const req = `SELECT distinct C.name, C.surname, R.score, R.review  
+                FROM eve.Review R, eve.User C
+                WHERE R.target_id=? and C.id=R.writer_id`
+    return req;
+}
+
+const getRatingParticipantQuery = () => {
+    const req ='SELECT Avg(R.score) FROM eve.Review R, eve.User C WHERE R.target_id=? and R.creator=0'
+    return req;
+}
+
+const getRatingCreatorQuery = () => {
+    const req ='SELECT Avg(R.score) FROM eve.Review R, eve.User C WHERE R.target_id=? and R.creator=1'
     return req;
 }
 
@@ -36,4 +51,4 @@ return req;
 
 
 
-export { getHistoricQuery, getReviewUserQuery, getUpcomingEventQuery, editInfoUser };
+export { getUserInfoQuery, getHistoricQuery, getReviewUserQuery, getUpcomingEventQuery, editInfoUser, getRatingParticipantQuery, getRatingCreatorQuery };
