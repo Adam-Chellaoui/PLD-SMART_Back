@@ -11,7 +11,6 @@ import {getEventsRoute, getFilteredEventsRoute} from "./routes/searchPage/route.
 import {cancelEvent, getEventParticipants} from "./routes/eventOrganizer/route.js"
 import {authenticateEventOwner} from "./middleware/authenticateEventOwner.js"
 import { removeParticipant } from "./routes/eventOrganizer/route.js"
-import {getFilteredEventsRoute2} from "./routes/Filters/route.js"
 //import {getEventbyCategoryRoute} from "./routes/homepage/route.js"
 
 //Env config
@@ -67,9 +66,6 @@ app.post("/removeParticipant",
 //SEARCH PAGE
 app.get("/getMapEvents", (req, res) => getEventsRoute(connection, req, res));
 app.post("/getFilteredEvents", (req, res) => getFilteredEventsRoute(connection, req, res));
-
-//FILTERS
-app.post("/getFilteredEvents2", (req, res) => getFilteredEventsRoute2(connection, req, res));
 
 
 //My Account
