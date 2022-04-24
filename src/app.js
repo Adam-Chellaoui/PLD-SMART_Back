@@ -3,7 +3,7 @@ import express from "express"
 import mysql from "mysql2/promise"
 import signupRoute from "./routes/signup/route.js"
 import loginRoute from "./routes/login/route.js"
-import {getPopularRoute, getUserInfoRoute, getCategoriesRoute, getEventsbyCategoryRoute} from "./routes/homepage/route.js"
+import {getPopularRoute, getUserInfoRoute, getCategoriesRoute, getEventsbyCategoryRoute,getEventbyCategoryRoute} from "./routes/homepage/route.js"
 import {getHistoricRoute, getReviewUserRoute, getUpcomingEventRoute, getMyAccountInfo} from "./routes/myaccount/route.js"
 import {authenticateToken} from "./middleware/authenticateToken.js"
 import {getComingEventsRoute, getMyHistoric,getMyFavorite} from "./routes/myEventsPage/route.js"
@@ -41,6 +41,7 @@ app.get("/getPopular", (req, res) => getPopularRoute(connection, req, res));
 app.get("/getCategories", (req, res) => getCategoriesRoute(connection, req, res))
 app.post("/getUserInfo", authenticateToken, (req, res) => getUserInfoRoute(connection, req, res))
 
+app.post("/getEventByCategory", (req, res) => getEventbyCategoryRoute(connection, req, res))
 app.get("/getEventsByCategory", (req, res) => getEventsbyCategoryRoute(connection, req, res))
 app.post("/getComingEvents", (req, res) => getComingEventsRoute(connection, req, res))
 app.post("/getMyHistoric", (req, res) => getMyHistoric(connection, req, res))

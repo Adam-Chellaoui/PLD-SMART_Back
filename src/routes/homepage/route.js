@@ -1,4 +1,4 @@
-import { getPopularEventQuery, getUserInfoQuery, getCategoriesQuery, getEventsbyCategoryQuery } from "./query.js";
+import { getPopularEventQuery, getUserInfoQuery, getCategoriesQuery, getEventsbyCategoryQuery,getEventbyCategoryQuery } from "./query.js";
 
 const getUserInfoRoute = async(connection, req, res) => {
     console.log("getUserInfoRoute Request bod: ", req.body)
@@ -22,9 +22,8 @@ const getPopularRoute = async(connection, req, res) => {
 }
 
 const getCategoriesRoute = async (connection, req, res) => {
-    console.log("getCategoriesRoute Request bod: ", req.body)
-    const {} = req.body
-    const [results, fields] = await connection.execute(`SELECT * FROM eve.Category`,[])
+    console.log("getCategoriesRoute Request bod: ")
+    const [results, fields] = await connection.execute(getCategoriesQuery())
     if(results){
         console.log(results[0]);
         res.send(results);
@@ -42,5 +41,16 @@ const getEventsbyCategoryRoute = async(connection, req, res) => {
         }
 }
 
+const getEventbyCategoryRoute = async(connection, req, res) => {
+    console.log(req.body)
+    const {id} = req.body
+    const [results, fields] = await connection.execute(getEventbyCategoryQuery(),[id])
+    if(results){
+        console.log(results);
+        res.send(results);
+    }
+}
 
-export {getUserInfoRoute, getPopularRoute, getCategoriesRoute, getEventsbyCategoryRoute} ;
+
+
+export {getUserInfoRoute, getPopularRoute, getCategoriesRoute, getEventsbyCategoryRoute,getEventbyCategoryRoute} ;

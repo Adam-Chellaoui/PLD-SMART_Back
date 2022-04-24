@@ -22,12 +22,12 @@ const getReviewUserQuery = () => {
 }
 
 const getRatingParticipantQuery = () => {
-    const req ='SELECT Avg(R.score) FROM eve.Review R, eve.User C WHERE R.target_id=? and R.creator=0'
+    const req ='SELECT Round(Avg(R.score),1) as score FROM eve.Review R, eve.User C WHERE R.target_id=? and R.creator=0'
     return req;
 }
 
 const getRatingCreatorQuery = () => {
-    const req ='SELECT Avg(R.score) FROM eve.Review R, eve.User C WHERE R.target_id=? and R.creator=1'
+    const req ='SELECT Round(Avg(R.score),1) as score FROM eve.Review R, eve.User C WHERE R.target_id=? and R.creator=1'
     return req;
 }
 

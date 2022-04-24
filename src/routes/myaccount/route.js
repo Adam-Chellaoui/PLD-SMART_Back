@@ -10,10 +10,11 @@ const getMyAccountInfo = async (connection, req, res) => {
     if(results){
         console.log(results[0]);
         var infos = {
-            "global infos":results,
-            "participant rating":results2,
-            "creator rating":results3
+            "global_infos":results,
+            "participant_rating":results2,
+            "creator_rating":results3
         }
+        console.log(infos)
         res.send(infos);
     }
 }
@@ -35,10 +36,10 @@ const getReviewUserRoute = async (connection, req, res) => {
     const [results, fields] = await connection.execute(getReviewUserQuery(), [id])
 
     if(results){
-        console.log(results[0]);
-        
+        console.log(results);
+        res.send(results);
     }
-    res.send(results);
+    
 }
 
 const getUpcomingEventRoute = async (connection, req, res) => {
