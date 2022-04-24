@@ -4,6 +4,7 @@ import mysql from "mysql2/promise"
 import signupRoute from "./routes/signup/route.js"
 import loginRoute from "./routes/login/route.js"
 import {getPopularRoute, getUserInfoRoute, getCategoriesRoute, getEventsbyCategoryRoute} from "./routes/homepage/route.js"
+import {getHistoricRoute, getReviewUserRoute, getUpcomingEventRoute } from "./routes/myaccount/route.js"
 import {authenticateToken} from "./middleware/authenticateToken.js"
 import {getComingEventsRoute, getMyHistoric,getMyFavorite} from "./routes/myEventsPage/route.js"
 import {getEventsRoute, getFilteredEventsRoute} from "./routes/searchPage/route.js"
@@ -69,6 +70,12 @@ app.post("/getFilteredEvents", (req, res) => getFilteredEventsRoute(connection, 
 
 //FILTERS
 app.post("/getFilteredEvents2", (req, res) => getFilteredEventsRoute2(connection, req, res));
+
+
+//My Account
+app.get("/getHistoric", (req, res) => getHistoricRoute(connection, req, res))
+app.get("/getReviewUser", (req, res) => getReviewUserRoute(connection, req, res))
+app.get("/getUpcomingEvent", (req, res) => getUpcomingEventRoute(connection, req, res))
 
 
 app.listen(process.env.PORT || 3000, () => {
