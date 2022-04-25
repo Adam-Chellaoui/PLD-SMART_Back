@@ -4,7 +4,7 @@ import mysql from "mysql2/promise"
 import signupRoute from "./routes/signup/route.js"
 import loginRoute from "./routes/login/route.js"
 import {getPopularRoute, getUserInfoRoute, getCategoriesRoute, getEventsbyCategoryRoute,getEventbyCategoryRoute} from "./routes/homepage/route.js"
-import {getHistoricRoute, getReviewUserRoute, getUpcomingEventRoute, getMyAccountInfo,editInfoUserRoute} from "./routes/myaccount/route.js"
+import {getHistoricRoute, getReviewUserRoute, getUpcomingEventRoute, getMyAccountInfo,editInfoUserRoute,editImageProfilRoute} from "./routes/myaccount/route.js"
 import {authenticateToken} from "./middleware/authenticateToken.js"
 import {getComingEventsRoute, getMyHistoric,getMyFavorite} from "./routes/myEventsPage/route.js"
 import {getEventsRoute, getFilteredEventsRoute} from "./routes/searchPage/route.js"
@@ -79,6 +79,7 @@ app.post("/getHistoric", (req, res) => getHistoricRoute(connection, req, res))
 app.post("/getReviewUser", (req, res) => getReviewUserRoute(connection, req, res))
 app.post("/getUpcomingEvent", (req, res) => getUpcomingEventRoute(connection, req, res))
 app.post("/editProfile", (req, res) => editInfoUserRoute(connection, req, res))
+app.post("/editImageProfil", (req, res) => editImageProfilRoute(connection, req, res))
 
 app.listen(process.env.PORT || 3000, () => {
   console.log(`EVE's backend app listening on port ${process.env.PORT || 3000}`);

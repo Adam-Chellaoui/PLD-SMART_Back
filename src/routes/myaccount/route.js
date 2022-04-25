@@ -1,4 +1,4 @@
-import { getUserInfoQuery,getHistoricQuery, getReviewUserQuery, getUpcomingEventQuery,getRatingParticipantQuery, getRatingCreatorQuery, editInfoUser } from "./query.js";
+import { getUserInfoQuery,getHistoricQuery, getReviewUserQuery, getUpcomingEventQuery,getRatingParticipantQuery, getRatingCreatorQuery, editInfoUser,editImageUser } from "./query.js";
 
 
 const getMyAccountInfo = async (connection, req, res) => {
@@ -64,4 +64,11 @@ const editInfoUserRoute = async (connection, req, res) => {
     }*/
 }
 
-export {getHistoricRoute, getReviewUserRoute, getUpcomingEventRoute,getMyAccountInfo, editInfoUserRoute};
+const editImageProfilRoute = async (connection, req, res) => {
+    console.log("getUpcomingEventRoute Request bod: ", req.body)
+    const {photo, id} = req.body
+    connection.query(editImageUser(), [photo, id])
+    res.send("lala")
+}
+
+export {getHistoricRoute, getReviewUserRoute, getUpcomingEventRoute,getMyAccountInfo, editInfoUserRoute,editImageProfilRoute};

@@ -44,6 +44,12 @@ const editInfoUser = () => {
     
 }
 
+const editImageUser = () => {
+    const req = "UPDATE User SET photo=? where id=?"
+    return req;
+    
+}
 
 
-export { getUserInfoQuery, getHistoricQuery, getReviewUserQuery, getUpcomingEventQuery, editInfoUser, getRatingParticipantQuery, getRatingCreatorQuery };
+
+export { getUserInfoQuery, getHistoricQuery, getReviewUserQuery, editImageUser,getUpcomingEventQuery, editInfoUser, getRatingParticipantQuery, getRatingCreatorQuery };
