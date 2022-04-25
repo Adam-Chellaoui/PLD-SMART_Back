@@ -1,4 +1,4 @@
-import { getEventsParticipantsQuery, cancelEventQuery, removeParticipantQuery } from "./query.js"
+import { getEventsParticipantsQuery, cancelEventQuery, removeParticipantQuery, modifyEventQuery } from "./query.js"
 
 
 const cancelEvent = async(connection, req, res) => {
@@ -31,13 +31,40 @@ const removeParticipant = async(connection, req, res) => {
 }
 
 const modifyEvent = async(connection, req, res) => {
+    const eventId = req.eventId;
     const {name, city, categoryId, numberPersonMax, paying, photo} = req.body
+    const params = [
+        {row: "name", value: name}, 
+        {row: "city", value: city}, 
+        {row: "categoryId", value: categoryId}, 
+        {row: "numberPersonMax", value: numberPersonMax},
+        {row: "paying", value: paying},
+        {row: "photo", value: photo}
+    ]
+    console.log("Params: ", params)
 
+    const filteredParams = params.filter(x => x.value)
+    const filteredParamsRows = filteredParams.map(x => x.row)
+    const filteredParamsValues = filteredParams.map(x => x.value)
+    if(filteredParams.length == 0)
+        return res.status(400).send("All params to be modified are empty")
 
     try{
+          //Concatenate the values with the eventId for the query
+        const query = modifyEventQuery(filteredParamsRows)
+        const queryValues = filteredParamsValues.concat([eventId])
+        console.log("Query is: ", query)
+        console.log("Query Params is: ", filteredParams)
+        console.log("Query values is: ", queryValues)
+        const [results, fields] = await connection.execute(
+            query,
+            queryValues
+            )
+        res.status(200).json({message: "Event successfully modified."})
 
     }catch(err){
-        res.send(500).json({error: "An error occured" + err})
+        console.log("Error: ", err)
+        res.status(500).json({error: "An error occured"})
     }
 }
 
@@ -66,4 +93,4 @@ const getEventParticipants = async(connection, req, res) => {
     }
 }
 
-export {getEventParticipants, cancelEvent, removeParticipant}
+export {getEventParticipants, cancelEvent, removeParticipant, modifyEvent}

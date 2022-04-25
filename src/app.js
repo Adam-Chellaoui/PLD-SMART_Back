@@ -8,9 +8,8 @@ import {getHistoricRoute, getReviewUserRoute, getUpcomingEventRoute, getMyAccoun
 import {authenticateToken} from "./middleware/authenticateToken.js"
 import {getComingEventsRoute, getMyHistoric,getMyFavorite} from "./routes/myEventsPage/route.js"
 import {getEventsRoute, getFilteredEventsRoute} from "./routes/searchPage/route.js"
-import {cancelEvent, getEventParticipants} from "./routes/eventOrganizer/route.js"
+import {cancelEvent, getEventParticipants, modifyEvent, removeParticipant} from "./routes/eventOrganizer/route.js"
 import {authenticateEventOwner} from "./middleware/authenticateEventOwner.js"
-import { removeParticipant } from "./routes/eventOrganizer/route.js"
 //import {getEventbyCategoryRoute} from "./routes/homepage/route.js"
 
 //Env config
@@ -57,6 +56,11 @@ app.post("/cancelEvent",
         authenticateToken,
         (req, res, next) => authenticateEventOwner(connection, req, res, next),
         (req, res) => cancelEvent(connection, req, res)
+)
+app.post("/modifyEvent",
+        authenticateToken,
+        (req, res, next) => authenticateEventOwner(connection, req, res, next),
+        (req, res) => modifyEvent(connection, req, res)
 )
 app.post("/removeParticipant",
         authenticateToken,
