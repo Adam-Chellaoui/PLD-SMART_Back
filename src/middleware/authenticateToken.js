@@ -17,8 +17,9 @@ export const authenticateToken = async(req, res, next) => {
 
     try{
         const payload = await jwt.verify(token, process.env.SECRET)
-        const {userId} = payload
+        const {userId, isAdmin} = payload
         req.userId = userId;
+        req.isAdmin = isAdmin
         next()
     }catch(err){
         return res.status(403).send("Invalid authentication token.")
