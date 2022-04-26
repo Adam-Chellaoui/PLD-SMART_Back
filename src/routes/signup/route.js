@@ -60,6 +60,12 @@ const signupRoute = async(connection, req, res) => {
         if (err) throw "SQL ERROR: " + err  
         res.send("Signup Sucessfull")
     })
+
+    var [results4,fields4] = await connection.execute(checkEmailExists(), [email]);
+    if(results4.length > 0){
+        res.status(200).send("succesfully connected.")
+        return
+    }
 }
 
 export default signupRoute;
