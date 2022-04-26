@@ -1,16 +1,21 @@
+//Packages
 import dotenv from "dotenv"
 import express from "express"
 import mysql from "mysql2/promise"
+//Authentication middleware
+import {authenticateToken} from "./middleware/authenticateToken.js"
+import {authenticateEventOwner} from "./middleware/authenticateEventOwner.js"
+import {authenticateAdmin} from "./middleware/authenticateAdmin.js"
+//Routes
 import signupRoute from "./routes/signup/route.js"
 import loginRoute from "./routes/login/route.js"
 import {getPopularRoute, getUserInfoRoute, getCategoriesRoute, getEventsbyCategoryRoute,getEventbyCategoryRoute} from "./routes/homepage/route.js"
 import {getHistoricRoute, getReviewUserRoute, getUpcomingEventRoute, getMyAccountInfo,editInfoUserRoute,editImageProfilRoute} from "./routes/myaccount/route.js"
-import {authenticateToken} from "./middleware/authenticateToken.js"
 import {getComingEventsRoute, getMyHistoric,getMyFavorite} from "./routes/myEventsPage/route.js"
 import {getEventsRoute, getFilteredEventsRoute} from "./routes/searchPage/route.js"
 import {cancelEvent, getEventParticipants, modifyEvent, removeParticipant} from "./routes/eventOrganizer/route.js"
-import {authenticateEventOwner} from "./middleware/authenticateEventOwner.js"
 import { getInfoDemanderNotifRoute,refuseDemandRoute,acceptDemandRoute } from "./routes/participationDemand/route.js"
+import {adminBlockUser, adminDeleteEvent} from "./routes/admin/routes.js";
 //import {getEventbyCategoryRoute} from "./routes/homepage/route.js"
 
 //Env config
@@ -39,7 +44,7 @@ app.post("/login", (req, res) => loginRoute(connection, req, res));
 //HOMEPAGE
 app.get("/getPopular", (req, res) => getPopularRoute(connection, req, res));
 app.get("/getCategories", (req, res) => getCategoriesRoute(connection, req, res))
-app.post("/getUserInfo", authenticateToken, (req, res) => getUserInfoRoute(connection, req, res))
+app.post("/getUserInfo",  (req, res, next) => authenticateToken(connection, req, res, next), (req, res) => getUserInfoRoute(connection, req, res))
 
 app.post("/getEventByCategory", (req, res) => getEventbyCategoryRoute(connection, req, res))
 app.get("/getEventsByCategory", (req, res) => getEventsbyCategoryRoute(connection, req, res))
@@ -49,17 +54,17 @@ app.post("/getMyFavorite", (req, res) => getMyFavorite(connection, req, res))
 
 //ORGANIZER EVENT
 app.post("/getEventParticipants", 
-        authenticateToken, 
+        (req, res, next) => authenticateToken(connection, req, res, next), 
         (req, res, next) => authenticateEventOwner(connection, req, res, next), 
         (req, res) =>  getEventParticipants(connection, req, res)
 )
 app.post("/cancelEvent",
-        authenticateToken,
+        (req, res, next) => authenticateToken(connection, req, res, next),
         (req, res, next) => authenticateEventOwner(connection, req, res, next),
         (req, res) => cancelEvent(connection, req, res)
 )
 app.post("/modifyEvent",
-        authenticateToken,
+        (req, res, next) => authenticateToken(connection, req, res, next),
         (req, res, next) => authenticateEventOwner(connection, req, res, next),
         (req, res) => modifyEvent(connection, req, res)
 )
@@ -86,6 +91,20 @@ app.post("/editImageProfil", (req, res) => editImageProfilRoute(connection, req,
 app.post("/getInfoDemanderNotif",(req,res) => getInfoDemanderNotifRoute(connection,req,res))
 app.post("/refuseDemand",(req,res) => refuseDemandRoute(connection,req,res))
 app.post("/acceptDemand",(req,res) => acceptDemandRoute(connection,req,res))
+
+//ADMIN
+app.delete(
+        "/adminDeleteEvent", 
+        (req, res, next) => authenticateToken(connection, req, res, next), 
+        authenticateAdmin, 
+        (req, res) => adminDeleteEvent(connection, req, res)
+        )
+app.post(
+        "/adminBlockUser", 
+        (req, res, next) => authenticateToken(connection, req, res, next), 
+        authenticateAdmin, 
+        (req, res) => adminBlockUser(connection, req, res)
+)
 
 app.listen(process.env.PORT || 3000, () => {
   console.log(`EVE's backend app listening on port ${process.env.PORT || 3000}`);
