@@ -10,7 +10,7 @@ import {getComingEventsRoute, getMyHistoric,getMyFavorite} from "./routes/myEven
 import {getEventsRoute, getFilteredEventsRoute} from "./routes/searchPage/route.js"
 import {cancelEvent, getEventParticipants, modifyEvent, removeParticipant} from "./routes/eventOrganizer/route.js"
 import {authenticateEventOwner} from "./middleware/authenticateEventOwner.js"
-import { getInfoDemanderNotifRoute } from "./routes/participationDemand/route.js"
+import { getInfoDemanderNotifRoute,refuseDemandRoute,acceptDemandRoute } from "./routes/participationDemand/route.js"
 //import {getEventbyCategoryRoute} from "./routes/homepage/route.js"
 
 //Env config
@@ -84,6 +84,8 @@ app.post("/editImageProfil", (req, res) => editImageProfilRoute(connection, req,
 
 //Participation demand
 app.post("/getInfoDemanderNotif",(req,res) => getInfoDemanderNotifRoute(connection,req,res))
+app.post("/refuseDemand",(req,res) => refuseDemandRoute(connection,req,res))
+app.post("/acceptDemand",(req,res) => acceptDemandRoute(connection,req,res))
 
 app.listen(process.env.PORT || 3000, () => {
   console.log(`EVE's backend app listening on port ${process.env.PORT || 3000}`);
