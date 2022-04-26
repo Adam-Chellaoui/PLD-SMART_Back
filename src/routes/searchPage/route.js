@@ -1,4 +1,4 @@
-import { getEventsQuery, getFilteredEventsQuery } from "./query.js";
+import { getEventsQuery, getFilteredEventsQuery,getEventsRatings} from "./query.js";
 
 
 const getEventsRoute = async(connection, req, res) => {
@@ -6,10 +6,11 @@ const getEventsRoute = async(connection, req, res) => {
     const {} = req.body;
     const [results, fields] = await connection.execute(getEventsQuery());
    
-    if(results){
-        res.send(results);
-    }  
+    console.log(results)
+    res.send(results)
 }
+
+
 
 const getFilteredEventsRoute = async(connection, req, res) => {
     console.log("getFilteredEventsRoute Request bod: ", req.body)
