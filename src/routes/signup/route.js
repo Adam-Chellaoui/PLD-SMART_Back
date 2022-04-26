@@ -20,7 +20,7 @@ const signupRoute = async(connection, req, res) => {
          gender,
          birthDate,
          description 
-    } = req.body
+    } = req.body 
 
     const [results,fields] = await connection.execute(checkEmailExists(), [email])
 
@@ -31,7 +31,7 @@ const signupRoute = async(connection, req, res) => {
         return
     }
 
-    const domain = email.substring(email.lastIndexOf("@")+1,email.lastIndexOf("."));
+    const domain = email.substring(email.lastIndexOf("@")+1);
     console.log(domain)
     const [results2,fields2] = await connection.execute(checkMailValid(), [domain])
     if(results2.length===0){
