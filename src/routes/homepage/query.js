@@ -4,7 +4,8 @@ const getUserInfoQuery = () => {
 }
 
 const getPopularEventQuery = () => {
-        const req = `select event.name, event.photo as ImageEvent, event.date_timestamp, event.place, creator.photo as ImageProfil  from eve.Participation p, eve.Event event, eve.User as creator where event.date_timestamp>=Now() and creator.id=event.creator_id and event.id =p.event_id GROUP BY p.event_id ORDER BY count(p.event_id) DESC`
+        const req = `select event.name, event.photo as ImageEvent, event.date_timestamp, event.place
+        , creator.photo as ImageProfil, event.creator_id as CreatorId  from eve.Participation p, eve.Event event, eve.User as creator where event.date_timestamp>=Now() and creator.id=event.creator_id and event.id =p.event_id GROUP BY p.event_id ORDER BY count(p.event_id) DESC`
         return req
 }
 
