@@ -14,7 +14,7 @@ import {getHistoricRoute, getReviewUserRoute, getUpcomingEventRoute, getMyAccoun
 import {getComingEventsRoute, getMyHistoric,getMyFavorite} from "./routes/myEventsPage/route.js"
 import {getEventsRoute, getFilteredEventsRoute} from "./routes/searchPage/route.js"
 import {cancelEvent, getEventParticipants, modifyEvent, removeParticipant} from "./routes/eventOrganizer/route.js"
-import { getInfoDemanderNotifRoute,refuseDemandRoute,acceptDemandRoute } from "./routes/participationDemand/route.js"
+import { getInfoDemanderNotifRoute,refuseDemandRoute,acceptDemandRoute,signoutDemand } from "./routes/participationDemand/route.js"
 import {adminBlockUser, adminDeleteEvent} from "./routes/admin/routes.js";
 import {getNotificationsRoute} from "./routes/notifications/route.js"
 //import {getEventbyCategoryRoute} from "./routes/homepage/route.js"
@@ -92,6 +92,7 @@ app.post("/editImageProfil", (req, res) => editImageProfilRoute(connection, req,
 app.post("/getInfoDemanderNotif",(req,res) => getInfoDemanderNotifRoute(connection,req,res))
 app.post("/refuseDemand",(req,res) => refuseDemandRoute(connection,req,res))
 app.post("/acceptDemand",(req,res) => acceptDemandRoute(connection,req,res))
+app.post("/signoutDemand",(req,res) => signoutDemand(connection,req,res))
 
 //ADMIN
 app.delete(
