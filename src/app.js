@@ -16,6 +16,7 @@ import {getEventsRoute, getFilteredEventsRoute} from "./routes/searchPage/route.
 import {cancelEvent, getEventParticipants, modifyEvent, removeParticipant} from "./routes/eventOrganizer/route.js"
 import { getInfoDemanderNotifRoute,refuseDemandRoute,acceptDemandRoute } from "./routes/participationDemand/route.js"
 import {adminBlockUser, adminDeleteEvent} from "./routes/admin/routes.js";
+import {getNotificationsRoute} from "./routes/notifications/route.js"
 //import {getEventbyCategoryRoute} from "./routes/homepage/route.js"
 
 //Env config
@@ -105,6 +106,9 @@ app.post(
         authenticateAdmin, 
         (req, res) => adminBlockUser(connection, req, res)
 )
+
+//Notifications
+app.post("/getNotifications",(req,res) => getNotificationsRoute(connection,req,res))
 
 app.listen(process.env.PORT || 3000, () => {
   console.log(`EVE's backend app listening on port ${process.env.PORT || 3000}`);
