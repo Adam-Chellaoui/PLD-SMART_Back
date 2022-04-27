@@ -13,7 +13,7 @@ import {getPopularRoute, getUserInfoRoute, getCategoriesRoute, getEventsbyCatego
 import {getHistoricRoute, getReviewUserRoute, getUpcomingEventRoute, getMyAccountInfo,editInfoUserRoute,editImageProfilRoute} from "./routes/myaccount/route.js"
 import {getComingEventsRoute, getMyHistoric,getMyFavorite} from "./routes/myEventsPage/route.js"
 import {getEventsRoute, getFilteredEventsRoute} from "./routes/searchPage/route.js"
-import {cancelEvent, getEventParticipants, modifyEvent, removeParticipant} from "./routes/eventOrganizer/route.js"
+import {cancelEvent, getEventParticipants, modifyEvent, removeParticipant,getInfoEvent} from "./routes/eventOrganizer/route.js"
 import { getInfoDemanderNotifRoute,refuseDemandRoute,acceptDemandRoute,signoutDemand } from "./routes/participationDemand/route.js"
 import {adminBlockUser, adminDeleteEvent} from "./routes/admin/routes.js";
 import {getNotificationsRoute} from "./routes/notifications/route.js"
@@ -74,6 +74,8 @@ app.post("/removeParticipant",
         (req, res, next) => authenticateEventOwner(connection, req, res, next),
         (req, res) => removeParticipant(connection, req, res)
 )
+
+app.post("/getInfoEvent", (req, res) => getInfoEvent(connection, req, res));
 
 //SEARCH PAGE
 app.get("/getMapEvents", (req, res) => getEventsRoute(connection, req, res));

@@ -1,5 +1,15 @@
-import { getEventsParticipantsQuery, cancelEventQuery, removeParticipantQuery, modifyEventQuery } from "./query.js"
+import { getEventsParticipantsQuery, cancelEventQuery, removeParticipantQuery, modifyEventQuery,getEventState } from "./query.js"
 
+const getInfoEvent = async(connection, req, res) => {
+    console.log("getInfoevent Request bod: ", req.body)
+    const {event_id,user_id} = req.body;
+    const [results, fields] = await connection.execute(getEventState(),[event_id,user_id]);
+   
+    if(results){
+        console.log(results)
+        res.send(results);
+    }  
+}
 
 const cancelEvent = async(connection, req, res) => {
     const eventId = req.eventId; 
@@ -93,4 +103,4 @@ const getEventParticipants = async(connection, req, res) => {
     }
 }
 
-export {getEventParticipants, cancelEvent, removeParticipant, modifyEvent}
+export {getEventParticipants, cancelEvent, removeParticipant, modifyEvent,getInfoEvent}
