@@ -13,9 +13,10 @@ import {getPopularRoute, getUserInfoRoute, getCategoriesRoute, getEventsbyCatego
 import {getHistoricRoute, getReviewUserRoute, getUpcomingEventRoute, getMyAccountInfo,editInfoUserRoute,editImageProfilRoute} from "./routes/myaccount/route.js"
 import {getComingEventsRoute, getMyHistoric,getMyFavorite} from "./routes/myEventsPage/route.js"
 import {getEventsRoute, getFilteredEventsRoute} from "./routes/searchPage/route.js"
-import {cancelEvent, getEventParticipants, modifyEvent, removeParticipant,demanderParticipationRoute} from "./routes/event/route.js"
-import { getInfoDemanderNotifRoute,refuseDemandRoute,acceptDemandRoute } from "./routes/participationDemand/route.js"
+import {cancelEvent, getEventParticipants, modifyEvent, removeParticipant,demanderParticipationRoute,getInfoEvent} from "./routes/event/route.js"
+import { getInfoDemanderNotifRoute,refuseDemandRoute,acceptDemandRoute,signoutDemand } from "./routes/participationDemand/route.js"
 import {adminBlockUser, adminDeleteEvent} from "./routes/admin/routes.js";
+import {getNotificationsRoute} from "./routes/notifications/route.js"
 //import {getEventbyCategoryRoute} from "./routes/homepage/route.js"
 
 //Env config
@@ -77,6 +78,8 @@ app.post("/removeParticipant",
         (req, res) => removeParticipant(connection, req, res)
 )
 
+app.post("/getInfoEvent", (req, res) => getInfoEvent(connection, req, res));
+
 //SEARCH PAGE
 app.get("/getMapEvents", (req, res) => getEventsRoute(connection, req, res));
 app.post("/getFilteredEvents", (req, res) => getFilteredEventsRoute(connection, req, res));
@@ -94,6 +97,7 @@ app.post("/editImageProfil", (req, res) => editImageProfilRoute(connection, req,
 app.post("/getInfoDemanderNotif",(req,res) => getInfoDemanderNotifRoute(connection,req,res))
 app.post("/refuseDemand",(req,res) => refuseDemandRoute(connection,req,res))
 app.post("/acceptDemand",(req,res) => acceptDemandRoute(connection,req,res))
+app.post("/signoutDemand",(req,res) => signoutDemand(connection,req,res))
 
 //ADMIN
 app.delete(
@@ -108,6 +112,9 @@ app.post(
         authenticateAdmin, 
         (req, res) => adminBlockUser(connection, req, res)
 )
+
+//Notifications
+app.post("/getNotifications",(req,res) => getNotificationsRoute(connection,req,res))
 
 app.listen(process.env.PORT || 3000, () => {
   console.log(`EVE's backend app listening on port ${process.env.PORT || 3000}`);
