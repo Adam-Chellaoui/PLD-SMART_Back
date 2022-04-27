@@ -1,4 +1,4 @@
-import { checkEmailExists, signupQuery } from "./query.js";
+import { checkEmailExists, signupQuery , checkMailValid} from "./query.js";
 import bcrypt from "bcrypt"
 
 const signupRoute = async(connection, req, res) => {
@@ -19,8 +19,8 @@ const signupRoute = async(connection, req, res) => {
          address, 
          gender,
          birthDate,
-         description
-    } = req.body
+         description 
+    } = req.body 
 
     const [results,fields] = await connection.execute(checkEmailExists(), [email])
 
@@ -30,6 +30,17 @@ const signupRoute = async(connection, req, res) => {
         res.status(400).send("Email already exists.")
         return
     }
+
+    const domain = email.substring(email.lastIndexOf("@")+1);
+    console.log(domain)
+    const [results2,fields2] = await connection.execute(checkMailValid(), [domain])
+    if(results2.length===0){
+        res.status(401).send("Your school is not on our list")
+        return
+    }
+
+    const school_id = results2[0].id;
+    console.log(school_id);
 
     //We hash the password with bcrypt: 
     const saltRounds = 10;
@@ -55,11 +66,18 @@ const signupRoute = async(connection, req, res) => {
          gender, 
          birthDateTimestamp, 
          hashedPassword, 
-         description],
+         description,
+         school_id],
     (err, rows, fields) => {
         if (err) throw "SQL ERROR: " + err  
         res.send("Signup Sucessfull")
     })
+
+    var [results4,fields4] = await connection.execute(checkEmailExists(), [email]);
+    if(results4.length > 0){
+        res.status(200).send("succesfully connected.")
+        return
+    }
 }
 
 export default signupRoute;

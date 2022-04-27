@@ -6,7 +6,7 @@ const getUserInfoQuery = () => {
 const getHistoricQuery = () => {
     const req = `SELECT e.name, e.photo as ImageEvent, e.date_timestamp, e.place, u.photo as ImageProfil  
                 FROM eve.Event e , eve.User u
-                WHERE u.id=e.creator_id and u.id = ?`
+                WHERE u.id=e.creator_id and u.id = ? and  e.date_timestamp<=Now()`
     /*    
     const req = `SELECT e.name, e.photo as ImageEvent, e.date_timestamp, e.place, u.photo as ImageProfil  
                 FROM eve.Event e , eve.User u
@@ -15,11 +15,11 @@ const getHistoricQuery = () => {
 }
 
 const getReviewUserQuery = () => {
-    const req = `SELECT distinct C.name, C.surname, R.score, R.review  
-                FROM eve.Review R, eve.User C
-                WHERE R.target_id=? and C.id=R.writer_id`
+    const req = `SELECT distinct C.name, C.surname, C.photo, R.score, R.review, E.name as event_name
+                FROM eve.Review R, eve.User C, eve.Event E
+                WHERE R.target_id=? and C.id=R.writer_id and R.event_id=E.id`
     return req;
-}
+} 
 
 const getRatingParticipantQuery = () => {
     const req ='SELECT Round(Avg(R.score),1) as score FROM eve.Review R, eve.User C WHERE R.target_id=? and R.creator=0'
@@ -39,16 +39,17 @@ const getUpcomingEventQuery = () => {
 }
 
 const editInfoUser = () => {
-    (phone, city, streetNumber, street, region, zipCode, adressComplement, gender, dateBirth, userPassword, photo) => {
-        const params = [{phone: phone}, {city: city}, {streetNumber: streetNumber}, {street: street}, {region: region},
-            {zipCode: zipCode}, {adressComplement: adressComplement}, {gender: gender}, {dateBirth: dateBirth},
-            {userPassword: userPassword}, {photo: photo}]
-        const setColumns = params.filter(x => x.length > 0).map(x => "x = ")
-        const req = "UPDATE User SET " + setColumns()
-    }
-return req;
+    const req = "UPDATE User SET phone=COALESCE(?, phone), city=COALESCE(?, city), street_number=COALESCE(?, street_number), street=COALESCE(?, street), region=COALESCE(?, region), zip_code=COALESCE(?, zip_cOde), address_complement=COALESCE(?, address_complement), gender=COALESCE(?, gender), date_birth=COALESCE(?, date_birth), user_password=COALESCE(?, user_password) where id=?"
+    return req;
+    
+}
+
+const editImageUser = () => {
+    const req = "UPDATE User SET photo=? where id=?"
+    return req;
+    
 }
 
 
 
-export { getUserInfoQuery, getHistoricQuery, getReviewUserQuery, getUpcomingEventQuery, editInfoUser, getRatingParticipantQuery, getRatingCreatorQuery };
+export { getUserInfoQuery, getHistoricQuery, getReviewUserQuery, editImageUser,getUpcomingEventQuery, editInfoUser, getRatingParticipantQuery, getRatingCreatorQuery };
