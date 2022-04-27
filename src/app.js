@@ -13,7 +13,7 @@ import {getPopularRoute, getUserInfoRoute, getCategoriesRoute, getEventsbyCatego
 import {getHistoricRoute, getReviewUserRoute, getUpcomingEventRoute, getMyAccountInfo,editInfoUserRoute,editImageProfilRoute} from "./routes/myaccount/route.js"
 import {getComingEventsRoute, getMyHistoric,getMyFavorite} from "./routes/myEventsPage/route.js"
 import {getEventsRoute, getFilteredEventsRoute} from "./routes/searchPage/route.js"
-import {cancelEvent, getEventParticipants, modifyEvent, removeParticipant} from "./routes/eventOrganizer/route.js"
+import {cancelEvent, getEventParticipants, modifyEvent, removeParticipant,demanderParticipationRoute} from "./routes/event/route.js"
 import { getInfoDemanderNotifRoute,refuseDemandRoute,acceptDemandRoute } from "./routes/participationDemand/route.js"
 import {adminBlockUser, adminDeleteEvent} from "./routes/admin/routes.js";
 //import {getEventbyCategoryRoute} from "./routes/homepage/route.js"
@@ -51,6 +51,9 @@ app.get("/getEventsByCategory", (req, res) => getEventsbyCategoryRoute(connectio
 app.post("/getComingEvents", (req, res) => getComingEventsRoute(connection, req, res))
 app.post("/getMyHistoric", (req, res) => getMyHistoric(connection, req, res))
 app.post("/getMyFavorite", (req, res) => getMyFavorite(connection, req, res))
+
+//PARTICIPANT EVENT
+app.post("/getDemandParticipation", (req, res) => demanderParticipationRoute(connection, req, res))
 
 //ORGANIZER EVENT
 app.post("/getEventParticipants", 

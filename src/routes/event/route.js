@@ -1,4 +1,4 @@
-import { getEventsParticipantsQuery, cancelEventQuery, removeParticipantQuery, modifyEventQuery } from "./query.js"
+import { getEventsParticipantsQuery, cancelEventQuery, removeParticipantQuery, modifyEventQuery, demanderParticipationQuery } from "./query.js"
 
 
 const cancelEvent = async(connection, req, res) => {
@@ -93,4 +93,15 @@ const getEventParticipants = async(connection, req, res) => {
     }
 }
 
-export {getEventParticipants, cancelEvent, removeParticipant, modifyEvent}
+const demanderParticipationRoute = async(connection, req, res) => {
+    console.log("demanderParticipationRoute Request bod: ", req.body)
+    const {user_id, event_id, date_timestamp} = req.body;
+    const [results, fields] = await connection.execute(demanderParticipationQuery(),[user_id, event_id, date_timestamp]);
+   
+    if(results){
+        console.log(results)
+        res.send(results);
+    }  
+}
+
+export {getEventParticipants, cancelEvent, removeParticipant, modifyEvent, demanderParticipationRoute}
