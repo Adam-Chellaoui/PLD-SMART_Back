@@ -1,6 +1,8 @@
 //Packages
 import dotenv from "dotenv"
 import express from "express"
+import {Server, Socket} from "socket.io"
+import {createServer} from "http"
 import mysql from "mysql2/promise"
 //Authentication middleware
 import {authenticateToken} from "./middleware/authenticateToken.js"
@@ -16,14 +18,17 @@ import {getEventsRoute, getFilteredEventsRoute} from "./routes/searchPage/route.
 import {cancelEvent, getEventParticipants, modifyEvent, removeParticipant,demanderParticipationRoute,getInfoEvent} from "./routes/event/route.js"
 import { getInfoDemanderNotifRoute,refuseDemandRoute,acceptDemandRoute,signoutDemand } from "./routes/participationDemand/route.js"
 import {adminBlockUser, adminDeleteEvent} from "./routes/admin/routes.js";
-import {getNotificationsRoute} from "./routes/notifications/route.js"
-//import {getEventbyCategoryRoute} from "./routes/homepage/route.js"
+import {getNotificationsRoute,createNotificationRoute} from "./routes/notifications/route.js"
+
 
 //Env config
 dotenv.config();
 //Server config
 const app = express();
 app.use(express.json());
+//socket config
+const httpServer= createServer(app)
+const io = new Server (httpServer)
 
 const connection = await mysql.createConnection({
   host: process.env.DB_HOST,
@@ -116,6 +121,74 @@ app.post(
 //Notifications
 app.post("/getNotifications",(req,res) => getNotificationsRoute(connection,req,res))
 
-app.listen(process.env.PORT || 3000, () => {
+const getDateNow = ()=>{
+        var date_ob = new Date();
+        var day = ("0" + date_ob.getDate()).slice(-2);
+        var month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
+        var year = date_ob.getFullYear();
+
+        var hours = date_ob.getHours();
+        var minutes = date_ob.getMinutes();
+        var seconds = date_ob.getSeconds();
+        
+        var dateTime = year + "-" + month + "-" + day + " " + hours + ":" + minutes + ":" + seconds;
+        console.log(dateTime);
+
+        return dateTime
+}
+
+
+var storeClient = [];
+
+const getUserSocket = (id)=>{
+        console.log(id)
+        var sock = ""
+        storeClient.map((item)=>{
+                if(item.userId===id){
+                        sock=item.socketId
+                }
+        })
+        return sock;
+}
+
+const addUserSocket = (id,socket_id)=>{
+        var exists =-1;
+        var socketId = -1
+        storeClient.map((item,index)=>{
+                if(item.userId===id){
+                        exists=index;
+                        socketId=item.socketId
+                }       
+        })
+        if(exists!=-1){
+                storeClient[exists]=socketId
+        }else{
+                storeClient.push({socketId :socket_id, userId: id})
+        }
+        console.log(storeClient)
+}
+
+
+io.on('connection',(socket)=>{
+        console.log(`connecté au client ${socket.id}`);
+        socket.on('userId',(userId)=>{
+                
+                addUserSocket(userId,socket.id)
+        })
+        socket.on('message', (message, type, event_id,user_id)=>{
+                console.log(message.message)
+                var date = getDateNow();
+                if(message.type===2){
+                        console.log("demand accepted")
+                        createNotificationRoute(connection,message.user_id,"",1,message.type,message.event_id,null,null,null,date)
+                }
+                io.to(getUserSocket(message.user_id)).emit('message',("eeee"));
+
+        })
+})
+
+
+httpServer.listen(process.env.PORT || 3000, () => {
   console.log(`EVE's backend app listening on port ${process.env.PORT || 3000}`);
 });
+

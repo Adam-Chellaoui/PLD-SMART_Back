@@ -12,6 +12,12 @@ const getNotificationsQuery = () => {
     return req
 };
 
+const createNotification = ()=>{
+    const req = `Insert into eve.Notification (receiver_id,Corps,status_id,type_id,event_id, review_id,user_targeted_id,participation_demand_id,date)
+    Values (?,?,?,?,?,?,?,?,?)`
+    return req;
+}
 
-export { getNotificationsQuery};
+
+export { getNotificationsQuery,createNotification};
   

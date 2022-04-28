@@ -1,6 +1,8 @@
 import { getInfoDemanderNotif, setStatus, acceptDemand,deleteDemand, deleteParticipation} from "./query.js";
 
 
+
+
 const getInfoDemanderNotifRoute = async(connection, req, res) => {
     console.log("getEventsRoute Request bod: ", req.body)
     const {id} = req.body;
