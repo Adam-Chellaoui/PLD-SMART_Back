@@ -18,7 +18,7 @@ import {getEventsRoute, getFilteredEventsRoute} from "./routes/searchPage/route.
 import {cancelEvent, getEventParticipants, modifyEvent, removeParticipant,demanderParticipationRoute,getInfoEvent} from "./routes/event/route.js"
 import { getInfoDemanderNotifRoute,refuseDemandRoute,acceptDemandRoute,signoutDemand } from "./routes/participationDemand/route.js"
 import {adminBlockUser, adminDeleteEvent} from "./routes/admin/routes.js";
-import {getNotificationsRoute,createNotificationRoute} from "./routes/notifications/route.js"
+import {getNotificationsRoute,createNotificationRoute,setNotifDoneRoute} from "./routes/notifications/route.js"
 
 
 //Env config
@@ -120,6 +120,7 @@ app.post(
 
 //Notifications
 app.post("/getNotifications",(req,res) => getNotificationsRoute(connection,req,res))
+app.post("/setNotifDone",(req,res) => setNotifDoneRoute(connection,req,res))
 
 const getDateNow = ()=>{
         var date_ob = new Date();
@@ -161,7 +162,7 @@ const addUserSocket = (id,socket_id)=>{
                 }       
         })
         if(exists!=-1){
-                storeClient[exists]=socketId
+                storeClient[exists]={socketId :socket_id, userId: id}
         }else{
                 storeClient.push({socketId :socket_id, userId: id})
         }
@@ -182,7 +183,7 @@ io.on('connection',(socket)=>{
                         console.log("demand accepted")
                         createNotificationRoute(connection,message.user_id,"",1,message.type,message.event_id,null,null,null,date)
                 }
-                io.to(getUserSocket(message.user_id)).emit('message',("eeee"));
+                io.to(getUserSocket(message.user_id)).emit('message',(message));
 
         })
 })

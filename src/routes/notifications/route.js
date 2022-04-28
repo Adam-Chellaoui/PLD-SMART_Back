@@ -1,5 +1,5 @@
 
-import { getNotificationsQuery, createNotification} from "./query.js";
+import { getNotificationsQuery, createNotification,setNotificationDone} from "./query.js";
 
 
 const getNotificationsRoute = async (connection, req, res) => {
@@ -25,4 +25,16 @@ const createNotificationRoute = async (connection,receiver_id,Corps,status_id,ty
         })
 }
 
-export {getNotificationsRoute,createNotificationRoute};
+const setNotifDoneRoute = async (connection, req, res)=>{
+    console.log("done body", req.body);
+    const { id } = req.body;
+    connection.query(
+        setNotificationDone(),
+        [id],
+        (err, rows, fields) => {
+            if (err) throw "SQL ERROR: " + err  
+        })
+    res.send("ok")
+}
+
+export {getNotificationsRoute,createNotificationRoute,setNotifDoneRoute};
