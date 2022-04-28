@@ -18,9 +18,9 @@ const demanderParticipationQuery = () =>{
 }
 
 const getEventState = ()=>{
-    const req = ` Select event.photo as event_image, event.name, event.number_person_max, event.paying, event.description, event.date_timestamp , event.place, event.status
-    c.photo, c.name,
-    cat.description, cat.img,
+    const req = ` Select event.photo as event_image, event.name as event_name, event.number_person_max as maxcapacity, event.paying, event.description, event.date_timestamp as date, event.place, event.status_id,
+    c.photo as creator_image, c.name as creator_name,
+    cat.description as categorie_name, cat.img as categorie_image,
     COALESCE((SELECT p.id from eve.Participation p where event.id=p.event_id and u.id=p.id and NOW()>=event.date_timestamp),0) as particip_id,
     IFNULL(c.id=u.id,0) as user_is_creator
     from eve.Category cat, eve.Event event, eve.User c, eve.User u
