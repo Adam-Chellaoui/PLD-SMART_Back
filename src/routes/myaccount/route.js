@@ -1,4 +1,4 @@
-import { getUserInfoQuery,getHistoricQuery, getReviewUserQuery, getUpcomingEventQuery,getRatingParticipantQuery, getRatingCreatorQuery, editInfoUser,editImageUser } from "./query.js";
+import { getUserInfoQuery,getHistoricQuery, getReviewUserQuery, getUpcomingEventQuery,getRatingParticipantQuery, getRatingCreatorQuery, editInfoUser,editImageUser,getReportTypes,createReport } from "./query.js";
 
 
 const getMyAccountInfo = async (connection, req, res) => {
@@ -71,4 +71,22 @@ const editImageProfilRoute = async (connection, req, res) => {
     res.send("lala")
 }
 
-export {getHistoricRoute, getReviewUserRoute, getUpcomingEventRoute,getMyAccountInfo, editInfoUserRoute,editImageProfilRoute};
+const getReportTypesRoute = async (connection, req, res) => {
+    console.log("getReportTypesRoute Request bod: ", req.body)
+    const {} = req.body
+    const [results, fields] = await connection.execute(getReportTypes())
+
+    if(results){
+        console.log(results[0]);
+        res.send(results);
+    }
+}
+
+const createReportRoute = async (connection, req,res)=>{
+    console.log("createReport Request bod: ", req.body)
+    const {user_id, type_id} = req.body
+    connection.query(createReport(), [user_id, type_id])
+    res.send("lala")
+}
+
+export {getHistoricRoute, getReviewUserRoute, getUpcomingEventRoute,getMyAccountInfo, editInfoUserRoute,editImageProfilRoute,getReportTypesRoute,createReportRoute};

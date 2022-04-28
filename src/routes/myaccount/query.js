@@ -1,5 +1,5 @@
 const getUserInfoQuery = () => {
-    const req = `SELECT name, surname, mail, phone, city, street, street_number, region, zip_code, gender, date_birth, description, photo FROM eve.User WHERE id = ?`
+    const req = `SELECT u.name, u.surname, u.mail, u.phone, u.city, u.street, u.street_number, u.region, u.zip_code, u.gender, u.date_birth, u.description, u.photo, s.name as school_name FROM eve.User u, eve.School s WHERE u.id = ? and u.school_id=s.id `
     return req
 }
 
@@ -50,6 +50,14 @@ const editImageUser = () => {
     
 }
 
+const getReportTypes = () =>{
+    const req = 'Select * from eve.ReportType'
+    return req
+}
 
+const createReport = ()=>{
+    const req = 'INSERT into eve.Report (user_id, report_type_id) values (?,?)'
+    return req
+}
 
-export { getUserInfoQuery, getHistoricQuery, getReviewUserQuery, editImageUser,getUpcomingEventQuery, editInfoUser, getRatingParticipantQuery, getRatingCreatorQuery };
+export { getUserInfoQuery, getHistoricQuery, getReviewUserQuery, editImageUser,getUpcomingEventQuery, editInfoUser, getRatingParticipantQuery, getRatingCreatorQuery,getReportTypes,createReport};
