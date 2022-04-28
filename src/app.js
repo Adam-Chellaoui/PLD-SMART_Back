@@ -154,7 +154,6 @@ const getUserSocket = (id)=>{
 
 const addUserSocket = (id,socket_id)=>{
         var exists =-1;
-        var socketId = -1
         storeClient.map((item,index)=>{
                 if(item.userId===id){
                         exists=index;
@@ -166,18 +165,15 @@ const addUserSocket = (id,socket_id)=>{
         }else{
                 storeClient.push({socketId :socket_id, userId: id})
         }
-        console.log(storeClient)
 }
 
 
 io.on('connection',(socket)=>{
-        console.log(`connecté au client ${socket.id}`);
         socket.on('userId',(userId)=>{
                 
                 addUserSocket(userId,socket.id)
         })
         socket.on('message', (message, type, event_id,user_id)=>{
-                console.log(message.message)
                 var date = getDateNow();
                 if(message.type===2){
                         console.log("demand accepted")
