@@ -6,7 +6,7 @@ const getUserInfoQuery = () => {
 }
 
 const getHistoricQuery = () => {
-    const req = `SELECT e.name, e.photo as ImageEvent, e.date_timestamp, e.place, u.photo as ImageProfil, e.creator_id as CreatorId
+    const req = `SELECT e.name, e.photo as ImageEvent, e.date_timestamp, e.place, u.photo as ImageProfil, e.creator_id as CreatorId, e.id as event_id
                 FROM eve.Event e , eve.User u
                 WHERE u.id=e.creator_id and u.id = ? and  e.date_timestamp<=Now()`
     /*    
@@ -17,7 +17,7 @@ const getHistoricQuery = () => {
 }
 
 const getReviewUserQuery = () => {
-    const req = `SELECT distinct C.name, C.surname, C.photo, R.score, R.review, E.name as event_name
+    const req = `SELECT distinct C.name, C.surname, C.photo, R.score, R.review, E.name as event_name, C.id as creator_id
                 FROM eve.Review R, eve.User C, eve.Event E
                 WHERE R.target_id=? and C.id=R.writer_id and R.event_id=E.id`
     return req;
@@ -34,9 +34,9 @@ const getRatingCreatorQuery = () => {
 }
 
 const getUpcomingEventQuery = () => {
-    const req =  `SELECT e.name, e.photo as ImageEvent, e.date_timestamp, e.place, u.photo as ImageProfil, e.creator_id as CreatorId 
+    const req =  `SELECT e.name, e.photo as ImageEvent, e.date_timestamp, e.place, u.photo as ImageProfil, e.creator_id as CreatorId, e.id as event_id 
                 FROM eve.Event e , eve.User u
-                WHERE e.date_timestamp >= Now() and u.id=e.creator_id and u.id = ?`
+                WHERE e.date_timestamp >= Now() and u.id=e.creator_id and u.id = ? and e.status_id=1`
     return req;
 }
 
