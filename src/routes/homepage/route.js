@@ -52,5 +52,22 @@ const getEventbyCategoryRoute = async(connection, req, res) => {
 }
 
 
+const getAllInfo = async(connection, req, res) => {
+    console.log(req.body)
+    const [results2, fields2] = await connection.execute(getPopularEventQuery());
+    const [results3, fields3] = await connection.execute(getCategoriesQuery())
+    const [results4, fields4] = await connection.execute(getEventsbyCategoryQuery())
+    if(results2 && results3 && results4){
+        
+        var total = {
+            popular : results2,
+            categories: results3,
+            eventsByCat: results4
+        }
+        console.log(total)
+        res.send(total);
+    }
+}
 
-export {getUserInfoRoute, getPopularRoute, getCategoriesRoute, getEventsbyCategoryRoute,getEventbyCategoryRoute} ;
+
+export {getUserInfoRoute, getPopularRoute, getCategoriesRoute, getEventsbyCategoryRoute,getEventbyCategoryRoute,getAllInfo} ;

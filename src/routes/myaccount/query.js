@@ -1,10 +1,12 @@
 const getUserInfoQuery = () => {
-    const req = `SELECT u.name, u.surname, u.mail, u.phone, u.city, u.street, u.street_number, u.region, u.zip_code, u.gender, u.date_birth, u.description, u.photo, s.name as school_name FROM eve.User u, eve.School s WHERE u.id = ? and u.school_id=s.id `
+    const req = `SELECT u.name, u.surname, u.mail, u.phone, u.city, u.street, u.street_number, u.region, u.zip_code, u.gender, u.date_birth, u.description, u.photo, s.name as school_name,
+    COALESCE((select id from eve.Report r where r.user_id=u.id ),-1) as reported
+    FROM eve.User u, eve.School s, eve.Report r WHERE u.id = ? and u.school_id=s.id `
     return req
 }
 
 const getHistoricQuery = () => {
-    const req = `SELECT e.name, e.photo as ImageEvent, e.date_timestamp, e.place, u.photo as ImageProfil  
+    const req = `SELECT e.name, e.photo as ImageEvent, e.date_timestamp, e.place, u.photo as ImageProfil, e.creator_id as CreatorId
                 FROM eve.Event e , eve.User u
                 WHERE u.id=e.creator_id and u.id = ? and  e.date_timestamp<=Now()`
     /*    
@@ -32,7 +34,7 @@ const getRatingCreatorQuery = () => {
 }
 
 const getUpcomingEventQuery = () => {
-    const req =  `SELECT e.name, e.photo as ImageEvent, e.date_timestamp, e.place, u.photo as ImageProfil  
+    const req =  `SELECT e.name, e.photo as ImageEvent, e.date_timestamp, e.place, u.photo as ImageProfil, e.creator_id as CreatorId 
                 FROM eve.Event e , eve.User u
                 WHERE e.date_timestamp >= Now() and u.id=e.creator_id and u.id = ?`
     return req;
