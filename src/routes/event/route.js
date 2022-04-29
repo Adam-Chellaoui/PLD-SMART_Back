@@ -1,4 +1,4 @@
-import { getEventsParticipantsQuery, cancelEventQuery, removeParticipantQuery, modifyEventQuery, demanderParticipationQuery,getEventState } from "./query.js"
+import { getEventsParticipantsQuery, cancelEventQuery, removeParticipantQuery, modifyEventQuery, demanderParticipationQuery,getEventState, getReviewEventQuery } from "./query.js"
 
 const getInfoEvent = async(connection, req, res) => {
     console.log("getInfoevent Request bod: ", req.body)
@@ -114,4 +114,16 @@ const demanderParticipationRoute = async(connection, req, res) => {
     }  
 }
 
-export {getEventParticipants, cancelEvent, removeParticipant, modifyEvent, demanderParticipationRoute,getInfoEvent}
+const getReviewEventRoute = async(connection, req, res) => {
+    const event_id = req.body.event_id;
+    try{
+        const[results, field] = await connection.execute(getReviewEventQuery(), [event_id]);
+        res.status(200).json({ reviews: results });
+    }
+    catch(err){
+        console.log(err)
+        res.status(500).json({message: "An error ocurred: "})
+    }
+}
+
+export {getEventParticipants, cancelEvent, removeParticipant, modifyEvent, demanderParticipationRoute,getInfoEvent, getReviewEventRoute}

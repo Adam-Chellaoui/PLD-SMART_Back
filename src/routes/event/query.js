@@ -27,5 +27,13 @@ const getEventState = ()=>{
     where event.id=? and u.id=? and event.creator_id=c.id and event.category_id=cat.id`
     return req;
 }
-export {getEventsParticipantsQuery, cancelEventQuery, removeParticipantQuery, modifyEventQuery, demanderParticipationQuery, getEventState};
+
+const getReviewEventQuery = () => {
+    const req = `SELECT distinct C.name, C.surname, C.photo, R.score, R.review
+                FROM eve.Review R, eve.User C
+                WHERE R.event_id= ? and C.id=R.writer_id `
+    return req;
+} 
+
+export {getEventsParticipantsQuery, cancelEventQuery, removeParticipantQuery, modifyEventQuery, demanderParticipationQuery, getEventState, getReviewEventQuery};
 
