@@ -14,12 +14,11 @@ import loginRoute from "./routes/login/route.js"
 import {getPopularRoute, getUserInfoRoute, getCategoriesRoute, getEventsbyCategoryRoute,getEventbyCategoryRoute, getAllInfo} from "./routes/homepage/route.js"
 import {getHistoricRoute, getReviewUserRoute, getUpcomingEventRoute, getMyAccountInfo,editInfoUserRoute,editImageProfilRoute,getReportTypesRoute,createReportRoute} from "./routes/myaccount/route.js"
 import {getComingEventsRoute, getMyHistoric,getMyFavorite} from "./routes/myEventsPage/route.js"
-import {getEventsRoute, getFilteredEventsRoute} from "./routes/searchPage/route.js"
+import {getEventsRoute} from "./routes/searchPage/route.js"
 import {cancelEvent, getEventParticipants, modifyEvent, removeParticipant,demanderParticipationRoute,getInfoEvent, getReviewEventRoute} from "./routes/event/route.js"
 import { getInfoDemanderNotifRoute,refuseDemandRoute,acceptDemandRoute,signoutDemand } from "./routes/participationDemand/route.js"
 import {adminBlockUser, adminDeleteEvent} from "./routes/admin/routes.js";
 import {getNotificationsRoute,createNotificationRoute,setNotifDoneRoute} from "./routes/notifications/route.js"
-import {authenticateEventOwner} from "./middleware/authenticateEventOwner.js"
 import {getFilteredEventsRoute} from "./routes/Filters/route.js"
 //import {getEventbyCategoryRoute} from "./routes/homepage/route.js"
 
