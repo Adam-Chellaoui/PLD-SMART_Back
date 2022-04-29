@@ -19,7 +19,9 @@ import {cancelEvent, getEventParticipants, modifyEvent, removeParticipant,demand
 import { getInfoDemanderNotifRoute,refuseDemandRoute,acceptDemandRoute,signoutDemand } from "./routes/participationDemand/route.js"
 import {adminBlockUser, adminDeleteEvent} from "./routes/admin/routes.js";
 import {getNotificationsRoute,createNotificationRoute,setNotifDoneRoute} from "./routes/notifications/route.js"
-
+import {authenticateEventOwner} from "./middleware/authenticateEventOwner.js"
+import {getFilteredEventsRoute} from "./routes/Filters/route.js"
+//import {getEventbyCategoryRoute} from "./routes/homepage/route.js"
 
 //Env config
 dotenv.config();
@@ -88,6 +90,8 @@ app.post("/getInfoEvent", (req, res) => getInfoEvent(connection, req, res));
 
 //SEARCH PAGE
 app.get("/getMapEvents", (req, res) => getEventsRoute(connection, req, res));
+
+//FILTERS
 app.post("/getFilteredEvents", (req, res) => getFilteredEventsRoute(connection, req, res));
 
 
