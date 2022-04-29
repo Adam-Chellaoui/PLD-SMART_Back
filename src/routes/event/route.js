@@ -1,12 +1,12 @@
 import { getEventsParticipantsQuery, cancelEventQuery, removeParticipantQuery, modifyEventQuery, demanderParticipationQuery,getEventState, getReviewEventQuery } from "./query.js"
 
 const getInfoEvent = async(connection, req, res) => {
-    console.log("getInfoevent Request bod: ", req.body)
+    //console.log("getInfoevent Request bod: ", req.body)
     const {event_id,user_id} = req.body;
     const [results, fields] = await connection.execute(getEventState(),[event_id,user_id]);
    
     if(results){
-        console.log(results)
+        //console.log(results)
         res.send(results);
     }  
 }
@@ -91,10 +91,10 @@ const modifyEvent = async(connection, req, res) => {
  * 
  */
 const getEventParticipants = async(connection, req, res) => {
-    const eventId = req.eventId;
-    
+    const event_id = req.body.event_id;
+    console.log("getEventParticipantsRoute Request bod: ", req.body)
     try{
-        const[results, field] = await connection.execute(getEventsParticipantsQuery(), [eventId]);
+        const[results, field] = await connection.execute(getEventsParticipantsQuery(), [event_id]);
         res.status(200).json({ participants: results });
     }
     catch(err){

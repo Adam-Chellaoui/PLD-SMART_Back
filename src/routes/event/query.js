@@ -9,7 +9,7 @@ const modifyEventQuery = (params) => {
 const removeParticipantQuery = () => "UPDATE Participation SET status_id = 3 WHERE event_id = ? AND user_id = ?"
 
 const getEventsParticipantsQuery = () => 
-    "SELECT Participation.user_id, User.name, User.surname FROM Participation INNER JOIN User ON User.id=Participation.user_id  WHERE event_id = ?"
+    "SELECT Participation.user_id, User.name, User.surname, User.photo FROM Participation INNER JOIN User ON User.id=Participation.user_id  WHERE event_id = ?"
 
 const demanderParticipationQuery = () =>{
     const req = `INSERT INTO eve.ParticipationDemand  (user_id, event_id, status_id, date_timestamp)

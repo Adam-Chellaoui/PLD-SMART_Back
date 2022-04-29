@@ -59,8 +59,8 @@ app.post("/getReviewEvent", (req, res) => getReviewEventRoute(connection, req, r
 
 //ORGANIZER EVENT
 app.post("/getEventParticipants", 
-        (req, res, next) => authenticateToken(connection, req, res, next), 
-        (req, res, next) => authenticateEventOwner(connection, req, res, next), 
+        //(req, res, next) => authenticateToken(connection, req, res, next), 
+        //(req, res, next) => authenticateEventOwner(connection, req, res, next), 
         (req, res) =>  getEventParticipants(connection, req, res)
 )
 app.post("/cancelEvent",
