@@ -17,10 +17,13 @@ const acceptDemand = () => {
 
 const deleteDemand = () =>{
     const req = 'Delete from eve.ParticipationDemand where id=?'
+    return req
 }
 
 const deleteParticipation = () =>{
     const req = 'Delete from eve.Participation where id=?'
+    return req
 }
+
 
 export {getInfoDemanderNotif, setStatus, acceptDemand, deleteDemand, deleteParticipation};
