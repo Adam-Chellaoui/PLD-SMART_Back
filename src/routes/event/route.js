@@ -204,4 +204,23 @@ const addReview = async(connection, req, res) => {
     }
 }
 
-export {getEventParticipants, cancelEvent, removeParticipant, modifyEvent, demanderParticipationRoute,getInfoEvent, getReviewEventRoute,setEventLikeRoute,getLikeRoute,withdrawRoute,getEventParticipantsNotif,addReview}
+
+const getReviewId = async(connection, req, res) => {
+    console.log("getReview Request bod: ", req.body)
+    const {writer_id,target_id,event_id} = req.body;
+    try{
+        const[results, field] = await connection.execute(getReviewQuery(), [writer_id,target_id,event_id]);
+        if(results){
+            res.status(200).send(results);
+        }else{
+            res.status(200).json([{id: -1}])
+        }
+        
+    }
+    catch(err){
+        console.log(err)
+        res.status(500).json({message: "An error ocurred: "})
+    }
+}
+
+export {getEventParticipants, cancelEvent, removeParticipant, modifyEvent, demanderParticipationRoute,getInfoEvent, getReviewEventRoute,setEventLikeRoute,getLikeRoute,withdrawRoute,getEventParticipantsNotif,addReview,getReviewId}

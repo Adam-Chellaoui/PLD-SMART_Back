@@ -45,7 +45,7 @@ const getReviewEventQuery = () => {
 const getReviewQuery = () => {
     const req = `SELECT distinct R.id
                 FROM eve.Review R
-                WHERE R.event_id= ? and R.writer_id=? and R.target_id=? `
+                WHERE R.writer_id=? and R.target_id=? and R.event_id=?`
     return req;
 } 
 
