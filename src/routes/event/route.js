@@ -210,10 +210,11 @@ const getReviewId = async(connection, req, res) => {
     const {writer_id,target_id,event_id} = req.body;
     try{
         const[results, field] = await connection.execute(getReviewQuery(), [writer_id,target_id,event_id]);
-        if(results){
+        if(results.length!=0){
             res.status(200).send(results);
         }else{
-            res.status(200).json([{id: -1}])
+            var resp = [{id: -1}]
+            res.status(200).send(resp)
         }
         
     }
