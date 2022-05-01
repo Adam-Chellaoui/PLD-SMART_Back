@@ -3,69 +3,96 @@ import { getPopularEventQuery, getUserInfoQuery, getCategoriesQuery, getEventsby
 const getUserInfoRoute = async(connection, req, res) => {
     console.log("getUserInfoRoute Request bod: ", req.body)
     const {id} = req.body
-    const [results, fields] = await connection.execute(getUserInfoQuery(), [id])
 
-    if(results){
-        console.log(results[0]);
-        res.send(results);
+    try{
+        const [results, fields] = await connection.execute(getUserInfoQuery(), [id])
+        res.status(200).send(results);
+    }catch(err){
+        console.log(err)
+        res.status(500).json({message: "An error ocurred: "})
     }
 }
 
 const getPopularRoute = async(connection, req, res) => {
     const {} = req.body;
-    const [results, fields] = await connection.execute(getPopularEventQuery());
-   
-    //if (err) throw "SQL ERROR: " + err 
-    if(results){
-        res.send(results);
-    }  
+
+    try{
+        const [results, fields] = await connection.execute(getPopularEventQuery());
+        res.status(200).send(results);
+    }catch(err){
+        console.log(err)
+        res.status(500).json({message: "An error ocurred: "})
+    }
 }
 
 const getCategoriesRoute = async (connection, req, res) => {
     console.log("getCategoriesRoute Request bod: ")
-    const [results, fields] = await connection.execute(getCategoriesQuery())
-    if(results){
-        console.log(results[0]);
-        res.send(results);
-
+   
+    try{
+        const [results, fields] = await connection.execute(getCategoriesQuery())
+        res.status(200).send(results);
+    }catch(err){
+        console.log(err)
+        res.status(500).json({message: "An error ocurred: "})
     }
 }
 
 const getEventsbyCategoryRoute = async(connection, req, res) => {
     console.log(req.body)
     const {} = req.body
-    const [results, fields] = await connection.execute(getEventsbyCategoryQuery())
-        if(results){
-            console.log(results);
-            res.send(results);
-        }
+
+    try{
+        const [results, fields] = await connection.execute(getEventsbyCategoryQuery())
+        res.status(200).send(results);
+    }catch(err){
+        console.log(err)
+        res.status(500).json({message: "An error ocurred: "})
+    }
 }
 
 const getEventbyCategoryRoute = async(connection, req, res) => {
     console.log(req.body)
     const {id} = req.body
-    const [results, fields] = await connection.execute(getEventbyCategoryQuery(),[id])
-    if(results){
-        console.log(results);
-        res.send(results);
+    
+    try{
+        const [results, fields] = await connection.execute(getEventbyCategoryQuery(),[id])
+        res.status(200).send(results);
+    }catch(err){
+        console.log(err)
+        res.status(500).json({message: "An error ocurred: "})
     }
 }
 
 
 const getAllInfo = async(connection, req, res) => {
     console.log(req.body)
-    const [results2, fields2] = await connection.execute(getPopularEventQuery());
-    const [results3, fields3] = await connection.execute(getCategoriesQuery())
-    const [results4, fields4] = await connection.execute(getEventsbyCategoryQuery())
-    if(results2 && results3 && results4){
-        
-        var total = {
-            popular : results2,
-            categories: results3,
-            eventsByCat: results4
+
+    try{
+        const [results4, fields4] = await connection.execute(getEventsbyCategoryQuery())
+        try{
+            const [results3, fields3] = await connection.execute(getCategoriesQuery())
+            
+            try{
+                const [results2, fields2] = await connection.execute(getPopularEventQuery());
+                var total = {
+                    popular : results2,
+                    categories: results3,
+                    eventsByCat: results4
+                }
+                console.log(total)
+                res.status(200).send(total);
+            }catch(err){
+                console.log(err)
+                res.status(500).json({message: "An error ocurred: "})
+            }
+        }catch(err){
+            console.log(err)
+            res.status(500).json({message: "An error ocurred: "})
         }
-        console.log(total)
-        res.send(total);
+        
+    }catch(err){
+        console.log(err)
+        res.status(500).json({message: "An error ocurred: "})
     }
 }
 
