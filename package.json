@@ -12,12 +12,21 @@
   "type": "module",
   "license": "ISC",
   "dependencies": {
+<<<<<<< HEAD
     "bcrypt": "^5.0.1",
+=======
+    "bcrypt": "5.0.1",
+    "config": "^3.3.7",
+>>>>>>> 56b0bda4621d3d98c4a04d2a21c51d2bba11898c
     "dotenv": "16.0.0",
-    "express": "4.17.3",
+    "express": "^4.17.3",
     "jsonwebtoken": "8.5.1",
     "mysql2": "2.3.3",
+<<<<<<< HEAD
     "nodemailer": "^6.7.3"
+=======
+    "socket.io": "^4.5.0"
+>>>>>>> 56b0bda4621d3d98c4a04d2a21c51d2bba11898c
   },
   "devDependencies": {
     "babel-cli": "6.26.0",

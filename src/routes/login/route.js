@@ -3,7 +3,6 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 const loginRoute = async (connection, req, res) => {
-    console.log("Request body", req.body);
     const { email, password } = req.body;
 
     const [results, fields] = await connection.execute(
@@ -18,7 +17,7 @@ const loginRoute = async (connection, req, res) => {
     const passwordMatch = await bcrypt.compare(password,results[0].user_password)
   ;
     if (passwordMatch) {
-      const token = jwt.sign({ userId: results[0].id }, process.env.SECRET, { expiresIn: '3 hours' })
+      const token = jwt.sign({ userId: results[0].id, isAdmin: results[0].admin == 1 ? true : false }, process.env.SECRET, { expiresIn: '3 hours' })
       res.status(200).json({ id: results[0].id, token: token });
     } else {
       res.status(401).send("Wrong password or email.");
