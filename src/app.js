@@ -11,14 +11,8 @@ import {authenticateAdmin} from "./middleware/authenticateAdmin.js"
 //Routes
 import signupRoute from "./routes/signup/route.js"
 import loginRoute from "./routes/login/route.js"
-<<<<<<< HEAD
-import {resetPasswordRoute, resetPasswordVerifyTokenRoute} from "./routes/resetPassword/route.js"
-import {getPopularRoute, getUserInfoRoute, getCategoriesRoute, getEventsbyCategoryRoute} from "./routes/homepage/route.js"
-import {authenticateToken} from "./middleware/authenticateToken.js"
-=======
 import {getPopularRoute, getUserInfoRoute, getCategoriesRoute, getEventsbyCategoryRoute,getEventbyCategoryRoute, getAllInfo} from "./routes/homepage/route.js"
 import {getHistoricRoute, getReviewUserRoute, getUpcomingEventRoute, getMyAccountInfo,editInfoUserRoute,editImageProfilRoute,getReportTypesRoute,createReportRoute} from "./routes/myaccount/route.js"
->>>>>>> 56b0bda4621d3d98c4a04d2a21c51d2bba11898c
 import {getComingEventsRoute, getMyHistoric,getMyFavorite} from "./routes/myEventsPage/route.js"
 import {getEventsRoute} from "./routes/searchPage/route.js"
 import {cancelEvent, getEventParticipants, modifyEvent, removeParticipant,demanderParticipationRoute,getInfoEvent, getReviewEventRoute, setEventLikeRoute, getLikeRoute, withdrawRoute, getEventParticipantsNotif, addReview, getReviewId} from "./routes/event/route.js"
