@@ -98,8 +98,13 @@ const createReportEvent = ()=>{
     return req
 }
 
+const deleteEventQuery = ()=>{
+    const req="DELETE FROM Event where Event.id = ?"
+    return req
+}
+
 export {getReportTypesEvent,createReportEvent,getEventsParticipantsQuery, cancelEventQuery, removeParticipantQuery,
          modifyEventQuery, demanderParticipationQuery, getEventState, getReviewEventQuery,setEventLiked,
          getPartcipationDemandId,deleteLike,getLike,deleteParticipation,delteDemand,makeReview,getReviewQuery,
-         getnonReviewedParticipantsQuery};
+         getnonReviewedParticipantsQuery, deleteEventQuery};
 

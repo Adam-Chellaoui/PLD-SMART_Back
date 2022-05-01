@@ -1,7 +1,7 @@
 import { getEventsParticipantsQuery, cancelEventQuery, removeParticipantQuery, modifyEventQuery,
          demanderParticipationQuery,getEventState, getReviewEventQuery, setEventLiked,getPartcipationDemandId,
         deleteLike,getLike,deleteParticipation,delteDemand,makeReview, getReviewQuery, getnonReviewedParticipantsQuery,
-        getReportTypesEvent, createReportEvent } from "./query.js"
+        getReportTypesEvent, createReportEvent, deleteEventQuery } from "./query.js"
 
 import getDateNow from "../../utils/formatageDate.js";
 
@@ -27,6 +27,20 @@ const cancelEvent = async(connection, req, res) => {
     try{
         const [results, fields] = await connection.execute(cancelEventQuery(), [event_id])
         res.status(200).json({message: "Event successfully cancelled."})
+    }
+    catch(err){
+        console.log(err)
+        res.status(500).json({message: "An error occured."})
+    }
+}
+
+const deleteEvent = async(connection, req, res) => {
+    console.log("getParti Request bod: ", req.body)
+    const {event_id} = req.body;
+
+    try{
+        const [results, fields] = await connection.execute(deleteEventQuery(), [event_id])
+        res.status(200).json({message: "Event successfully deleted."})
     }
     catch(err){
         console.log(err)
@@ -119,7 +133,7 @@ const getnonReviewedParticipants = async(connection, req, res) => {
     
     try{
         const[results, field] = await connection.execute(getnonReviewedParticipantsQuery(), [event_id]);
-        res.status(200).json({ participants: results });
+        res.status(200).json({ participantstoReview: results });
     }
     catch(err){
         console.log(err)
@@ -310,4 +324,4 @@ const createReportEventRoute = async (connection, req,res)=>{
 export {getReportTypesEventRoute,createReportEventRoute,getEventParticipants,
          cancelEvent, removeParticipant, modifyEvent, demanderParticipationRoute,getInfoEvent,
         getReviewEventRoute,setEventLikeRoute,getLikeRoute,withdrawRoute,getEventParticipantsNotif,
-        addReview,getReviewId, getnonReviewedParticipants}
+        addReview,getReviewId, getnonReviewedParticipants, deleteEvent}
