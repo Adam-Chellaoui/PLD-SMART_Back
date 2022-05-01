@@ -29,7 +29,8 @@ const getEventState = ()=>{
     COALESCE((SELECT p.id from eve.Participation p where event.id=p.event_id and u.id=p.user_id),0) as particip_id,
     IFNULL(c.id=u.id,0) as user_is_creator,
     COALESCE((SELECT l.id from eve.Liked l where l.event_id=event.id and l.user_id=u.id),0) as liked_id,
-    COALESCE((SELECT pd.id from eve.ParticipationDemand pd where pd.event_id=event.id and pd.user_id=u.id),0) as demand_id
+    COALESCE((SELECT pd.id from eve.ParticipationDemand pd where pd.event_id=event.id and pd.user_id=u.id),0) as demand_id,
+     COALESCE((SELECT rep.id from eve.ReportEvent rep where rep.event_id=event.id),-1) as reported
     from eve.Category cat, eve.Event event, eve.User c, eve.User u
     where event.id=? and u.id=? and event.creator_id=c.id and event.category_id=cat.id`
     return req;
