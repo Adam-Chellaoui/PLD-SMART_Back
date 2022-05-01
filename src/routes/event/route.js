@@ -1,17 +1,23 @@
 import { getEventsParticipantsQuery, cancelEventQuery, removeParticipantQuery, modifyEventQuery,
          demanderParticipationQuery,getEventState, getReviewEventQuery, setEventLiked,getPartcipationDemandId,
-        deleteLike,getLike,deleteParticipation,delteDemand,makeReview, getReviewQuery, getnonReviewedParticipantsQuery } from "./query.js"
+        deleteLike,getLike,deleteParticipation,delteDemand,makeReview, getReviewQuery, getnonReviewedParticipantsQuery,
+        getReportTypesEvent, createReportEvent } from "./query.js"
 
 import getDateNow from "../../utils/formatageDate.js";
+
 const getInfoEvent = async(connection, req, res) => {
     //console.log("getInfoevent Request bod: ", req.body)
     const {event_id,user_id} = req.body;
-    const [results, fields] = await connection.execute(getEventState(),[event_id,user_id]);
-   
-    if(results){
-        //console.log(results)
-        res.send(results);
-    }  
+
+    try{
+        const [results, fields] = await connection.execute(getEventState(),[event_id,user_id]);
+        res.status(200).send(results) 
+    }
+    catch(err){
+        console.log(err)
+        res.status(500).json({message: "An error occured."})
+    }
+    
 }
 
 const cancelEvent = async(connection, req, res) => {
@@ -45,8 +51,7 @@ const removeParticipant = async(connection, req, res) => {
 }
 
 const modifyEvent = async(connection, req, res) => {
-    const eventId = req.eventId;
-    const {name, city, categoryId, numberPersonMax, paying, photo} = req.body
+    const {event_id,name, city, categoryId, numberPersonMax, paying, photo} = req.body
     const params = [
         {row: "name", value: name}, 
         {row: "city", value: city}, 
@@ -138,28 +143,51 @@ const demanderParticipationRoute = async(connection, req, res) => {
     console.log("demanderParticipationRoute Request bod: ", req.body)
     const {user_id, event_id} = req.body;
     const date = getDateNow();
-    connection.query(demanderParticipationQuery(),[user_id, event_id, date]);
-
+    
     try{
-        const[results, field] = await connection.execute(getPartcipationDemandId(), [user_id,event_id]);
-        res.status(200).send(results);
+        connection.query(demanderParticipationQuery(),[user_id, event_id, date]);
+
+        try{
+        
+            const[results, field] = await connection.execute(getPartcipationDemandId(), [user_id,event_id]);
+            res.status(200).send(results);
+        }
+        catch(err){
+            console.log(err)
+            res.status(500).json({message: "An error ocurred: "})
+        }
     }
     catch(err){
         console.log(err)
         res.status(500).json({message: "An error ocurred: "})
     }
+
+    
 }
 
 const setEventLikeRoute = async(connection, req, res) => {
-    console.log("demanderParticipationRoute Request bod: ", req.body)
+    console.log("event like Request bod: ", req.body)
     const {user_id, event_id, liked} = req.body;
+
     if(liked===0){
-        connection.query(deleteLike(),[user_id, event_id]);
-        res.send("successfully deleted");
+        try{
+            connection.query(deleteLike(),[user_id, event_id]);
+            res.status(200).send({message:"successfully deleted"});
+        }catch(err){
+            console.log(err)
+            res.status(500).json({message: "An error ocurred: "})
+        }
+        
     }else{
-        const date = getDateNow();
-        connection.query(setEventLiked(),[user_id, event_id,date]);
-        res.send("successfully liked");
+        
+        try{
+            const date = getDateNow();
+            connection.query(setEventLiked(),[user_id, event_id,date]);
+            res.status(200).send({message:"successfully liked"});
+        }catch(err){
+            console.log(err)
+            res.status(500).json({message: "An error ocurred: "})
+        }
     }  
 
 }
@@ -193,9 +221,21 @@ const getReviewEventRoute = async(connection, req, res) => {
 const withdrawRoute = async(connection, req, res) => {
     console.log("withdraw Request bod: ", req.body)
     const {user_id, event_id} = req.body;
-    connection.query(deleteParticipation(),[user_id, event_id]);
-    connection.query(delteDemand(),[user_id, event_id]);
-    res.send("successfully deleted");
+    try{
+        connection.query(deleteParticipation(),[user_id, event_id]);
+        try{
+            connection.query(delteDemand(),[user_id, event_id]);
+            res.status(200).json({message: "Succesfully deleted"})
+        }catch(err){
+            console.log(err)
+            res.status(500).json({message: "An error ocurred: "})
+        }
+    }catch(err){
+        console.log(err)
+        res.status(500).json({message: "An error ocurred: "})
+    }
+    
+    
 
 }
 
@@ -241,7 +281,33 @@ const getReviewId = async(connection, req, res) => {
     }
 }
 
-export {getEventParticipants, cancelEvent, removeParticipant, modifyEvent, 
-        demanderParticipationRoute,getInfoEvent, getReviewEventRoute,setEventLikeRoute,
-        getLikeRoute,withdrawRoute,getEventParticipantsNotif,addReview,getReviewId,
-        getnonReviewedParticipants}
+const getReportTypesEventRoute = async (connection, req, res) => {
+    console.log("getReportTypesRoute Request bod: ", req.body)
+    const {} = req.body
+
+    try{
+        const [results, fields] = await connection.execute(getReportTypesEvent())
+        res.status(200).send(results);
+    }catch(err){
+        console.log(err)
+        res.status(500).json({message: "An error ocurred: "})
+    }
+}
+
+const createReportEventRoute = async (connection, req,res)=>{
+    console.log("createReport Request bod: ", req.body)
+    const {event_id, type_id} = req.body
+    
+    try{
+        const [results, fields] = await connection.execute(createReportEvent(), [event_id, type_id])
+        res.status(200).send({message: "Success "});
+    }catch(err){
+        console.log(err)
+        res.status(500).json({message: "An error ocurred: "})
+    }
+}
+
+export {getReportTypesEventRoute,createReportEventRoute,getEventParticipants,
+         cancelEvent, removeParticipant, modifyEvent, demanderParticipationRoute,getInfoEvent,
+        getReviewEventRoute,setEventLikeRoute,getLikeRoute,withdrawRoute,getEventParticipantsNotif,
+        addReview,getReviewId, getnonReviewedParticipants}

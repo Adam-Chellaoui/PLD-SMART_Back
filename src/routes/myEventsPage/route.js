@@ -6,14 +6,16 @@ const getComingEventsRoute = async (connection, req, res) => {
     console.log("Request body", req.body);
     const { id } = req.body;
 
-    const [results, fields] = await connection.execute(
-        comingEventsQuery(),
-        [id]);
-
-    //if no results => front = no coming events
-    //else
-    if(results){
-        res.send(results);
+    
+    try{
+        const [results, fields] = await connection.execute(
+            comingEventsQuery(),
+            [id]);
+    
+        res.status(200).send(results);
+    }catch(err){
+        console.log(err)
+        res.status(500).json({message: "An error ocurred: "})
     }
 };
 
@@ -21,12 +23,14 @@ const getMyHistoric = async (connection, req, res) => {
     console.log("historiqueRequest body", req.body);
     const { id } = req.body;
 
-    const [results, fields] = await connection.execute(
-        myHistoric(),
-        [id]);
-
-    if(results){
-        res.send(results);
+    try{
+        const [results, fields] = await connection.execute(
+            myHistoric(),
+            [id]);
+        res.status(200).send(results);
+    }catch(err){
+        console.log(err)
+        res.status(500).json({message: "An error ocurred: "})
     }
 };
 
@@ -34,12 +38,15 @@ const getMyFavorite = async (connection, req, res) => {
     console.log("favoriteRequest body", req.body);
     const { id } = req.body;
 
-    const [results, fields] = await connection.execute(
-        myFavorite(),
-        [id]);
-    console.log(results)
-    if(results){
-        res.send(results);
+   
+    try{
+        const [results, fields] = await connection.execute(
+            myFavorite(),
+            [id]);
+        res.status(200).send(results);
+    }catch(err){
+        console.log(err)
+        res.status(500).json({message: "An error ocurred: "})
     }
 };
 
