@@ -15,7 +15,7 @@ import {getPopularRoute, getUserInfoRoute, getCategoriesRoute, getEventsbyCatego
 import {getHistoricRoute, getReviewUserRoute, getUpcomingEventRoute, getMyAccountInfo,editInfoUserRoute,editImageProfilRoute,getReportTypesRoute,createReportRoute} from "./routes/myaccount/route.js"
 import {getComingEventsRoute, getMyHistoric,getMyFavorite} from "./routes/myEventsPage/route.js"
 import {getEventsRoute} from "./routes/searchPage/route.js"
-import {cancelEvent, getEventParticipants, modifyEvent, removeParticipant,demanderParticipationRoute,getInfoEvent, getReviewEventRoute, setEventLikeRoute, getLikeRoute, withdrawRoute, getEventParticipantsNotif, addReview, getReviewId} from "./routes/event/route.js"
+import {cancelEvent, getEventParticipants, modifyEvent, removeParticipant,demanderParticipationRoute,getInfoEvent, getReviewEventRoute, setEventLikeRoute, getLikeRoute, withdrawRoute, getEventParticipantsNotif, addReview, getReviewId, getReportTypesEventRoute, createReportEventRoute} from "./routes/event/route.js"
 import { getInfoDemanderNotifRoute,refuseDemandRoute,acceptDemandRoute,signoutDemand } from "./routes/participationDemand/route.js"
 import {adminBlockUser, adminDeleteEvent} from "./routes/admin/routes.js";
 import {getNotificationsRoute,createNotificationRoute,setNotifDoneRoute} from "./routes/notifications/route.js"
@@ -70,6 +70,9 @@ app.post("/setLiked", (req, res) => setEventLikeRoute(connection, req, res))
 app.post("/getLike", (req, res) => getLikeRoute(connection, req, res))
 app.post("/addReview", (req, res) => addReview(connection, req, res))
 app.post("/getReviewId", (req, res) => getReviewId(connection, req, res))
+
+app.get("/getReportTypesEvent", (req, res) => getReportTypesEventRoute(connection, req, res))
+app.post("/createReportEvent", (req, res) => createReportEventRoute(connection, req, res))
 
 //ORGANIZER EVENT
 app.post("/getEventParticipants", 

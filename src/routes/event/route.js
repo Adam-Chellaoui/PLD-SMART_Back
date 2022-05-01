@@ -1,4 +1,4 @@
-import { getEventsParticipantsQuery, cancelEventQuery, removeParticipantQuery, modifyEventQuery, demanderParticipationQuery,getEventState, getReviewEventQuery, setEventLiked,getPartcipationDemandId,deleteLike,getLike,deleteParticipation,delteDemand,makeReview, getReviewQuery } from "./query.js"
+import { getEventsParticipantsQuery, cancelEventQuery, removeParticipantQuery, modifyEventQuery, demanderParticipationQuery,getEventState, getReviewEventQuery, setEventLiked,getPartcipationDemandId,deleteLike,getLike,deleteParticipation,delteDemand,makeReview, getReviewQuery, getReportTypesEvent, createReportEvent } from "./query.js"
 import getDateNow from "../../utils/formatageDate.js";
 
 const getInfoEvent = async(connection, req, res) => {
@@ -263,4 +263,30 @@ const getReviewId = async(connection, req, res) => {
     }
 }
 
-export {getEventParticipants, cancelEvent, removeParticipant, modifyEvent, demanderParticipationRoute,getInfoEvent, getReviewEventRoute,setEventLikeRoute,getLikeRoute,withdrawRoute,getEventParticipantsNotif,addReview,getReviewId}
+const getReportTypesEventRoute = async (connection, req, res) => {
+    console.log("getReportTypesRoute Request bod: ", req.body)
+    const {} = req.body
+
+    try{
+        const [results, fields] = await connection.execute(getReportTypesEvent())
+        res.status(200).send(results);
+    }catch(err){
+        console.log(err)
+        res.status(500).json({message: "An error ocurred: "})
+    }
+}
+
+const createReportEventRoute = async (connection, req,res)=>{
+    console.log("createReport Request bod: ", req.body)
+    const {event_id, type_id} = req.body
+    
+    try{
+        const [results, fields] = await connection.execute(createReportEvent(), [event_id, type_id])
+        res.status(200).send({message: "Success "});
+    }catch(err){
+        console.log(err)
+        res.status(500).json({message: "An error ocurred: "})
+    }
+}
+
+export {getReportTypesEventRoute,createReportEventRoute,getEventParticipants, cancelEvent, removeParticipant, modifyEvent, demanderParticipationRoute,getInfoEvent, getReviewEventRoute,setEventLikeRoute,getLikeRoute,withdrawRoute,getEventParticipantsNotif,addReview,getReviewId}

@@ -80,5 +80,15 @@ const delteDemand = () =>{
     return req
 }
 
-export {getEventsParticipantsQuery, cancelEventQuery, removeParticipantQuery, modifyEventQuery, demanderParticipationQuery, getEventState, getReviewEventQuery,setEventLiked,getPartcipationDemandId,deleteLike,getLike,deleteParticipation,delteDemand,makeReview,getReviewQuery};
+const getReportTypesEvent = () =>{
+    const req = 'Select * from eve.ReportTypeEvent'
+    return req
+}
+
+const createReportEvent = ()=>{
+    const req = 'INSERT into eve.ReportEvent (event_id, report_type_id) values (?,?)'
+    return req
+}
+
+export {getReportTypesEvent,createReportEvent,getEventsParticipantsQuery, cancelEventQuery, removeParticipantQuery, modifyEventQuery, demanderParticipationQuery, getEventState, getReviewEventQuery,setEventLiked,getPartcipationDemandId,deleteLike,getLike,deleteParticipation,delteDemand,makeReview,getReviewQuery};
 
