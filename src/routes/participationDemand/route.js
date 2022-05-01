@@ -6,64 +6,83 @@ import { setNotificationDone } from "../notifications/query.js";
 const getInfoDemanderNotifRoute = async(connection, req, res) => {
     console.log("getEventsRoute Request bod: ", req.body)
     const {id} = req.body;
-    const [results, fields] = await connection.execute(getInfoDemanderNotif(),[id]);
-   
-    if(results){
-        console.log(results)
-        res.send(results);
-    }  
+    
+    try{
+        const [results, fields] = await connection.execute(getInfoDemanderNotif(),[id]);
+        res.status(200).send(results);
+    }catch(err){
+        console.log(err)
+        res.status(500).json({message: "An error ocurred: "})
+    }
 }
 
 const refuseDemandRoute = async(connection, req, res) => {
     console.log("setStatusDemand Request bod: ", req.body)
     const {id, notif_id} = req.body;
-    connection.query(setStatus(),[3, id],(err, rows, fields) => {
-        if (err) throw "SQL ERROR: " + err  
-        res.status(200).send("success: demand has been refused")
-    });
+    try{
+        const [results, fields] = await connection.execute(setStatus(),[3, id])
 
-    console.log("notif Request bod: ", req.body)
-    connection.query(setNotificationDone(),[notif_id],(err, rows, fields) => {
-        if (err) throw "SQL ERROR: " + err  
-        res.status(200).send("success: demand has been accepted")
-    });
+        try{
+            const [results, fields] = await connection.execute(setNotificationDone(),[notif_id])
+            res.status(200).send({message: "Success "});
+        }catch(err){
+            console.log(err)
+            res.status(500).json({message: "An error ocurred: "})
+        }
+    }catch(err){
+        console.log(err)
+        res.status(500).json({message: "An error ocurred: "})
+    }
 }
 
 const acceptDemandRoute = async(connection, req, res) => {
 
     console.log("setStatusDemand Request bod: ", req.body)
     const {demand_id, user_id, event_id, notif_id} = req.body;
-    connection.query(setStatus(),[2, demand_id],(err, rows, fields) => {
-        if (err) throw "SQL ERROR: " + err  
-    });
 
-    console.log("acceptDemand Request bod: ", req.body)
-    connection.query(acceptDemand(),[user_id,event_id],(err, rows, fields) => {
-        if (err) throw "SQL ERROR: " + err  
-        res.status(200).send("success: demand has been accepted")
-    });
+    try{
+        const [results, fields] = await connection.execute(setStatus(),[2, demand_id])
 
-    console.log("notif Request bod: ", req.body)
-    connection.query(setNotificationDone(),[notif_id],(err, rows, fields) => {
-        if (err) throw "SQL ERROR: " + err  
-        res.status(200).send("success: demand has been accepted")
-    });
+        try{
+            const [results, fields] = await connection.execute(acceptDemand(),[user_id,event_id])
+            
+            try{
+                const [results, fields] = await connection.execute(setNotificationDone(),[notif_id])
+                res.status(200).send({message: "Demand has been accepted "});
+            }catch(err){
+                console.log(err)
+                res.status(500).json({message: "An error ocurred: "})
+            }
+
+        }catch(err){
+            console.log(err)
+            res.status(500).json({message: "An error ocurred: "})
+        }
+    }catch(err){
+        console.log(err)
+        res.status(500).json({message: "An error ocurred: "})
+    }
 }
 
 const signoutDemand = async(connection, req, res) => {
 
     console.log("signOut Request bod: ", req.body)
     const {demand_id, participation_id} = req.body;
-    connection.query(deleteDemand,[demand_id],(err, rows, fields) => {
-        if (err) throw "SQL ERROR: " + err  
-    });
 
-    console.log("delete participation Request bod: ", req.body)
-    connection.query(deleteParticipation(),[participation_id],(err, rows, fields) => {
-        if (err) throw "SQL ERROR: " + err  
-        res.status(200).send("success: sign out successfull")
-    });
+    try{
+        const [results, fields] = await connection.execute(deleteDemand(),[demand_id])
 
+        try{
+            const [results, fields] = await connection.execute(deleteParticipation(),[participation_id])
+            res.status(200).send({message: "Success "});
+        }catch(err){
+            console.log(err)
+            res.status(500).json({message: "An error ocurred: "})
+        }
+    }catch(err){
+        console.log(err)
+        res.status(500).json({message: "An error ocurred: "})
+    }
     
 }
 

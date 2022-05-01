@@ -10,11 +10,14 @@ const getFilteredEventsRoute = async(connection, req, res) => {
     const splitted = date.split("/");
     const date_timestamp = `${splitted[2]}-${splitted[1]}-${splitted[0]} 00:00:00`
 
-    const [results,fields] = await connection.execute(getFilteredEventsQuery(), [category_id,date_timestamp])
-   
-    if(results){
-        res.send(results);
-    }  
+    try{
+        const [results,fields] = await connection.execute(getFilteredEventsQuery(), [category_id,date_timestamp])
+        res.status(200).send(results);
+    }catch(err){
+        console.log(err)
+        res.status(500).json({message: "An error ocurred: "})
+    }
+    
 }
 
 export {getFilteredEventsRoute}

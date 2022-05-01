@@ -4,10 +4,14 @@ import { getEventsQuery, getFilteredEventsQuery,getEventsRatings} from "./query.
 const getEventsRoute = async(connection, req, res) => {
     console.log("getEventsRoute Request bod: ", req.body)
     const {} = req.body;
-    const [results, fields] = await connection.execute(getEventsQuery());
-   
-    console.log(results)
-    res.send(results)
+
+    try{
+        const [results, fields] = await connection.execute(getEventsQuery());
+        res.status(200).send(results);
+    }catch(err){
+        console.log(err)
+        res.status(500).json({message: "An error ocurred: "})
+    }
 }
 
 
@@ -23,11 +27,13 @@ const getFilteredEventsRoute = async(connection, req, res) => {
     const splitted = date.split("/")
     const date_timestamp = `${splitted[2]}-${splitted[1]}-${splitted[0]} 00:00:00`
 
-    const [results,fields] = await connection.execute(getFilteredEventsQuery(), [category_id,date_timestamp])
-   
-    if(results){
-        res.send(results);
-    }  
+    try{
+        const [results,fields] = await connection.execute(getFilteredEventsQuery(), [category_id,date_timestamp])
+        res.status(200).send(results);
+    }catch(err){
+        console.log(err)
+        res.status(500).json({message: "An error ocurred: "})
+    }
 }
 
 export {getEventsRoute, getFilteredEventsRoute}
