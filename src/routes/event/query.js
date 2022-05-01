@@ -24,6 +24,7 @@ const getPartcipationDemandId = () =>{
 
 const getEventState = ()=>{
     const req = ` Select event.photo as event_image, event.name as event_name, event.number_person_max as maxcapacity, event.paying, event.description, event.date_timestamp as date, event.place, event.status_id,
+    event.city, event.street, event.street_number, event.zip_code, event.latitude, event.longitude, Count(part.id) as nb_registered,
     c.photo as creator_image, c.name as creator_name, c.id as creator_id,
     cat.description as categorie_name, cat.img as categorie_image,
     COALESCE((SELECT p.id from eve.Participation p where event.id=p.event_id and u.id=p.user_id),0) as particip_id,
@@ -31,8 +32,8 @@ const getEventState = ()=>{
     COALESCE((SELECT l.id from eve.Liked l where l.event_id=event.id and l.user_id=u.id),0) as liked_id,
     COALESCE((SELECT pd.id from eve.ParticipationDemand pd where pd.event_id=event.id and pd.user_id=u.id),0) as demand_id,
      COALESCE((SELECT rep.id from eve.ReportEvent rep where rep.event_id=event.id),-1) as reported
-    from eve.Category cat, eve.Event event, eve.User c, eve.User u
-    where event.id=? and u.id=? and event.creator_id=c.id and event.category_id=cat.id`
+    from eve.Category cat, eve.Event event, eve.User c, eve.User u, eve.Participation part
+    where event.id=? and u.id=? and event.creator_id=c.id and event.category_id=cat.id and part.event_id = event.id group by(event_id)`
     return req;
 }
 
