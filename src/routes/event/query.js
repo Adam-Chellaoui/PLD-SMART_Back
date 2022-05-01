@@ -11,6 +11,11 @@ const removeParticipantQuery = () => "UPDATE Participation SET status_id = 3 WHE
 const getEventsParticipantsQuery = () => 
     "SELECT Participation.user_id, User.name, User.surname, User.photo FROM Participation INNER JOIN User ON User.id=Participation.user_id  WHERE event_id = ?"
 
+const getnonReviewedParticipantsQuery = () => 
+    `SELECT P.user_id, U.name, U.surname, U.photo 
+        FROM Participation P INNER JOIN User U ON U.id=P.user_id
+        WHERE event_id = ?  and P.user_id NOT IN ( SELECT R.target_id FROM Review R )`
+
 const demanderParticipationQuery = () =>{
     const req = `INSERT INTO eve.ParticipationDemand  (user_id, event_id, status_id, date_timestamp)
                     VALUES (?,?,1,?)`
@@ -80,5 +85,8 @@ const delteDemand = () =>{
     return req
 }
 
-export {getEventsParticipantsQuery, cancelEventQuery, removeParticipantQuery, modifyEventQuery, demanderParticipationQuery, getEventState, getReviewEventQuery,setEventLiked,getPartcipationDemandId,deleteLike,getLike,deleteParticipation,delteDemand,makeReview,getReviewQuery};
+export {getEventsParticipantsQuery, cancelEventQuery, removeParticipantQuery, 
+        modifyEventQuery, demanderParticipationQuery, getEventState, getReviewEventQuery,
+        setEventLiked,getPartcipationDemandId,deleteLike,getLike,deleteParticipation,
+        delteDemand,makeReview,getReviewQuery, getnonReviewedParticipantsQuery};
 

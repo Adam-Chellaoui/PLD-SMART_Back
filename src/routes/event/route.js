@@ -1,4 +1,7 @@
-import { getEventsParticipantsQuery, cancelEventQuery, removeParticipantQuery, modifyEventQuery, demanderParticipationQuery,getEventState, getReviewEventQuery, setEventLiked,getPartcipationDemandId,deleteLike,getLike,deleteParticipation,delteDemand,makeReview, getReviewQuery } from "./query.js"
+import { getEventsParticipantsQuery, cancelEventQuery, removeParticipantQuery, modifyEventQuery,
+         demanderParticipationQuery,getEventState, getReviewEventQuery, setEventLiked,getPartcipationDemandId,
+        deleteLike,getLike,deleteParticipation,delteDemand,makeReview, getReviewQuery, getnonReviewedParticipantsQuery } from "./query.js"
+
 import getDateNow from "../../utils/formatageDate.js";
 const getInfoEvent = async(connection, req, res) => {
     //console.log("getInfoevent Request bod: ", req.body)
@@ -97,6 +100,20 @@ const getEventParticipants = async(connection, req, res) => {
     
     try{
         const[results, field] = await connection.execute(getEventsParticipantsQuery(), [event_id]);
+        res.status(200).json({ participants: results });
+    }
+    catch(err){
+        console.log(err)
+        res.status(500).json({message: "An error ocurred: "})
+    }
+}
+
+const getnonReviewedParticipants = async(connection, req, res) => {
+    console.log("getnonReviewedParti Request bod: ", req.body)
+    const {event_id} = req.body;
+    
+    try{
+        const[results, field] = await connection.execute(getnonReviewedParticipantsQuery(), [event_id]);
         res.status(200).json({ participants: results });
     }
     catch(err){
@@ -224,4 +241,7 @@ const getReviewId = async(connection, req, res) => {
     }
 }
 
-export {getEventParticipants, cancelEvent, removeParticipant, modifyEvent, demanderParticipationRoute,getInfoEvent, getReviewEventRoute,setEventLikeRoute,getLikeRoute,withdrawRoute,getEventParticipantsNotif,addReview,getReviewId}
+export {getEventParticipants, cancelEvent, removeParticipant, modifyEvent, 
+        demanderParticipationRoute,getInfoEvent, getReviewEventRoute,setEventLikeRoute,
+        getLikeRoute,withdrawRoute,getEventParticipantsNotif,addReview,getReviewId,
+        getnonReviewedParticipants}

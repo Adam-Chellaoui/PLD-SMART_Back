@@ -15,7 +15,7 @@ import {getPopularRoute, getUserInfoRoute, getCategoriesRoute, getEventsbyCatego
 import {getHistoricRoute, getReviewUserRoute, getUpcomingEventRoute, getMyAccountInfo,editInfoUserRoute,editImageProfilRoute,getReportTypesRoute,createReportRoute} from "./routes/myaccount/route.js"
 import {getComingEventsRoute, getMyHistoric,getMyFavorite} from "./routes/myEventsPage/route.js"
 import {getEventsRoute} from "./routes/searchPage/route.js"
-import {cancelEvent, getEventParticipants, modifyEvent, removeParticipant,demanderParticipationRoute,getInfoEvent, getReviewEventRoute, setEventLikeRoute, getLikeRoute, withdrawRoute, getEventParticipantsNotif, addReview, getReviewId} from "./routes/event/route.js"
+import {cancelEvent, getEventParticipants, getnonReviewedParticipants, modifyEvent, removeParticipant,demanderParticipationRoute,getInfoEvent, getReviewEventRoute, setEventLikeRoute, getLikeRoute, withdrawRoute, getEventParticipantsNotif, addReview, getReviewId} from "./routes/event/route.js"
 import { getInfoDemanderNotifRoute,refuseDemandRoute,acceptDemandRoute,signoutDemand } from "./routes/participationDemand/route.js"
 import {adminBlockUser, adminDeleteEvent} from "./routes/admin/routes.js";
 import {getNotificationsRoute,createNotificationRoute,setNotifDoneRoute} from "./routes/notifications/route.js"
@@ -75,6 +75,12 @@ app.post("/getEventParticipants",
         //(req, res, next) => authenticateEventOwner(connection, req, res, next), 
         (req, res) =>  getEventParticipants(connection, req, res)
 )
+
+app.post("/getnonReviewedParticipants",
+        //(req, res, next) => authenticateToken(connection, req, res, next), 
+        //(req, res, next) => authenticateEventOwner(connection, req, res, next), 
+        (req,res)=> getnonReviewedParticipants(connection, req, res))
+
 app.post("/cancelEvent",
         //(req, res, next) => authenticateToken(connection, req, res, next),
         //(req, res, next) => authenticateEventOwner(connection, req, res, next),
