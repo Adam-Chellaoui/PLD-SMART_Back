@@ -1,3 +1,11 @@
+const createEventQuery = () => {
+    const req =  `INSERT INTO Event 
+    (id, name, date_timestamp, description, creator_id, city, street, street_number,region,zip_code, category_id, latitude, longitude, number_person_max, paying, photo, place, status_id) 
+    VALUES (DEFAULT,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);`;
+
+    return req
+}
+
 const cancelEventQuery = () => "UPDATE Event SET status_id = 2 WHERE id = ?"
 
 const modifyEventQuery = (params) => {
@@ -103,7 +111,7 @@ const deleteEventQuery = ()=>{
     return req
 }
 
-export {getReportTypesEvent,createReportEvent,getEventsParticipantsQuery, cancelEventQuery, removeParticipantQuery,
+export {createEventQuery, getReportTypesEvent,createReportEvent,getEventsParticipantsQuery, cancelEventQuery, removeParticipantQuery,
          modifyEventQuery, demanderParticipationQuery, getEventState, getReviewEventQuery,setEventLiked,
          getPartcipationDemandId,deleteLike,getLike,deleteParticipation,delteDemand,makeReview,getReviewQuery,
          getnonReviewedParticipantsQuery, deleteEventQuery};

@@ -1,9 +1,58 @@
-import { getEventsParticipantsQuery, cancelEventQuery, removeParticipantQuery, modifyEventQuery,
+import { getEventsParticipantsQuery,createEventQuery, cancelEventQuery, removeParticipantQuery, modifyEventQuery,
          demanderParticipationQuery,getEventState, getReviewEventQuery, setEventLiked,getPartcipationDemandId,
         deleteLike,getLike,deleteParticipation,delteDemand,makeReview, getReviewQuery, getnonReviewedParticipantsQuery,
         getReportTypesEvent, createReportEvent, deleteEventQuery } from "./query.js"
 
 import getDateNow from "../../utils/formatageDate.js";
+
+const createEvent = async(connection, req, res) => {
+
+    const {
+        name, 
+        date, 
+        description, 
+        creatorId, 
+        city, 
+        street, 
+        streetNb,
+        region,
+        zipCode, 
+        categoryId, 
+        latitude, 
+        longitude, 
+        numberPersonMax,
+        paying, 
+        photo, 
+        place, 
+        status_id} = req.body;
+
+    const args = [
+        street, 
+        streetNb,
+        region,
+        zipCode, 
+        categoryId, 
+        latitude, 
+        longitude, 
+        numberPersonMax,
+        paying, 
+        photo, 
+        place, 
+        status_id];
+
+    const filteredArgs = args.map(x => !x ? null : x)
+    const reqArgs = [name, date, description, creatorId, city].concat(filteredArgs);
+
+    try{
+        console.log("Request args: ", reqArgs)
+        const [results, fields] =  await connection.execute(createEventQuery(), reqArgs);
+        res.status(200).json({message: "Event successfully created."})
+    }
+    catch(e){
+        console.log("SQL error: ", e)
+        res.status(500).json({error: "An error ocurred."})
+    }
+}
 
 const getInfoEvent = async(connection, req, res) => {
     //console.log("getInfoevent Request bod: ", req.body)
@@ -321,7 +370,7 @@ const createReportEventRoute = async (connection, req,res)=>{
     }
 }
 
-export {getReportTypesEventRoute,createReportEventRoute,getEventParticipants,
+export {createEvent, getReportTypesEventRoute,createReportEventRoute,getEventParticipants,
          cancelEvent, removeParticipant, modifyEvent, demanderParticipationRoute,getInfoEvent,
         getReviewEventRoute,setEventLikeRoute,getLikeRoute,withdrawRoute,getEventParticipantsNotif,
         addReview,getReviewId, getnonReviewedParticipants, deleteEvent}

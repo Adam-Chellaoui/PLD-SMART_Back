@@ -15,7 +15,7 @@ import {getPopularRoute, getUserInfoRoute, getCategoriesRoute, getEventsbyCatego
 import {getHistoricRoute, getReviewUserRoute, getUpcomingEventRoute, getMyAccountInfo,editInfoUserRoute,editImageProfilRoute,getReportTypesRoute,createReportRoute} from "./routes/myaccount/route.js"
 import {getComingEventsRoute, getMyHistoric,getMyFavorite} from "./routes/myEventsPage/route.js"
 import {getEventsRoute} from "./routes/searchPage/route.js"
-import {cancelEvent, getEventParticipants, getnonReviewedParticipants, modifyEvent,
+import {createEvent, cancelEvent, getEventParticipants, getnonReviewedParticipants, modifyEvent,
          removeParticipant,demanderParticipationRoute,getInfoEvent, getReviewEventRoute, 
          setEventLikeRoute, getLikeRoute, withdrawRoute, getEventParticipantsNotif, addReview, 
          getReviewId, getReportTypesEventRoute, createReportEventRoute, deleteEvent} from "./routes/event/route.js"
@@ -25,6 +25,7 @@ import {getNotificationsRoute,createNotificationRoute,setNotifDoneRoute} from ".
 import {getFilteredEventsRoute} from "./routes/Filters/route.js"
 
 import getDateNow from "./utils/formatageDate.js"
+import { createEventQuery } from "./routes/event/query.js"
 //import {getEventbyCategoryRoute} from "./routes/homepage/route.js"
 
 //Env config
@@ -78,6 +79,12 @@ app.get("/getReportTypesEvent", (req, res) => getReportTypesEventRoute(connectio
 app.post("/createReportEvent", (req, res) => createReportEventRoute(connection, req, res))
 
 //ORGANIZER EVENT
+
+app.post("/createEvent", 
+        (req, res, next) => authenticateToken(connection, req, res, next),
+        (req, res) => createEvent(connection, req, res)
+)
+
 app.post("/getEventParticipants", 
         //(req, res, next) => authenticateToken(connection, req, res, next), 
         //(req, res, next) => authenticateEventOwner(connection, req, res, next), 
