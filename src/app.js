@@ -73,6 +73,7 @@ import getDateNow from "./utils/formatageDate.js";
 import { verifyAccount, signup } from "./routes/signup";
 import { createEventQuery } from "./routes/event/query.js";
 import { verifyUser } from "./routes/signup/query.js";
+import { upload } from "./middleware/upload.js";
 //import {getEventbyCategoryRoute} from "./routes/homepage/route.js"
 
 //Env config
@@ -151,6 +152,18 @@ app.post("/createReportEvent", (req, res) =>
 );
 
 //ORGANIZER EVENT
+
+app.post('/upload', upload.array('photo', 3), (req, res) => {
+  console.log('file', req.files);
+  console.log('body', req.body);
+  res.status(200).json({
+    message: 'success!',
+  });
+});
+
+app.get(image, (req, res) => {
+  res.sendFile(image);
+});
 
 app.post(
   "/createEvent",
