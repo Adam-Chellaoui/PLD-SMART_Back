@@ -1,15 +1,8 @@
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
 import crypto from 'crypto';
 import { resetQuery, saveTokenQuery, newPasswordQuery, saveNewPasswordQuery} from "./query.js";
 import nodemailer from 'nodemailer'
 
-function generateRandomNumber() {
-    var minm = 100000;
-    var maxm = 999999;
-    return Math.floor(Math
-    .random() * (maxm - minm + 1)) + minm;
-}
+const generateRandomNumber = () => crypto.randomBytes(3).toString("hex");
 
 const resetPasswordRoute = async (connection, req, res) => {
     console.log("Request body", req.body);
