@@ -5,6 +5,9 @@ const signupQuery = () => {
   return req;
 };
 
+const getSignupToken = () =>
+  `SELECT token, expiration_date FROM SignupToken WHERE user_id=?`;
+
 const checkEmailExists = () => `SELECT * FROM eve.User WHERE mail=?`;
 
 const verifyUser = () => `UPDATE eve.User SET verified = 1 WHERE user_id = ?`;
@@ -14,4 +17,10 @@ const checkMailValid = () => {
   return req;
 };
 
-export { verifyUser, signupQuery, checkEmailExists, checkMailValid };
+export {
+  getSignupToken,
+  verifyUser,
+  signupQuery,
+  checkEmailExists,
+  checkMailValid,
+};

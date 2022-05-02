@@ -70,7 +70,9 @@ import {
 import { getFilteredEventsRoute } from "./routes/Filters/route.js";
 
 import getDateNow from "./utils/formatageDate.js";
+import { verifyAccount, signup } from "./routes/signup";
 import { createEventQuery } from "./routes/event/query.js";
+import { verifyUser } from "./routes/signup/query.js";
 //import {getEventbyCategoryRoute} from "./routes/homepage/route.js"
 
 //Env config
@@ -96,7 +98,8 @@ app.get("/", (req, res) =>
   res.send("Bienvenue au backend du meilleur hexanome de l'INSA.")
 );
 //LOGIN AND SIGNUP
-app.post("/signup", (req, res) => signupRoute(connection, req, res));
+app.post("/signup", (req, res) => signup(connection, req, res));
+app.post("/verifyAccount", (req, res) => verifyAccount(connection, req, res));
 app.post("/login", (req, res) => loginRoute(connection, req, res));
 app.post("/resetPassword", (req, res) =>
   resetPasswordRoute(connection, req, res)

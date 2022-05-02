@@ -3,12 +3,13 @@ import {
   signupQuery,
   checkMailValid,
   verifyUser,
+  getSignupToken,
 } from "./query.js";
 import bcrypt from "bcrypt";
 import crypto from "crypto";
 import nodemailer from "nodemailer";
 
-const signupRoute = async (connection, req, res) => {
+const signup = async (connection, req, res) => {
   console.log("Request bod: ", req.body);
   const {
     name,
@@ -169,4 +170,4 @@ const verifyAccount = async (connection, req, res) => {
   return res.status(200).json({ message: "User verified." });
 };
 
-export default signupRoute;
+export default { signup, verifyAccount };
