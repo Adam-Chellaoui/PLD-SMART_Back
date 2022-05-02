@@ -1,15 +1,15 @@
 const signupQuery = () => {
-        //Checker formatation
-        const req = `INSERT INTO eve.User (name, surname, mail, phone, city, street, street_number, region, zip_code, address_complement, gender, date_birth, user_password, description, admin, school_id, photo)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, FALSE, ?, '')`
-        return req
-   }
+  //Checker formatation
+  const req = `INSERT INTO eve.User (name, surname, mail, phone, city, street, street_number, region, zip_code, address_complement, gender, date_birth, user_password, description, admin, school_id, photo)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, FALSE, ?, '')`;
+  return req;
+};
 
-const checkEmailExists = () => `SELECT * FROM eve.User WHERE mail=?`
+const checkEmailExists = () => `SELECT * FROM eve.User WHERE mail=?`;
 
-const checkMailValid = ()=>{
-        const req = `Select id from eve.School where domain=?`
-        return req
-}
+const checkMailValid = () => {
+  const req = `Select id from eve.School where domain=?`;
+  return req;
+};
 
-export {signupQuery, checkEmailExists,checkMailValid};
+export { signupQuery, checkEmailExists, checkMailValid };

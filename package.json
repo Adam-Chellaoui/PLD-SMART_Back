@@ -26,6 +26,7 @@
     "babel-preset-es2015": "6.24.1",
     "babel-preset-stage-2": "6.24.1",
     "babel-register": "6.26.0",
-    "nodemon": "2.0.15"
+    "nodemon": "2.0.15",
+    "prettier": "2.6.2"
   }
 }

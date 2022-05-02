@@ -1,1 +1,1 @@
-export const checkUserExistsQuery = () => "SELECT id FROM eve.User WHERE id=?"
+export const checkUserExistsQuery = () => "SELECT id FROM eve.User WHERE id=?";

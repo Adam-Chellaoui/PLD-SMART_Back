@@ -1,1 +1,2 @@
-export const isUserBlockedQuery = () => "SELECT blocked FROM eve.User WHERE id=?"
+export const isUserBlockedQuery = () =>
+  "SELECT blocked FROM eve.User WHERE id=?";
