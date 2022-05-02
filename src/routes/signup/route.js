@@ -1,4 +1,9 @@
-import { checkEmailExists, signupQuery, checkMailValid } from "./query.js";
+import {
+  checkEmailExists,
+  signupQuery,
+  checkMailValid,
+  verifyUser,
+} from "./query.js";
 import bcrypt from "bcrypt";
 
 const signupRoute = async (connection, req, res) => {
@@ -74,12 +79,51 @@ const signupRoute = async (connection, req, res) => {
       email,
     ]);
     if (results4.length != 0) {
-      res.status(200).send(results);
+      res.status(200).send(results4);
     }
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: "An error ocurred: " });
   }
+};
+
+const verifyAccount = async (connection, req, res) => {
+  const { verificationToken, preAuthToken } = req.body;
+
+  if (!preAuthToken)
+    return res.status(401).json({ error: "Empty authentication token." });
+
+  try {
+    const payload = await jwt.verify(preAuthToken, process.env.SECRET);
+    const { userId, isAdmin } = payload;
+    req.userId = userId;
+    req.isAdmin = isAdmin;
+  } catch (err) {
+    return res.status(403).json({ error: "Invalid authentication token." });
+  }
+  try {
+    const [results, fields] = await connection.execute(getSignupToken(), [
+      userId,
+    ]);
+  } catch (e) {
+    return defaultResponseError(e, res);
+  }
+
+  const token = results[0];
+  if (!token) return res.status(400).json({ error: "Token not found." });
+
+  if (token !== verificationToken)
+    return res.status(401).json({ error: "Invalid verification token." });
+
+  try {
+    const [results, fields] = await connection.execute(verifyUser(), [
+      req.userId,
+    ]);
+  } catch (e) {
+    return defaultResponseError(e, res);
+  }
+
+  return res.status(200).json({ message: "User verified." });
 };
 
 export default signupRoute;

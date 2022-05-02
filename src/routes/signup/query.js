@@ -7,9 +7,11 @@ const signupQuery = () => {
 
 const checkEmailExists = () => `SELECT * FROM eve.User WHERE mail=?`;
 
+const verifyUser = () => `UPDATE eve.User SET verified = 1 WHERE user_id = ?`;
+
 const checkMailValid = () => {
   const req = `Select id from eve.School where domain=?`;
   return req;
 };
 
-export { signupQuery, checkEmailExists, checkMailValid };
+export { verifyUser, signupQuery, checkEmailExists, checkMailValid };
