@@ -8,6 +8,11 @@ const signupQuery = () => {
 const getSignupToken = () =>
   `SELECT token, expiration_date FROM SignupToken WHERE user_id=?`;
 
+const saveTokenQuery = () => {
+  const req = `INSERT INTO eve.SignupToken (user_id, token, expiration_date) VALUES (?, ?, ?)`;
+  return req;
+};
+
 const checkEmailExists = () => `SELECT * FROM eve.User WHERE mail=?`;
 
 const verifyUser = () => `UPDATE eve.User SET verified = 1 WHERE user_id = ?`;
@@ -19,8 +24,8 @@ const checkMailValid = () => {
 
 export {
   getSignupToken,
-  verifyUser,
   signupQuery,
   checkEmailExists,
   checkMailValid,
+  saveTokenQuery,
 };
