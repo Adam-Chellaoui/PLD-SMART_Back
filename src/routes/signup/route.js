@@ -1,7 +1,8 @@
-import { checkEmailExists, signupQuery, checkMailValid } from "./query.js";
+import { checkEmailExists, signupQuery, checkMailValid, saveTokenQuery } from "./query.js";
 import bcrypt from "bcrypt";
 import crypto from "crypto";
 import nodemailer from "nodemailer";
+import {generateRandomNumber} from "../../helpers/utils/token.js"
 
 const signupRoute = async (connection, req, res) => {
   console.log("Request bod: ", req.body);
@@ -73,9 +74,21 @@ const signupRoute = async (connection, req, res) => {
       school_id,
     ]);
 
-    // We send a verification code on the email
-    const generateRandomNumber = () => crypto.randomBytes(3).toString("hex");
+    // We create a token and save it in the database
+    const token = generateRandomNumber();
 
+    var mydate = new Date();
+    mydate.setHours(mydate.getHours() + 4);
+    const expiration_sql = mydate.toISOString().slice(0, 19).replace("T", " ");
+
+    const [resultToken, fieldsToken] = await connection.execute(saveTokenQuery(), [
+      result3[0],
+      token,
+      expiration_sql
+    ]);
+    res.status(200).send({ message: "Saved Token" });
+
+    // We send a verification code on the email
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
@@ -93,7 +106,7 @@ const signupRoute = async (connection, req, res) => {
       text:
         "You are receiving this because you (or someone else) have requested to signup to eve.\n\n" +
         "Please verify this code into the application in order to confirm your inscription :\n\n" +
-        `${generateRandomNumber()}` +
+        `${$token}` +
         "\n If you did not request this, please ignore this email.\n",
     }
 
