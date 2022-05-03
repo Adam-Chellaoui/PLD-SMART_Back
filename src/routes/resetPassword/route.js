@@ -33,8 +33,6 @@ const resetPasswordRoute = async (connection, req, res) => {
           token,
           expiration_sql,
         ]);
-        res.status(200).send({ message: "Saved Token" });
-
 
         // sending the code via email
         const transporter = nodemailer.createTransport({
