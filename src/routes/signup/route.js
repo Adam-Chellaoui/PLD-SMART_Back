@@ -114,7 +114,7 @@ const signup = async (connection, req, res) => {
       text:
         "You are receiving this because you (or someone else) have requested to signup to eve.\n\n" +
         "Please verify this code into the application in order to confirm your inscription :\n\n" +
-        `${$token}` +
+        `${token}` +
         "\n If you did not request this, please ignore this email.\n",
     };
 
@@ -182,4 +182,4 @@ const verifyAccount = async (connection, req, res) => {
   return res.status(200).json({ message: "User verified." });
 };
 
-export default { signup, verifyAccount };
+export { signup, verifyAccount };
