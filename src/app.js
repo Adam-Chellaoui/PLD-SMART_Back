@@ -78,6 +78,8 @@ import getDateNow from "./utils/formatageDate.js";
 import {signup, verifyAccount } from "./routes/signup/route.js";
 import { createEventQuery } from "./routes/event/query.js";
 import { verifyUser } from "./routes/signup/query.js";
+import { upload } from "./middleware/upload.js";
+import { getImage } from "./routes/images/route.js";
 //import {getEventbyCategoryRoute} from "./routes/homepage/route.js"
 
 //Env config
@@ -85,6 +87,7 @@ dotenv.config();
 //Server config
 const app = express();
 app.use(express.json());
+app.use(express.static('public'))
 //socket config
 const httpServer = createServer(app);
 const io = new Server(httpServer);
@@ -159,6 +162,19 @@ app.post("/createReportEvent", (req, res) =>
 );
 
 //ORGANIZER EVENT
+
+
+app.post("/upload", upload.single('photo'), (req, res) => {
+  console.log('file', req.files);
+  console.log('body', req.body);
+  res.status(200).json({
+    message: 'success!',
+  });
+});
+
+app.get("/getImage", (req, res, next) => {
+  getImage(req,res)
+});
 
 app.post(
   "/createEvent",
