@@ -212,6 +212,7 @@ const getnonReviewedParticipants = async (connection, req, res) => {
       getnonReviewedParticipantsQuery(),
       [event_id]
     );
+    console.log(results)
     res.status(200).json({ participantstoReview: results });
   } catch (err) {
     console.log(err);
