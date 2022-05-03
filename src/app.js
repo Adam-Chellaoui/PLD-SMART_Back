@@ -9,7 +9,6 @@ import { authenticateToken } from "./middleware/authenticateToken.js";
 import { authenticateEventOwner } from "./middleware/authenticateEventOwner.js";
 import { authenticateAdmin } from "./middleware/authenticateAdmin.js";
 //Routes
-import signupRoute from "./routes/signup/route.js";
 import loginRoute from "./routes/login/route.js";
 import {
   getPopularRoute,
@@ -70,7 +69,7 @@ import {
 import { getFilteredEventsRoute } from "./routes/Filters/route.js";
 
 import getDateNow from "./utils/formatageDate.js";
-import { verifyAccount, signup } from "./routes/signup";
+import {signup, verifyAccount } from "./routes/signup/route.js";
 import { createEventQuery } from "./routes/event/query.js";
 import { verifyUser } from "./routes/signup/query.js";
 //import {getEventbyCategoryRoute} from "./routes/homepage/route.js"

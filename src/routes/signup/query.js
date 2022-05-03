@@ -28,4 +28,5 @@ export {
   checkEmailExists,
   checkMailValid,
   saveTokenQuery,
+  verifyUser
 };

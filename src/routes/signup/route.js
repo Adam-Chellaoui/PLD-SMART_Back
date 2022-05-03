@@ -8,9 +8,7 @@ import {
 import bcrypt from "bcrypt";
 import crypto from "crypto";
 import nodemailer from "nodemailer";
-//import { generateRandomNumber } from "../../helpers/utils/token.js";
-
-const generateRandomNumber = () => crypto.randomBytes(3).toString("hex");
+import { generateRandomNumber } from "../../helpers/utils/token.js";
 
 const signup = async (connection, req, res) => {
   console.log("Request bod: ", req.body);
@@ -184,4 +182,4 @@ const verifyAccount = async (connection, req, res) => {
   return res.status(200).json({ message: "User verified." });
 };
 
-export default { signup, verifyAccount };
+export { signup, verifyAccount };
