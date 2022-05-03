@@ -81,6 +81,7 @@ dotenv.config();
 //Server config
 const app = express();
 app.use(express.json());
+app.use(express.static('public'))
 //socket config
 const httpServer = createServer(app);
 const io = new Server(httpServer);
