@@ -153,7 +153,8 @@ app.post("/createReportEvent", (req, res) =>
 
 //ORGANIZER EVENT
 
-app.post('/upload', upload.array('photo', 3), (req, res) => {
+
+app.post("/upload", upload.single('photo'), (req, res) => {
   console.log('file', req.files);
   console.log('body', req.body);
   res.status(200).json({
