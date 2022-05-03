@@ -12,12 +12,12 @@ const newPasswordQuery = () => {
   const req = `SELECT T.token 
                 FROM eve.ResetToken T JOIN eve.User U 
                                     ON T.user_id=U.id
-                WHERE U.mail=? AND T.expiration_date>now()`;
+                WHERE U.id=? AND T.expiration_date>now()`;
   return req;
 };
 
 const saveNewPasswordQuery = () => {
-  const req = `UPDATE eve.User SET user_password = ? WHERE mail = ?`;
+  const req = `UPDATE eve.User SET user_password = ? WHERE id = ?`;
   return req;
 };
 

@@ -20,6 +20,11 @@ import {
   getAllInfo,
 } from "./routes/homepage/route.js";
 import {
+  resetPasswordRoute,
+  resetPasswordVerifyTokenRoute,
+  newPasswordRoute
+} from "./routes/resetPassword/route.js";
+import {
   getHistoricRoute,
   getReviewUserRoute,
   getUpcomingEventRoute,
@@ -103,6 +108,9 @@ app.post("/resetPassword", (req, res) =>
 );
 app.post("/resetPasswordVerifyToken", (req, res) =>
   resetPasswordVerifyTokenRoute(connection, req, res)
+);
+app.post("/newPassword", (req, res) =>
+  newPasswordRoute(connection, req, res)
 );
 
 //HOMEPAGE

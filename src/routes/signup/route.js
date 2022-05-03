@@ -78,6 +78,7 @@ const signupRoute = async (connection, req, res) => {
     ]);
 
     // We create a token and save it in the database
+    const generateRandomNumber = () => crypto.randomBytes(3).toString("hex");
     const token = generateRandomNumber();
 
     var mydate = new Date();
