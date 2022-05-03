@@ -19,6 +19,7 @@ import {
   getReportTypesEvent,
   createReportEvent,
   deleteEventQuery,
+  getUserAdmin,
 } from "./query.js";
 
 import getDateNow from "../../utils/formatageDate.js";
@@ -85,6 +86,21 @@ const getInfoEvent = async (connection, req, res) => {
     const [results, fields] = await connection.execute(getEventState(), [
       event_id,
       user_id,
+    ]);
+    res.status(200).send(results);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "An error occured." });
+  }
+};
+
+const getUserAdminRoute= async (connection, req, res) => {
+  //console.log("getInfoevent Request bod: ", req.body)
+  const { id } = req.body;
+  
+  try {
+    const [results, fields] = await connection.execute(getUserAdmin(), [
+      id,
     ]);
     res.status(200).send(results);
   } catch (err) {
@@ -404,6 +420,7 @@ const createReportEventRoute = async (connection, req, res) => {
 };
 
 export {
+  getUserAdminRoute,
   createEvent,
   getReportTypesEventRoute,
   createReportEventRoute,

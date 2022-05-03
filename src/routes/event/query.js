@@ -8,6 +8,8 @@ const createEventQuery = () => {
 
 const cancelEventQuery = () => "UPDATE Event SET status_id = 2 WHERE id = ?";
 
+const getUserAdmin = () => "Select admin from eve.User where id=?";
+
 const modifyEventQuery = (params) => {
   const setColumns = params.map((x) => ` ${x} = ?`).join(",");
   const req = "UPDATE Event SET" + setColumns + " WHERE id = ?";
@@ -113,6 +115,7 @@ const deleteEventQuery = () => {
 };
 
 export {
+  getUserAdmin,
   createEventQuery,
   getReportTypesEvent,
   createReportEvent,

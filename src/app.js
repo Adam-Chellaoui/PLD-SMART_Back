@@ -59,6 +59,7 @@ import {
   getReportTypesEventRoute,
   createReportEventRoute,
   deleteEvent,
+  getUserAdminRoute,
 } from "./routes/event/route.js";
 import {
   getInfoDemanderNotifRoute,
@@ -66,7 +67,7 @@ import {
   acceptDemandRoute,
   signoutDemand,
 } from "./routes/participationDemand/route.js";
-import { adminBlockUser, adminDeleteEvent } from "./routes/admin/routes.js";
+import { adminBlockUser, adminDeleteEvent, getAdminIdRoute } from "./routes/admin/routes.js";
 import {
   getNotificationsRoute,
   createNotificationRoute,
@@ -128,6 +129,10 @@ app.post(
   "/getUserInfo",
   (req, res, next) => authenticateToken(connection, req, res, next),
   (req, res) => getUserInfoRoute(connection, req, res)
+);
+
+app.post("/getUserAdmin", (req, res) =>
+  getUserAdminRoute(connection, req, res)
 );
 
 app.post("/getEventByCategory", (req, res) =>
@@ -283,6 +288,7 @@ app.post(
   authenticateAdmin,
   (req, res) => adminBlockUser(connection, req, res)
 );
+app.get("/getAdminId", (req, res) => getAdminIdRoute(connection, req, res));
 
 //Notifications
 app.post("/getNotifications", (req, res) =>
@@ -349,7 +355,7 @@ io.on("connection", (socket) => {
         console.log("demand rejected");
       }
 
-      if (message.type === 12) {
+      if (message.type === 12 || message.type===14) {
         message.participants.map((item) => {
           createNotificationRoute(
             connection,

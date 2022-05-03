@@ -1,4 +1,4 @@
-import { adminDeleteEventQuery, adminBlockUserQuery } from "./query.js";
+import { adminDeleteEventQuery, adminBlockUserQuery, getAdminId } from "./query.js";
 import { checkUserExistsQuery } from "../../helpers/query/checkUserExists.js";
 
 const adminDeleteEvent = async (connection, req, res) => {
@@ -47,4 +47,16 @@ const adminBlockUser = async (connection, req, res) => {
   }
 };
 
-export { adminDeleteEvent, adminBlockUser };
+const getAdminIdRoute = async (connection, req, res) => {
+  console.log("getAdminRoute")
+  try {
+    const [results, fields] = await connection.execute(getAdminId(),[]);
+    console.log(results)
+    res.status(200).send(results);
+  } catch (err) {
+    console.log("An error occurred: ", err);
+    res.status(500).json({ error: "An error occured." });
+  }
+}
+
+export { adminDeleteEvent, adminBlockUser,getAdminIdRoute };
