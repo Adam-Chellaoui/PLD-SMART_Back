@@ -38,8 +38,8 @@ const signup = async (connection, req, res) => {
     ]);
 
     if (results.length > 0) {
-      //res.status(400).send("Email already exists.");
-      //return;
+      res.status(400).send("Email already exists.");
+      return;
     }
     const domain = email.substring(email.lastIndexOf("@") + 1);
     console.log(domain);
