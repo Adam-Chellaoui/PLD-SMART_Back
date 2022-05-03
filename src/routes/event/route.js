@@ -261,8 +261,8 @@ const addReview = async(connection, req, res) => {
         const [results, fields] = await connection.execute(makeReview(), [score,review,creator,writer_id,target_id,event_id])
         
         try{
-            const[results, field] = await connection.execute(getReviewQuery(), [event_id,writer_id,target_id]);
-            res.status(200).send(results);
+            const[results_2, field] = await connection.execute(getReviewQuery(), [writer_id,target_id,event_id]);
+            res.status(200).send(results_2);
         }
         catch(err){
             console.log(err)
