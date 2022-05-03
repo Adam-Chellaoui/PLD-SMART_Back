@@ -1,5 +1,5 @@
 const getUserInfoQuery = () => {
-  const req = `SELECT u.name, u.surname, u.mail, u.phone, u.city, u.street, u.street_number, u.region, u.zip_code, u.gender, u.date_birth, u.description, u.photo, s.name as school_name,
+  const req = `SELECT u.name, u.surname, u.mail, u.phone, u.city, u.street, u.street_number, u.region, u.zip_code, u.gender, u.date_birth, u.description, u.photo, u.admin, u.blocked, s.name as school_name,
     COALESCE((select id from eve.Report r where r.user_id=u.id ),-1) as reported
     FROM eve.User u, eve.School s, eve.Report r WHERE u.id = ? and u.school_id=s.id `;
   return req;
@@ -63,6 +63,10 @@ const createReport = () => {
   return req;
 };
 
+const editUserBlockStatus = () => {
+  const req = "UPDATE User SET blocked=? where id=?";
+  return req;
+};
 export {
   getUserInfoQuery,
   getHistoricQuery,
@@ -74,4 +78,5 @@ export {
   getRatingCreatorQuery,
   getReportTypes,
   createReport,
+  editUserBlockStatus,
 };

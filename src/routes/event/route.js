@@ -212,6 +212,7 @@ const getnonReviewedParticipants = async (connection, req, res) => {
       getnonReviewedParticipantsQuery(),
       [event_id]
     );
+    console.log(results)
     res.status(200).json({ participantstoReview: results });
   } catch (err) {
     console.log(err);
@@ -256,128 +257,122 @@ const demanderParticipationRoute = async (connection, req, res) => {
   }
 };
 
-const setEventLikeRoute = async (connection, req, res) => {
-  console.log("event like Request bod: ", req.body);
-  const { user_id, event_id, liked } = req.body;
 
-  if (liked === 0) {
-    try {
-      connection.query(deleteLike(), [user_id, event_id]);
-      res.status(200).send({ message: "successfully deleted" });
-    } catch (err) {
-      console.log(err);
-      res.status(500).json({ message: "An error ocurred: " });
+const setEventLikeRoute = async(connection, req, res) => {
+    console.log("event like Request bod: ", req.body)
+    const {user_id, event_id, liked} = req.body;
+
+    if(liked===0){
+        try{
+            connection.query(deleteLike(),[user_id, event_id]);
+            res.status(200).send({message:"successfully deleted"});
+        }catch(err){
+            console.log(err)
+            res.status(500).json({message: "An error ocurred: "})
+        }
+        
+    }else{
+        
+        try{
+            const date = getDateNow();
+            connection.query(setEventLiked(),[user_id, event_id,date]);
+            res.status(200).send({message:"successfully liked"});
+        }catch(err){
+            console.log(err)
+            res.status(500).json({message: "An error ocurred: "})
+        }
+    }  
+
+}
+
+const getLikeRoute = async(connection, req, res) => {
+    console.log("getLike Request bod: ", req.body)
+    const {user_id, event_id} = req.body;
+
+    try{
+        const[results, field] = await connection.execute(getLike(), [user_id,event_id]);
+        res.status(200).send(results);
     }
-  } else {
-    try {
-      const date = getDateNow();
-      connection.query(setEventLiked(), [user_id, event_id, date]);
-      res.status(200).send({ message: "successfully liked" });
-    } catch (err) {
-      console.log(err);
-      res.status(500).json({ message: "An error ocurred: " });
+    catch(err){
+        console.log(err)
+        res.status(500).json({message: "An error ocurred: "})
     }
-  }
-};
+}
 
-const getLikeRoute = async (connection, req, res) => {
-  console.log("getLike Request bod: ", req.body);
-  const { user_id, event_id } = req.body;
-
-  try {
-    const [results, field] = await connection.execute(getLike(), [
-      user_id,
-      event_id,
-    ]);
-    res.status(200).send(results);
-  } catch (err) {
-    console.log(err);
-    res.status(500).json({ message: "An error ocurred: " });
-  }
-};
-
-const getReviewEventRoute = async (connection, req, res) => {
-  const event_id = req.body.event_id;
-  try {
-    const [results, field] = await connection.execute(getReviewEventQuery(), [
-      event_id,
-    ]);
-    res.status(200).json({ reviews: results });
-  } catch (err) {
-    console.log(err);
-    res.status(500).json({ message: "An error ocurred: " });
-  }
-};
-
-const withdrawRoute = async (connection, req, res) => {
-  console.log("withdraw Request bod: ", req.body);
-  const { user_id, event_id } = req.body;
-  try {
-    connection.query(deleteParticipation(), [user_id, event_id]);
-    try {
-      connection.query(delteDemand(), [user_id, event_id]);
-      res.status(200).json({ message: "Succesfully deleted" });
-    } catch (err) {
-      console.log(err);
-      res.status(500).json({ message: "An error ocurred: " });
+const getReviewEventRoute = async(connection, req, res) => {
+    const event_id = req.body.event_id;
+    try{
+        const[results, field] = await connection.execute(getReviewEventQuery(), [event_id]);
+        res.status(200).json({ reviews: results });
     }
-  } catch (err) {
-    console.log(err);
-    res.status(500).json({ message: "An error ocurred: " });
-  }
-};
-
-const addReview = async (connection, req, res) => {
-  console.log("addReview Request bod: ", req.body);
-  const { score, review, creator, writer_id, target_id, event_id } = req.body;
-
-  try {
-    const [results, fields] = await connection.execute(makeReview(), [
-      score,
-      review,
-      creator,
-      writer_id,
-      target_id,
-      event_id,
-    ]);
-
-    try {
-      const [results, field] = await connection.execute(getReviewQuery(), [
-        event_id,
-        writer_id,
-        target_id,
-      ]);
-      res.status(200).send(results);
-    } catch (err) {
-      console.log(err);
-      res.status(500).json({ message: "An error ocurred: " });
+    catch(err){
+        console.log(err)
+        res.status(500).json({message: "An error ocurred: "})
     }
-  } catch (err) {
-    console.log(err);
-    res.status(500).json({ message: "An error occured." });
-  }
-};
+}
 
-const getReviewId = async (connection, req, res) => {
-  console.log("getReview Request bod: ", req.body);
-  const { writer_id, target_id, event_id } = req.body;
-  try {
-    const [results, field] = await connection.execute(getReviewQuery(), [
-      writer_id,
-      target_id,
-      event_id,
-    ]);
-    if (results.length != 0) {
-      res.status(200).send(results);
-    } else {
-      var resp = [{ id: -1 }];
-      res.status(200).send(resp);
+const withdrawRoute = async(connection, req, res) => {
+    console.log("withdraw Request bod: ", req.body)
+    const {user_id, event_id} = req.body;
+    try{
+        connection.query(deleteParticipation(),[user_id, event_id]);
+        try{
+            connection.query(delteDemand(),[user_id, event_id]);
+            res.status(200).json({message: "Succesfully deleted"})
+        }catch(err){
+            console.log(err)
+            res.status(500).json({message: "An error ocurred: "})
+        }
+    }catch(err){
+        console.log(err)
+        res.status(500).json({message: "An error ocurred: "})
     }
-  } catch (err) {
-    console.log(err);
-    res.status(500).json({ message: "An error ocurred: " });
-  }
-};
+    
+    
+
+}
+
+const addReview = async(connection, req, res) => {
+    console.log("addReview Request bod: ", req.body)
+    const {score,review,creator,writer_id,target_id,event_id} = req.body;
+
+    try{
+        const [results, fields] = await connection.execute(makeReview(), [score,review,creator,writer_id,target_id,event_id])
+        
+        try{
+            const[results_2, field] = await connection.execute(getReviewQuery(), [writer_id,target_id,event_id]);
+            res.status(200).send(results_2);
+        }
+        catch(err){
+            console.log(err)
+            res.status(500).json({message: "An error ocurred: "})
+        }
+    }
+    catch(err){
+        console.log(err)
+        res.status(500).json({message: "An error occured."})
+    }
+}
+
+
+const getReviewId = async(connection, req, res) => {
+    console.log("getReview Request bod: ", req.body)
+    const {writer_id,target_id,event_id} = req.body;
+    try{
+        const[results, field] = await connection.execute(getReviewQuery(), [writer_id,target_id,event_id]);
+        if(results.length!=0){
+            res.status(200).send(results);
+        }else{
+            var resp = [{id: -1}]
+            res.status(200).send(resp)
+        }
+        
+    }
+    catch(err){
+        console.log(err)
+        res.status(500).json({message: "An error ocurred: "})
+    }
+}
 
 const getReportTypesEventRoute = async (connection, req, res) => {
   console.log("getReportTypesRoute Request bod: ", req.body);

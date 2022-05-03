@@ -1,10 +1,16 @@
-import { checkEmailExists, signupQuery, checkMailValid, saveTokenQuery } from "./query.js";
+import {
+  getSignupToken,
+  checkEmailExists,
+  signupQuery,
+  checkMailValid,
+  saveTokenQuery,
+} from "./query.js";
 import bcrypt from "bcrypt";
 import crypto from "crypto";
 import nodemailer from "nodemailer";
-import {generateRandomNumber} from "../../helpers/utils/token.js"
+import { generateRandomNumber } from "../../helpers/utils/token.js";
 
-const signupRoute = async (connection, req, res) => {
+const signup = async (connection, req, res) => {
   console.log("Request bod: ", req.body);
   const {
     name,
@@ -85,11 +91,10 @@ const signupRoute = async (connection, req, res) => {
     mydate.setHours(mydate.getHours() + 4);
     const expiration_sql = mydate.toISOString().slice(0, 19).replace("T", " ");
 
-    const [resultToken, fieldsToken] = await connection.execute(saveTokenQuery(), [
-      result3[0],
-      token,
-      expiration_sql
-    ]);
+    const [resultToken, fieldsToken] = await connection.execute(
+      saveTokenQuery(),
+      [result3[0], token, expiration_sql]
+    );
     res.status(200).send({ message: "Saved Token" });
 
     // We send a verification code on the email
@@ -110,7 +115,7 @@ const signupRoute = async (connection, req, res) => {
       text:
         "You are receiving this because you (or someone else) have requested to signup to eve.\n\n" +
         "Please verify this code into the application in order to confirm your inscription :\n\n" +
-        `${$token}` +
+        `${token}` +
         "\n If you did not request this, please ignore this email.\n",
     };
 
@@ -178,4 +183,4 @@ const verifyAccount = async (connection, req, res) => {
   return res.status(200).json({ message: "User verified." });
 };
 
-export default signupRoute;
+export { signup, verifyAccount };

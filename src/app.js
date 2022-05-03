@@ -9,7 +9,6 @@ import { authenticateToken } from "./middleware/authenticateToken.js";
 import { authenticateEventOwner } from "./middleware/authenticateEventOwner.js";
 import { authenticateAdmin } from "./middleware/authenticateAdmin.js";
 //Routes
-import signupRoute from "./routes/signup/route.js";
 import loginRoute from "./routes/login/route.js";
 import {
   getPopularRoute,
@@ -33,6 +32,7 @@ import {
   editImageProfilRoute,
   getReportTypesRoute,
   createReportRoute,
+  editUserBlockStatusRoute,
 } from "./routes/myaccount/route.js";
 import {
   getComingEventsRoute,
@@ -75,7 +75,9 @@ import {
 import { getFilteredEventsRoute } from "./routes/Filters/route.js";
 
 import getDateNow from "./utils/formatageDate.js";
+import {signup, verifyAccount } from "./routes/signup/route.js";
 import { createEventQuery } from "./routes/event/query.js";
+import { verifyUser } from "./routes/signup/query.js";
 //import {getEventbyCategoryRoute} from "./routes/homepage/route.js"
 
 //Env config
@@ -101,7 +103,8 @@ app.get("/", (req, res) =>
   res.send("Bienvenue au backend du meilleur hexanome de l'INSA.")
 );
 //LOGIN AND SIGNUP
-app.post("/signup", (req, res) => signupRoute(connection, req, res));
+app.post("/signup", (req, res) => signup(connection, req, res));
+app.post("/verifyAccount", (req, res) => verifyAccount(connection, req, res));
 app.post("/login", (req, res) => loginRoute(connection, req, res));
 app.post("/resetPassword", (req, res) =>
   resetPasswordRoute(connection, req, res)
@@ -234,6 +237,9 @@ app.get("/getReportTypes", (req, res) =>
 );
 app.post("/createReport", (req, res) =>
   createReportRoute(connection, req, res)
+);
+app.post("/editUserBlockStatus", (req, res) =>
+editUserBlockStatusRoute(connection, req, res)
 );
 
 //Participation demand

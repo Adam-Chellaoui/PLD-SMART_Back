@@ -23,7 +23,7 @@ const getEventsParticipantsQuery = () =>
 const getnonReviewedParticipantsQuery = () =>
   `SELECT P.user_id, U.name, U.surname, U.photo 
         FROM Participation P INNER JOIN User U ON U.id=P.user_id
-        WHERE event_id = ?  and P.user_id NOT IN ( SELECT R.target_id FROM Review R )`;
+        WHERE P.event_id = ?  and P.user_id NOT IN (SELECT R.target_id FROM Review R WHERE R.event_id = P.event_id)`;
 
 const demanderParticipationQuery = () => {
   const req = `INSERT INTO eve.ParticipationDemand  (user_id, event_id, status_id, date_timestamp)
