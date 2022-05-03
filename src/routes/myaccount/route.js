@@ -9,6 +9,7 @@ import {
   editImageUser,
   getReportTypes,
   createReport,
+  editUserBlockStatus,
 } from "./query.js";
 
 const getMyAccountInfo = async (connection, req, res) => {
@@ -178,6 +179,21 @@ const createReportRoute = async (connection, req, res) => {
   }
 };
 
+
+const editUserBlockStatusRoute = async (connection, req, res) => {
+  console.log("editUserBlockRoute Request bod: ", req.body);
+  const { id, block_status } = req.body;
+
+  try {
+    const [results, fields] = await connection.execute(editUserBlockStatus(), [ block_status, id ]);
+    res.status(200).send({ message: "Success " });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "An error ocurred: " });
+  }
+};
+
+
 export {
   getHistoricRoute,
   getReviewUserRoute,
@@ -187,4 +203,5 @@ export {
   editImageProfilRoute,
   getReportTypesRoute,
   createReportRoute,
+  editUserBlockStatusRoute,
 };

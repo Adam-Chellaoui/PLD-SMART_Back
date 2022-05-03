@@ -27,6 +27,7 @@ import {
   editImageProfilRoute,
   getReportTypesRoute,
   createReportRoute,
+  editUserBlockStatusRoute,
 } from "./routes/myaccount/route.js";
 import {
   getComingEventsRoute,
@@ -228,6 +229,9 @@ app.get("/getReportTypes", (req, res) =>
 );
 app.post("/createReport", (req, res) =>
   createReportRoute(connection, req, res)
+);
+app.post("/editUserBlockStatus", (req, res) =>
+editUserBlockStatusRoute(connection, req, res)
 );
 
 //Participation demand
