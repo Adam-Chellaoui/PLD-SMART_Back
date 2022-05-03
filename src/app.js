@@ -73,6 +73,7 @@ import {signup, verifyAccount } from "./routes/signup/route.js";
 import { createEventQuery } from "./routes/event/query.js";
 import { verifyUser } from "./routes/signup/query.js";
 import { upload } from "./middleware/upload.js";
+import { getImage } from "./routes/images/route.js";
 //import {getEventbyCategoryRoute} from "./routes/homepage/route.js"
 
 //Env config
@@ -160,8 +161,8 @@ app.post('/upload', upload.array('photo', 3), (req, res) => {
   });
 });
 
-app.get(image, (req, res) => {
-  res.sendFile(image);
+app.get("/getImage", (req, res, next) => {
+  getImage(req,res)
 });
 
 app.post(

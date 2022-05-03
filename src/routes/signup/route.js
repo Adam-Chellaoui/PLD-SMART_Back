@@ -6,7 +6,6 @@ import {
   saveTokenQuery,
 } from "./query.js";
 import bcrypt from "bcrypt";
-import crypto from "crypto";
 import nodemailer from "nodemailer";
 import { generateRandomNumber } from "../../helpers/utils/token.js";
 
