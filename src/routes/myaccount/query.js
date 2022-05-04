@@ -69,7 +69,7 @@ const editUserBlockStatus = () => {
 };
 
 const followCountQuery = () => {
-  const req=` SELECT count(f.follower_id) From eve.Follower f where f.user_id = ? `;
+  const req=` SELECT count(f.follower_id) as count From eve.Follower f where f.user_id = ? `;
   return req;
 }
 
@@ -78,6 +78,15 @@ const addFollowerQuery = () => {
   return req;
 }
 
+const unFollowQuery = () => {
+  const req = `DELETE From eve.Follower WHERE user_id = ? and follower_id = ?`;
+  return req;
+}
+
+const getFollowingStatus =() =>{
+  const req = `SELECT COUNT(user_id) as following from eve.Follower where user_id = ? and follower_id = ?`;
+  return req;
+}
 export {
   getUserInfoQuery,
   getHistoricQuery,
@@ -91,5 +100,7 @@ export {
   createReport,
   editUserBlockStatus,
   followCountQuery,
-  addFollowerQuery
+  addFollowerQuery, 
+  unFollowQuery,
+  getFollowingStatus
 };
