@@ -6,7 +6,8 @@ const signupQuery = () => {
 };
 
 const getSignupToken = () =>
-  `SELECT token, expiration_date FROM SignupToken WHERE user_id=?`;
+  `SELECT token, expiration_date FROM SignupToken WHERE user_id=?
+  ORDER BY expiration_date DESC`;
 
 const saveTokenQuery = () => {
   const req = `INSERT INTO eve.SignupToken (user_id, token, expiration_date) VALUES (?, ?, ?)`;
