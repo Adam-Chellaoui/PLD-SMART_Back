@@ -126,14 +126,18 @@ const signup = async (connection, req, res) => {
 const verifyAccount = async (connection, req, res) => {
   const { verificationToken, userId } = req.body;
 
+  if (!verificationToken)
+    return res
+      .status(400)
+      .json({ error: "Verification token param veriricationToken empty." });
+
   try {
     const [results, fields] = await connection.execute(getSignupToken(), [
       userId,
     ]);
 
     const token = results[0].token;
-    const expirationDate = results[0].token;
-    console.log("Expiration date: ", expirationDate);
+    const expirationDate = results[0].expirationDate;
 
     if (!token) return res.status(400).json({ error: "Token not found." });
 
