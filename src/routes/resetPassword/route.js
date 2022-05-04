@@ -22,11 +22,14 @@ const resetPasswordRoute = async (connection, req, res) => {
     if (results.length == 0) {
       console.error("email not in database");
       res.status(403).send("email not in db");
-    // saving the session  
+      // saving the session
     } else {
       var mydate = new Date();
       mydate.setHours(mydate.getHours() + 4);
-      const expiration_sql = mydate.toISOString().slice(0, 19).replace("T", " ");
+      const expiration_sql = mydate
+        .toISOString()
+        .slice(0, 19)
+        .replace("T", " ");
       try {
         // saving the token in the db
         connection.query(saveTokenQuery(), [
@@ -51,7 +54,8 @@ const resetPasswordRoute = async (connection, req, res) => {
           subject: "Link To Reset Password",
           text:
             "You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n" +
-            "Please copy this code in the application. This code will expire 3 hours after receiving it : " +`${token}` +
+            "Please copy this code in the application. This code will expire 3 hours after receiving it : " +
+            `${token}` +
             "\n If you did not request this, please ignore this email and your password will remain unchanged.\n",
         };
 
@@ -63,7 +67,9 @@ const resetPasswordRoute = async (connection, req, res) => {
               console.error("there was an error: ", err);
             } else {
               console.log("here is the res: ", response);
-              res.status(200).json({ message: "recovery email sent" , id : results[0].id});
+              res
+                .status(200)
+                .json({ message: "recovery email sent", id: results[0].id });
               return results[0].id;
             }
           });
@@ -82,19 +88,17 @@ const resetPasswordRoute = async (connection, req, res) => {
   }
 };
 
-
 const resetPasswordVerifyTokenRoute = async (connection, req, res) => {
   console.log("Request body", req.body);
   const { id, token } = req.body;
   const [results, fields] = await connection.execute(newPasswordQuery(), [id]);
   console.log(results[0].token);
   if (token == results[0].token) {
-      //connection.query(saveNewPasswordQuery(), [password, email]);
-      console.error("Valid Reset Token");
-      res.status(200).send({ message: "Valid Reset Token", valid : 1 });
-      return 1;
-    }
-  else {
+    //connection.query(saveNewPasswordQuery(), [password, email]);
+    console.error("Valid Reset Token");
+    res.status(200).send({ message: "Valid Reset Token", valid: 1 });
+    return 1;
+  } else {
     console.error("invalid token");
     res.status(401).send("invalid token");
   }
@@ -102,7 +106,8 @@ const resetPasswordVerifyTokenRoute = async (connection, req, res) => {
 
 const newPasswordRoute = async (connection, req, res) => {
   console.log("Request body", req.body);
-  const { id, newpassword} = req.body;
+  const { id, newpassword } = req.body;
+  const saltRounds = 10;
   const hashedPassword = await bcrypt.hash(newpassword, saltRounds);
   try {
     connection.query(saveNewPasswordQuery(), [hashedPassword, id]);
