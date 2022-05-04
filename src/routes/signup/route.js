@@ -103,8 +103,8 @@ const signup = async (connection, req, res) => {
       subject: "Verify your account",
       text:
         "You are receiving this because you (or someone else) have requested to signup to eve.\n\n" +
-        "Please verify this code into the application in order to confirm your inscription :\n\n" +
-        `${token}` +
+        "Please verify this code into the application in order to confirm your inscription : "+ 
+        `${token}` + "\n\n" +
         "\n If you did not request this, please ignore this email.\n",
     };
 

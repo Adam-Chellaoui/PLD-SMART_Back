@@ -12,7 +12,8 @@ const newPasswordQuery = () => {
   const req = `SELECT T.token 
                 FROM eve.ResetToken T JOIN eve.User U 
                                     ON T.user_id=U.id
-                WHERE U.id=? AND T.expiration_date>now()`;
+                WHERE U.id=? AND T.expiration_date>now()
+                ORDER BY expiration_date DESC`;
   return req;
 };
 
