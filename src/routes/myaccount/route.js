@@ -23,32 +23,22 @@ const getMyAccountInfo = async (connection, req, res) => {
       id,
     ]);
 
-    try {
-      const [results2, fields2] = await connection.execute(
-        getRatingParticipantQuery(),
-        [id]
-      );
+    const [results2, fields2] = await connection.execute(
+      getRatingParticipantQuery(),
+      [id]
+    );
 
-      try {
-        const [results3, fields3] = await connection.execute(
-          getRatingCreatorQuery(),
-          [id]
-        );
-        var infos = {
-          global_infos: results,
-          participant_rating: results2,
-          creator_rating: results3,
-        };
-        console.log(infos);
-        res.status(200).send(infos);
-      } catch (err) {
-        console.log(err);
-        res.status(500).json({ message: "An error ocurred: " });
-      }
-    } catch (err) {
-      console.log(err);
-      res.status(500).json({ message: "An error ocurred: " });
-    }
+    const [results3, fields3] = await connection.execute(
+      getRatingCreatorQuery(),
+      [id]
+    );
+
+    var infos = {
+      global_infos: results,
+      participant_rating: results2,
+      creator_rating: results3,
+    };
+    return res.status(200).send(infos);
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: "An error ocurred: " });
@@ -181,13 +171,15 @@ const createReportRoute = async (connection, req, res) => {
   }
 };
 
-
 const editUserBlockStatusRoute = async (connection, req, res) => {
   console.log("editUserBlockRoute Request bod: ", req.body);
   const { id, block_status } = req.body;
 
   try {
-    const [results, fields] = await connection.execute(editUserBlockStatus(), [ block_status, id ]);
+    const [results, fields] = await connection.execute(editUserBlockStatus(), [
+      block_status,
+      id,
+    ]);
     res.status(200).send({ message: "Success " });
   } catch (err) {
     console.log(err);

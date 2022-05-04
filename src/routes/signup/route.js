@@ -17,16 +17,8 @@ const signup = async (connection, req, res) => {
     name,
     surname,
     email,
-    city,
-    street,
-    streetNb,
-    region,
-    zipCode,
-    addressComplement,
     password,
-    confirmedPassword,
     phone,
-    address,
     gender,
     birthDate,
     description,
@@ -71,12 +63,6 @@ const signup = async (connection, req, res) => {
       surname,
       email,
       phone,
-      city,
-      street,
-      streetNb,
-      region,
-      zipCode,
-      addressComplement,
       gender,
       birthDateTimestamp,
       hashedPassword,
@@ -95,10 +81,11 @@ const signup = async (connection, req, res) => {
 
     var mydate = new Date();
     mydate.setHours(mydate.getHours() + 4);
-    const expiration_sql = mydate.toISOString().slice(0, 19).replace("T", " ");
+    const expiration = mydate.toISOString().slice(0, 19).replace("T", " ");
+    const userId = userIdQuery[0].id;
     const [resultToken, fieldsToken] = await connection.execute(
       saveTokenQuery(),
-      [userIdQuery[0].id, token, expiration_sql]
+      [userId, token, expiration]
     );
 
     // We send a verification code on the email
@@ -109,8 +96,6 @@ const signup = async (connection, req, res) => {
         pass: "Trucmdp123!",
       },
     });
-
-    console.log("Before sending mail");
 
     const mailOptions = {
       from: "eve.taylorswift@gmail.com",
@@ -123,18 +108,15 @@ const signup = async (connection, req, res) => {
         "\n If you did not request this, please ignore this email.\n",
     };
 
-    console.log("sending mail");
-
     await transporter.sendMail(mailOptions, (err, response) => {
-      console.log("Inside");
       if (err) {
-        console.error("there was an error: ", err);
+        console.error("There was an error: ", err);
       } else {
-        const token = "";
-        return res.status(200).json({ message: "signup email sent" });
+        return res
+          .status(200)
+          .json({ message: "signup email sent", userId: userId });
       }
     });
-    console.log("After");
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: "An error ocurred: " });
@@ -142,21 +124,17 @@ const signup = async (connection, req, res) => {
 };
 
 const verifyAccount = async (connection, req, res) => {
-  const { verificationToken, email } = req.body;
+  const { verificationToken, userId } = req.body;
 
   try {
-    const [userIdQuery, fields3] = await connection.execute(
-      "SELECT id FROM eve.User WHERE mail = ?",
-      [email]
-    );
-
-    const userId = userIdQuery[0].id;
-
     const [results, fields] = await connection.execute(getSignupToken(), [
       userId,
     ]);
 
     const token = results[0].token;
+    const expirationDate = results[0].token;
+    console.log("Expiration date: ", expirationDate);
+
     if (!token) return res.status(400).json({ error: "Token not found." });
 
     //TODO: Check expiration date
@@ -169,7 +147,7 @@ const verifyAccount = async (connection, req, res) => {
     return defaultResponseError(e, res);
   }
 
-  return res.status(200).json({ message: "User verified." });
+  return res.status(200).json({ message: "User verified.", userId: userId });
 };
 
 export { signup, verifyAccount };

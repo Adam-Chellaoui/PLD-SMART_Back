@@ -6,6 +6,7 @@ import {
   saveNewPasswordQuery,
 } from "./query.js";
 import nodemailer from "nodemailer";
+import bcrypt from "bcrypt";
 
 const generateRandomNumber = () => crypto.randomBytes(3).toString("hex");
 
@@ -50,8 +51,7 @@ const resetPasswordRoute = async (connection, req, res) => {
           subject: "Link To Reset Password",
           text:
             "You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n" +
-            "Please copy this code in the application. This code will expire 3 hours after receiving it :\n\n" +
-            `${token}` +
+            "Please copy this code in the application. This code will expire 3 hours after receiving it : " +`${token}` +
             "\n If you did not request this, please ignore this email and your password will remain unchanged.\n",
         };
 
@@ -103,8 +103,9 @@ const resetPasswordVerifyTokenRoute = async (connection, req, res) => {
 const newPasswordRoute = async (connection, req, res) => {
   console.log("Request body", req.body);
   const { id, newpassword} = req.body;
+  const hashedPassword = await bcrypt.hash(newpassword, saltRounds);
   try {
-    connection.query(saveNewPasswordQuery(), [newpassword, id]);
+    connection.query(saveNewPasswordQuery(), [hashedPassword, id]);
     console.error("New password saved");
     res.status(401).send("New password saved");
   } catch (error) {
