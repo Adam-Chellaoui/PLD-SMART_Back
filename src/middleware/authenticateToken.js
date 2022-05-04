@@ -30,8 +30,8 @@ export const authenticateToken = async (connection, req, res, next) => {
     const [results, fields] = await connection.execute(isUserBlockedQuery(), [
       req.userId,
     ]);
-    const { blocked } = results[0];
-    if (blocked == 1)
+    const { blocked , verified} = results[0];
+    if (blocked == 1 || verified==0)
       return res.status(401).json({ error: "The user is curently blocked." });
   } catch (err) {
     console.log("SQL ERROR: ", err);

@@ -38,12 +38,12 @@ const getPartcipationDemandId = () => {
   return req;
 };
 
-const getEventState = () => {
-  const req = ` Select event.photo as event_image, event.name as event_name, event.number_person_max as maxcapacity, event.paying, event.description, event.date_timestamp as date, event.place, event.status_id,
-    event.city, event.street, event.street_number, event.zip_code, event.latitude, event.longitude, 
+const getEventState = ()=>{
+    const req = ` Select event.photo as event_image, event.name as event_name, event.number_person_max as maxcapacity, event.paying, event.description, event.date_timestamp as date, event.place, event.status_id,
+    event.city, event.street, event.street_number, event.zip_code, event.latitude, event.longitude, event.region,
     COALESCE ((SELECT Count(part.id) from eve.Participation part where part.event_id = event.id group by(event_id)),0) as nb_registered,
     c.photo as creator_image, c.name as creator_name, c.id as creator_id,
-    cat.description as categorie_name, cat.img as categorie_image,
+    cat.description as categorie_name, cat.img as categorie_image, cat.id as categorie_id,
     COALESCE((SELECT p.id from eve.Participation p where event.id=p.event_id and u.id=p.user_id),0) as particip_id,
     IFNULL(c.id=u.id,0) as user_is_creator,
     COALESCE((SELECT l.id from eve.Liked l where l.event_id=event.id and l.user_id=u.id),0) as liked_id,
