@@ -95,10 +95,11 @@ const signup = async (connection, req, res) => {
 
     var mydate = new Date();
     mydate.setHours(mydate.getHours() + 4);
-    const expiration_sql = mydate.toISOString().slice(0, 19).replace("T", " ");
+    const expiration = mydate.toISOString().slice(0, 19).replace("T", " ");
+    const userId = userIdQuery[0].id;
     const [resultToken, fieldsToken] = await connection.execute(
       saveTokenQuery(),
-      [userIdQuery[0].id, token, expiration_sql]
+      [userId, token, expiration]
     );
 
     // We send a verification code on the email
@@ -127,7 +128,7 @@ const signup = async (connection, req, res) => {
       } else {
         return res
           .status(200)
-          .json({ message: "signup email sent", email: email });
+          .json({ message: "signup email sent", userId: userId });
       }
     });
   } catch (err) {
@@ -137,16 +138,9 @@ const signup = async (connection, req, res) => {
 };
 
 const verifyAccount = async (connection, req, res) => {
-  const { verificationToken, email } = req.body;
+  const { verificationToken, userId } = req.body;
 
   try {
-    const [userIdQuery, fields3] = await connection.execute(
-      "SELECT id FROM eve.User WHERE mail = ?",
-      [email]
-    );
-
-    const userId = userIdQuery[0].id;
-
     const [results, fields] = await connection.execute(getSignupToken(), [
       userId,
     ]);
