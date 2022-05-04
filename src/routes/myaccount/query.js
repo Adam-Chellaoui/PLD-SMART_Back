@@ -67,6 +67,17 @@ const editUserBlockStatus = () => {
   const req = "UPDATE User SET blocked=? where id=?";
   return req;
 };
+
+const followCountQuery = () => {
+  const req=` SELECT count(f.follower_id) From eve.Follower f where f.user_id = ? `;
+  return req;
+}
+
+const addFollowerQuery = () => {
+  const req = `INSERT into eve.Follower (user_id, follower_id) values (?, ?)`;
+  return req;
+}
+
 export {
   getUserInfoQuery,
   getHistoricQuery,
@@ -79,4 +90,6 @@ export {
   getReportTypes,
   createReport,
   editUserBlockStatus,
+  followCountQuery,
+  addFollowerQuery
 };

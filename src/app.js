@@ -33,6 +33,8 @@ import {
   getReportTypesRoute,
   createReportRoute,
   editUserBlockStatusRoute,
+  followCountRoute,
+  addFollowerRoute
 } from "./routes/myaccount/route.js";
 import {
   getComingEventsRoute,
@@ -261,6 +263,14 @@ app.post("/createReport", (req, res) =>
 );
 app.post("/editUserBlockStatus", (req, res) =>
 editUserBlockStatusRoute(connection, req, res)
+);
+
+app.post("/addFollower", (req, res) =>
+addFollowerRoute(connection, req, res)
+);
+
+app.post("/countFollower", (req, res) =>
+followCountRoute(connection, req, res)
 );
 
 //Participation demand

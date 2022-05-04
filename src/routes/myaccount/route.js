@@ -10,6 +10,8 @@ import {
   getReportTypes,
   createReport,
   editUserBlockStatus,
+  followCountQuery,
+  addFollowerQuery
 } from "./query.js";
 
 const getMyAccountInfo = async (connection, req, res) => {
@@ -193,6 +195,34 @@ const editUserBlockStatusRoute = async (connection, req, res) => {
   }
 };
 
+const followCountRoute = async (connection, req, res) => {
+  console.log("followCountQuery Request bod: ", req.body);
+  const {user_id} = req.body;
+
+  try {
+    const [results, fields] = await connection.execute(followCountQuery(), [ user_id ]);
+    res.status(200).send({ message: "Success " });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "An error ocurred: " });
+  }
+
+};
+
+const addFollowerRoute = async (connection, req, res) => {
+  console.log("followCountQuery Request bod: ", req.body);
+  const {user_id, follower_id} = req.body;
+
+  try {
+    const [results, fields] = await connection.execute(addFollowerQuery(), [ user_id , follower_id]);
+    res.status(200).send({ message: "Success " });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "An error ocurred: " });
+  }
+
+};
+
 
 export {
   getHistoricRoute,
@@ -204,4 +234,6 @@ export {
   getReportTypesRoute,
   createReportRoute,
   editUserBlockStatusRoute,
+  followCountRoute,
+  addFollowerRoute
 };
