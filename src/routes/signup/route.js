@@ -110,8 +110,6 @@ const signup = async (connection, req, res) => {
       },
     });
 
-    console.log("Before sending mail");
-
     const mailOptions = {
       from: "eve.taylorswift@gmail.com",
       to: `${email}`,
@@ -123,18 +121,15 @@ const signup = async (connection, req, res) => {
         "\n If you did not request this, please ignore this email.\n",
     };
 
-    console.log("sending mail");
-
     await transporter.sendMail(mailOptions, (err, response) => {
-      console.log("Inside");
       if (err) {
-        console.error("there was an error: ", err);
+        console.error("There was an error: ", err);
       } else {
-        const token = "";
-        return res.status(200).json({ message: "signup email sent" });
+        return res
+          .status(200)
+          .json({ message: "signup email sent", email: email });
       }
     });
-    console.log("After");
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: "An error ocurred: " });
@@ -157,6 +152,9 @@ const verifyAccount = async (connection, req, res) => {
     ]);
 
     const token = results[0].token;
+    const expirationDate = results[0].token;
+    console.log("Expiration date: ", expirationDate);
+
     if (!token) return res.status(400).json({ error: "Token not found." });
 
     //TODO: Check expiration date
@@ -169,7 +167,7 @@ const verifyAccount = async (connection, req, res) => {
     return defaultResponseError(e, res);
   }
 
-  return res.status(200).json({ message: "User verified." });
+  return res.status(200).json({ message: "User verified.", userId: userId });
 };
 
 export { signup, verifyAccount };
