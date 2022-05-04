@@ -59,6 +59,7 @@ import {
   getReportTypesEventRoute,
   createReportEventRoute,
   deleteEvent,
+  getUserAdminRoute,
 } from "./routes/event/route.js";
 import {
   getInfoDemanderNotifRoute,
@@ -66,7 +67,7 @@ import {
   acceptDemandRoute,
   signoutDemand,
 } from "./routes/participationDemand/route.js";
-import { adminBlockUser, adminDeleteEvent } from "./routes/admin/routes.js";
+import { adminBlockUser, adminDeleteEvent, getAdminIdRoute } from "./routes/admin/routes.js";
 import {
   getNotificationsRoute,
   createNotificationRoute,
@@ -78,6 +79,8 @@ import getDateNow from "./utils/formatageDate.js";
 import {signup, verifyAccount } from "./routes/signup/route.js";
 import { createEventQuery } from "./routes/event/query.js";
 import { verifyUser } from "./routes/signup/query.js";
+import { upload } from "./middleware/upload.js";
+import { getImage } from "./routes/images/route.js";
 //import {getEventbyCategoryRoute} from "./routes/homepage/route.js"
 
 //Env config
@@ -85,6 +88,7 @@ dotenv.config();
 //Server config
 const app = express();
 app.use(express.json());
+app.use(express.static('public'))
 //socket config
 const httpServer = createServer(app);
 const io = new Server(httpServer);
@@ -127,6 +131,10 @@ app.post(
   (req, res) => getUserInfoRoute(connection, req, res)
 );
 
+app.post("/getUserAdmin", (req, res) =>
+  getUserAdminRoute(connection, req, res)
+);
+
 app.post("/getEventByCategory", (req, res) =>
   getEventbyCategoryRoute(connection, req, res)
 );
@@ -159,6 +167,19 @@ app.post("/createReportEvent", (req, res) =>
 );
 
 //ORGANIZER EVENT
+
+
+app.post("/upload", upload.single('photo'), (req, res) => {
+  console.log('file', req.files);
+  console.log('body', req.body);
+  res.status(200).json({
+    message: 'success!',
+  });
+});
+
+app.get("/getImage", (req, res, next) => {
+  getImage(req,res)
+});
 
 app.post(
   "/createEvent",
@@ -267,6 +288,7 @@ app.post(
   authenticateAdmin,
   (req, res) => adminBlockUser(connection, req, res)
 );
+app.get("/getAdminId", (req, res) => getAdminIdRoute(connection, req, res));
 
 //Notifications
 app.post("/getNotifications", (req, res) =>
@@ -333,7 +355,7 @@ io.on("connection", (socket) => {
         console.log("demand rejected");
       }
 
-      if (message.type === 12) {
+      if (message.type === 12 || message.type===14) {
         message.participants.map((item) => {
           createNotificationRoute(
             connection,

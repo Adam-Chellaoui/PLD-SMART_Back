@@ -1,5 +1,5 @@
 const getUserInfoQuery = () => {
-  const req = `SELECT surname, photo FROM eve.User WHERE id = ?`;
+  const req = `SELECT surname, photo, admin FROM eve.User WHERE id = ?`;
   return req;
 };
 
