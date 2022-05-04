@@ -34,7 +34,9 @@ import {
   createReportRoute,
   editUserBlockStatusRoute,
   followCountRoute,
-  addFollowerRoute
+  addFollowerRoute,
+  getFollowingRoute,
+  unFollowRoute
 } from "./routes/myaccount/route.js";
 import {
   getComingEventsRoute,
@@ -271,6 +273,14 @@ addFollowerRoute(connection, req, res)
 
 app.post("/countFollower", (req, res) =>
 followCountRoute(connection, req, res)
+);
+
+app.post("/getFollowerStatus", (req, res) =>
+getFollowingRoute(connection, req, res)
+);
+
+app.post("/unfollow", (req, res) =>
+unFollowRoute(connection, req, res)
 );
 
 //Participation demand
