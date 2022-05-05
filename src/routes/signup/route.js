@@ -10,6 +10,7 @@ import nodemailer from "nodemailer";
 import { generateRandomNumber } from "../../helpers/utils/token.js";
 import { defaultResponseError } from "../../helpers/utils/errors.js";
 import { verifyUser } from "./query.js";
+import { use } from "bcrypt/promises";
 
 const signup = async (connection, req, res) => {
   console.log("Request bod: ", req.body);
@@ -103,8 +104,9 @@ const signup = async (connection, req, res) => {
       subject: "Verify your account",
       text:
         "You are receiving this because you (or someone else) have requested to signup to eve.\n\n" +
-        "Please verify this code into the application in order to confirm your inscription : "+ 
-        `${token}` + "\n\n" +
+        "Please verify this code into the application in order to confirm your inscription : " +
+        `${token}` +
+        "\n\n" +
         "\n If you did not request this, please ignore this email.\n",
     };
 
@@ -126,17 +128,19 @@ const signup = async (connection, req, res) => {
 const verifyAccount = async (connection, req, res) => {
   const { verificationToken, userId } = req.body;
 
-  if (!verificationToken)
+  if (!verificationToken || !userId)
     return res
       .status(400)
-      .json({ error: "Verification token param veriricationToken empty." });
+      .json({ error: "Verification token param or userId empty." });
 
   try {
     const [results, fields] = await connection.execute(getSignupToken(), [
       userId,
     ]);
+    console.log("results", results);
 
     const token = results[0].token;
+    console.log("Token", token);
     const expirationDate = results[0].expirationDate;
 
     if (!token) return res.status(400).json({ error: "Token not found." });
