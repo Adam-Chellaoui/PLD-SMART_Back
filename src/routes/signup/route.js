@@ -10,7 +10,6 @@ import nodemailer from "nodemailer";
 import { generateRandomNumber } from "../../helpers/utils/token.js";
 import { defaultResponseError } from "../../helpers/utils/errors.js";
 import { verifyUser } from "./query.js";
-import { use } from "bcrypt/promises";
 
 const signup = async (connection, req, res) => {
   console.log("Request bod: ", req.body);
