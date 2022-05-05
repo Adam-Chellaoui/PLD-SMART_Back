@@ -126,6 +126,7 @@ const signup = async (connection, req, res) => {
 
 const verifyAccount = async (connection, req, res) => {
   const { verificationToken, userId } = req.body;
+  console.log("Verify account req body: ", req.body);
 
   if (!verificationToken || !userId)
     return res
