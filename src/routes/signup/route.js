@@ -3,6 +3,7 @@ import {
   checkEmailExists,
   signupQuery,
   checkMailValid,
+  getUserIdFromEmail,
   saveTokenQuery,
 } from "./query.js";
 import bcrypt from "bcrypt";
@@ -125,15 +126,26 @@ const signup = async (connection, req, res) => {
 };
 
 const verifyAccount = async (connection, req, res) => {
-  const { verificationToken, userId } = req.body;
+  const { verificationToken, email } = req.body;
   console.log("Verify account req body: ", req.body);
 
-  if (!verificationToken || !userId)
+  if (!verificationToken || !email)
     return res
       .status(400)
-      .json({ error: "Verification token param or userId empty." });
+      .json({ error: "Verification token param or email empty." });
 
   try {
+    console.log("Hello world");
+    const [getUserIdEmail, emailFileds] = await connection.execute(
+      getUserIdFromEmail(),
+      [email]
+    );
+
+    console.log("Got user id resuslts from: ", getUserIdEmail);
+
+    const userId = getUserIdEmail[0].id;
+    console.log("Id is: ", userId);
+
     const [results, fields] = await connection.execute(getSignupToken(), [
       userId,
     ]);
@@ -151,11 +163,11 @@ const verifyAccount = async (connection, req, res) => {
       return res.status(401).json({ error: "Invalid verification token." });
 
     await connection.execute(verifyUser(), [userId]);
-  } catch (e) {
-    return defaultResponseError(e, res);
-  }
 
-  return res.status(200).json({ message: "User verified.", userId: userId });
+    return res.status(200).json({ message: "User verified.", userId: userId });
+  } catch (e) {
+    return console.log("An error occured: ", e);
+  }
 };
 
 export { signup, verifyAccount };

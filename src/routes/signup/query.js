@@ -14,6 +14,8 @@ const saveTokenQuery = () => {
   return req;
 };
 
+const getUserIdFromEmail = () => `SELECT id FROM eve.User WHERE mail=?`;
+
 const checkEmailExists = () => `SELECT * FROM eve.User WHERE mail=?`;
 
 const verifyUser = () => `UPDATE eve.User SET verified = 1 WHERE id = ?`;
@@ -26,6 +28,7 @@ const checkMailValid = () => {
 export {
   getSignupToken,
   signupQuery,
+  getUserIdFromEmail,
   checkEmailExists,
   checkMailValid,
   saveTokenQuery,
