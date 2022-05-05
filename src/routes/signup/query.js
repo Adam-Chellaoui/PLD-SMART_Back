@@ -1,7 +1,7 @@
 const signupQuery = () => {
   //Checker formatation
-  const req = `INSERT INTO eve.User (dateSignupDemand, verified, name, surname, mail, phone, gender, date_birth, user_password, description, admin, school_id, photo)
-        VALUES (?, FALSE, ?, ?, ?, ?, ?, ?, ?, ?, FALSE, ?, '')`;
+  const req = `INSERT INTO eve.User (blocked, dateSignupDemand, verified, name, surname, mail, phone, gender, date_birth, user_password, description, admin, school_id, photo)
+        VALUES (FALSE, ?, FALSE, ?, ?, ?, ?, ?, ?, ?, ?, FALSE, ?, '')`;
   return req;
 };
 
