@@ -1,7 +1,7 @@
 const getUserInfoQuery = () => {
-  const req = `SELECT u.name, u.surname, u.mail, u.phone, u.city, u.street, u.street_number, u.region, u.zip_code, u.gender, u.date_birth, u.description, u.photo, u.admin, u.blocked, s.name as school_name,
-    COALESCE((select id from eve.Report r where r.user_id=u.id ),-1) as reported
-    FROM eve.User u, eve.School s, eve.Report r WHERE u.id = ? and u.school_id=s.id `;
+  const req = `SELECT u.name, u.surname, u.mail, u.phone, u.gender, u.date_birth, u.description, u.photo, u.admin, u.blocked, s.name as school_name,
+  COALESCE((select id from eve.Report r where r.user_id=u.id ),-1) as reported
+  FROM eve.User u, eve.School s WHERE u.id = ? and u.school_id=s.id `;
   return req;
 };
 

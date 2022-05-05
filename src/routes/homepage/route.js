@@ -9,6 +9,7 @@ import {
 const getUserInfoRoute = async (connection, req, res) => {
   console.log("getUserInfoRoute Request bod: ", req.body);
   const { id } = req.body;
+  console.log("here",req.body)
 
   try {
     const [results, fields] = await connection.execute(getUserInfoQuery(), [
